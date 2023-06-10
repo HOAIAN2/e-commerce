@@ -13,6 +13,7 @@ client/.pnp
 /client/dist
 /server/dist
 /server/public/*
+/server/static/avatars/*
 
 # misc
 /server/.env

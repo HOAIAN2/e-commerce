@@ -1,8 +1,10 @@
 import { FastifyRequest, FastifyReply } from "fastify"
-import { User } from "../models/index.js"
-import { dbSelectUserByUsername, dbUpdateUserInfo, usersCache } from "../cache/index.js"
+import { dbSelectUserByUsername, dbUpdateUserInfo, usersCache, dbUpdateUserAvatar } from "../cache/index.js"
 import { readTokenFromRequest } from "../services/auth.js"
 import { generateErrorMessage } from "../services/index.js"
+import fs from "fs/promises"
+import path from "path"
+import { __dirname } from "../config.js"
 
 interface UserChangInfo {
     username: string
@@ -51,13 +53,26 @@ async function handleEditInfo(request: FastifyRequest, reply: FastifyReply) {
     }
 }
 async function handleAddAvatar(request: FastifyRequest, reply: FastifyReply) {
-    const file = await request.file()
-    // console.log(request)
-    console.log(file)
-    // const tokenData = readTokenFromRequest(request)
-    // if (!tokenData) return reply.status(401).send()
-    // const user = await dbSelectUserByUsername(tokenData.username)
-    // return reply.send(user)
+    const acceptFormats = ['image/png', 'image/jpg', 'image/jpeg']
+    const tokenData = readTokenFromRequest(request)
+    if (!tokenData) return reply.status(401).send()
+    try {
+        const file = await request.file()
+        if (!file) return reply.status(400).send(generateErrorMessage("No file found"))
+        if (!acceptFormats.includes(file.mimetype)) return reply.status(400).send(generateErrorMessage("format not accept"))
+        const user = await dbSelectUserByUsername(tokenData.username)
+        if (!user) return reply.status(404).send(generateErrorMessage("cannot find user"))
+        const buffer = await file.toBuffer()
+        let fileName = `${Date.now()}-${user.username}.${file.mimetype.split('/')[1]}`
+        let newPath = path.join(__dirname, '../static/avatars', fileName)
+        await fs.writeFile(newPath, buffer)
+        if (user.avatar !== 'user.png') await fs.unlink(path.join(__dirname, '../static/avatars', user.avatar))
+        await dbUpdateUserAvatar(fileName, user.username)
+        user.setAvatar(fileName)
+        return reply.send(user)
+    } catch (error) {
+        return reply.status(500).send(generateErrorMessage("Server error"))
+    }
 }
 
 export {

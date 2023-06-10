@@ -7,13 +7,13 @@ import { initializeData } from "./cache/index.js"
 import fastifySwagger, { SwaggerOptions } from "@fastify/swagger"
 import fastifySwaggerUi, { FastifySwaggerUiOptions } from "@fastify/swagger-ui"
 import fastifyMultipart, { FastifyMultipartOptions } from "@fastify/multipart"
-import fs from "fs"
 
 const app = fastify({
     logger: true
 })
 
 const multipartOptions: FastifyMultipartOptions = {
+    throwFileSizeLimit: true,
     limits: {
         // fieldNameSize: 100, // Max field name size in bytes
         // fieldSize: (512 * 1024),     // Max field value size in bytes
