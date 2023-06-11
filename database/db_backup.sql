@@ -405,7 +405,7 @@ CREATE TABLE `suppliers` (
 
 LOCK TABLES `suppliers` WRITE;
 /*!40000 ALTER TABLE `suppliers` DISABLE KEYS */;
-INSERT INTO `suppliers` VALUES (1,'Samsung','Korea',NULL,NULL),(2,'Xiaomi','China',NULL,NULL),(3,'OPPO','China',NULL,NULL),(4,'Apple (iPhone)','USA',NULL,NULL),(5,'realme','China',NULL,NULL),(6,'Nokia','Finland',NULL,NULL),(7,'Vivo','China',NULL,NULL),(8,'Asus','Taiwan',NULL,NULL),(9,'Masstel','Vietnam',NULL,NULL),(10,'Honor','China',NULL,NULL),(11,'Huawei','China',NULL,NULL),(12,'Sony','Japan',NULL,NULL),(13,'ZTE Blade','China',NULL,NULL),(14,'Wiko','France',NULL,NULL),(15,'One Plus','China',NULL,NULL),(16,'LG','Korea',NULL,NULL),(17,'MSI','Taiwan',NULL,NULL),(18,'Gigabyte','Taiwan',NULL,NULL),(19,'Acer','Taiwan',NULL,NULL),(20,'Lenovo','China',NULL,NULL),(21,'HP','USA',NULL,NULL),(22,'Dell','USA',NULL,NULL),(23,'Chuwi','China',NULL,NULL);
+INSERT INTO `suppliers` VALUES (1,'Samsung','Korea',NULL,NULL),(2,'Xiaomi','China',NULL,NULL),(3,'OPPO','China',NULL,NULL),(4,'Apple','USA',NULL,NULL),(5,'realme','China',NULL,NULL),(6,'Nokia','Finland',NULL,NULL),(7,'Vivo','China',NULL,NULL),(8,'Asus','Taiwan',NULL,NULL),(9,'Masstel','Vietnam',NULL,NULL),(10,'Honor','China',NULL,NULL),(11,'Huawei','China',NULL,NULL),(12,'Sony','Japan',NULL,NULL),(13,'ZTE Blade','China',NULL,NULL),(14,'Wiko','France',NULL,NULL),(15,'One Plus','China',NULL,NULL),(16,'LG','Korea',NULL,NULL),(17,'MSI','Taiwan',NULL,NULL),(18,'Gigabyte','Taiwan',NULL,NULL),(19,'Acer','Taiwan',NULL,NULL),(20,'Lenovo','China',NULL,NULL),(21,'HP','USA',NULL,NULL),(22,'Dell','USA',NULL,NULL),(23,'Chuwi','China',NULL,NULL);
 /*!40000 ALTER TABLE `suppliers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -489,4 +489,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-10  9:31:43
+-- Dump completed on 2023-06-11 11:58:13

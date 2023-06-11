@@ -83,5 +83,6 @@ export {
     extractToken,
     generateSessionID,
     TokenData,
-    decodeToken
+    decodeToken,
+    verifyAccessToken
 }

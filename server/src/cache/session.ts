@@ -19,7 +19,7 @@ async function dbInsertSession(sessionID: string) {
     try {
         const queryString = [
             "INSERT INTO sessions",
-            'VALUES(?, DATE_ADD(NOW() , INTERVAL 2 DAY))'
+            'VALUES(?, DATE_ADD(NOW() , INTERVAL 60 DAY))'
         ].join(' ')
         await database.query(queryString, [sessionID])
         await dbDeleteOldSession()

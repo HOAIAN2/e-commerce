@@ -1,7 +1,16 @@
 import { FastifyRequest, FastifyReply } from "fastify"
-import { dbSelectProductByID, dbSelectProduct, searchCache, productsCache } from "../cache/index.js"
+import {
+    dbSelectProductByID,
+    dbSelectProduct,
+    searchCache,
+    productsCache,
+    dbSelectRating,
+    dbInsertRating,
+    dbUpdateRating
+} from "../cache/index.js"
 import { generateErrorMessage } from "../services/index.js"
 import { SearchSession, Product } from "../models/index.js"
+import { readTokenFromRequest, verifyAccessToken, TokenData } from "../services/auth.js"
 
 interface GetProductByIDParam {
     id: number
@@ -15,12 +24,43 @@ interface SearchProductParams {
     sessionID: string
     from: number
 }
+interface RateProductBody {
+    productID: number
+    rating: number
+}
 async function handleGetProductByID(request: FastifyRequest, reply: FastifyReply) {
+    const authorizationHeader = request.headers.authorization
+    const token = authorizationHeader?.split(' ')[1]
     const { id } = request.query as GetProductByIDParam
+    let tokenData: TokenData | null = null
+    try {
+        if (token) {
+            if (await verifyAccessToken(token)) tokenData = readTokenFromRequest(request)
+        }
+    } catch (error) { }
     try {
         const product = await dbSelectProductByID(id)
         if (!product) return reply.status(404).send()
+        if (tokenData) {
+            const rate = await dbSelectRating(tokenData.id, product.productID)
+            return reply.send({ ...product, userRate: rate?.rate })
+        }
         return reply.send(product)
+    } catch (error) {
+        return reply.status(500).send(generateErrorMessage("Server error"))
+    }
+}
+async function handleAddProductRate(request: FastifyRequest, reply: FastifyReply) {
+    const token = readTokenFromRequest(request)
+    if (!token) return reply.status(401).send()
+    const { productID, rating } = request.body as RateProductBody
+    try {
+        const product = await dbSelectProductByID(productID)
+        if (!product) return reply.status(404).send()
+        const dbRate = await dbSelectRating(token.id, product.productID)
+        if (dbRate) dbUpdateRating(token.id, product.productID, rating)
+        else dbInsertRating(token.id, product.productID, rating)
+        return reply.send({ ...product, userRate: rating })
     } catch (error) {
         return reply.status(500).send(generateErrorMessage("Server error"))
     }
@@ -86,5 +126,6 @@ async function handleSuggestProductByID(request: FastifyRequest, reply: FastifyR
 export {
     handleGetProductByID,
     handleSearchProduct,
-    handleSuggestProductByID
+    handleSuggestProductByID,
+    handleAddProductRate
 }
