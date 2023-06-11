@@ -38,6 +38,7 @@ import {
     dbDeleteOrderDetail,
     dbSelectOrderByID,
     dbSelectOrderFromUser,
+    dbCheckUserBought,
     dbAddVoucher,
     dbMakePayment,
     ordersCache
@@ -98,6 +99,7 @@ export {
     dbDeleteOrderDetail,
     dbSelectOrderByID,
     dbSelectOrderFromUser,
+    dbCheckUserBought,
     dbAddVoucher,
     dbMakePayment,
     dbSelectRating,

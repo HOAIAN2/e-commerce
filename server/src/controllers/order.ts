@@ -7,11 +7,11 @@ import {
     dbDeleteOrderDetail,
     dbMakePayment,
     dbSelectUserByUsername,
-    dbSelectOrderFromUser
+    dbSelectOrderFromUser,
+    dbCheckUserBought
 } from "../cache/index.js"
 import { generateErrorMessage } from "../services/index.js"
-import { readTokenFromRequest, extractToken, decodeToken } from "../services/auth.js"
-import { SearchSession, Product } from "../models/index.js"
+import { readTokenFromRequest } from "../services/auth.js"
 
 interface GetOrderByID {
     id: number
@@ -36,15 +36,6 @@ interface MakePayment {
     orderID: number
     paidMethodID: number
 }
-// interface SuggestProductByIDParam {
-//     id: number
-//     count: number
-// }
-// interface SearchProductParams {
-//     query: string
-//     sessionID: string
-//     from: number
-// }
 async function handleGetOrderByID(request: FastifyRequest, reply: FastifyReply) {
     const token = readTokenFromRequest(request)
     if (!token) return reply.status(401).send()
@@ -127,11 +118,23 @@ async function handleMakePayment(request: FastifyRequest, reply: FastifyReply) {
         return reply.status(500).send(generateErrorMessage("Server error"))
     }
 }
+async function handleCheckUserBought(request: FastifyRequest, reply: FastifyReply) {
+    const token = readTokenFromRequest(request)
+    if (!token) return reply.status(401).send()
+    const { id } = request.params as GetOrderByID
+    try {
+        const result = await dbCheckUserBought(token.id, id)
+        return reply.send(result)
+    } catch (error) {
+        return reply.status(500).send(generateErrorMessage("Server error"))
+    }
+}
 export {
     handleGetOrderByID,
     handleGetOrders,
     handleCreateOrder,
     handleAddProduct,
     handleDeleteProduct,
-    handleMakePayment
+    handleMakePayment,
+    handleCheckUserBought
 }

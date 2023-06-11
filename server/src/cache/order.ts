@@ -108,6 +108,25 @@ async function dbSelectOrderFromUser(userID: number, from?: number) {
         throw new Error(error.message)
     }
 }
+async function dbCheckUserBought(userID: number, productID: number) {
+    if (ordersCache.findKey((order: Order) => {
+        return (order.has(productID) && order.userID === userID && order.paid === true)
+    })) return { bought: true }
+    try {
+        const queryString = [
+            "SELECT orders.order_id , paid, order_details.product_id",
+            "FROM orders JOIN order_details ON orders.order_id = order_details.order_id",
+            "WHERE ((orders.user_id = ?) AND (order_details.product_id = ?) AND (paid = 1))",
+            "LIMIT 1"
+        ].join(' ')
+        const [rows] = await database.query(queryString, [userID, productID]) as RowDataPacket[]
+        if (rows.length !== 0) return { bought: true }
+        return { bought: false }
+    } catch (error: any) {
+        console.log('\x1b[31m%s\x1b[0m', error.message)
+        throw new Error(error.message)
+    }
+}
 async function dbSelectOrderByID(orderID: number) {
     if (ordersCache.has(orderID)) return ordersCache.get(orderID) as Order
     try {
@@ -312,5 +331,6 @@ export {
     dbMakePayment,
     dbSelectOrderByID,
     dbSelectOrderFromUser,
+    dbCheckUserBought,
     ordersCache
 }
