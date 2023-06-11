@@ -3,7 +3,8 @@ import {
     handleGetProductByID,
     handleSearchProduct,
     handleSuggestProductByID,
-    handleAddProductRate
+    handleAddProductRate,
+    handleSuggest
 } from "../controllers/index.js"
 import { authenticateToken } from "../services/auth.js"
 
@@ -65,7 +66,7 @@ const postProductRateSchema: FastifySchema = {
             productID: { type: 'integer' },
             rating: { type: 'integer', minimum: 1, maximum: 5 },
         },
-        required: ['orderID', 'paidMethodID'],
+        required: ['productID', 'rating'],
     },
     response: {
         200: {
@@ -177,6 +178,36 @@ const suggestProductSchema: FastifySchema = {
         }
     }
 }
+const suggestProductHomeSchema: FastifySchema = {
+    tags: ['Product'],
+    response: {
+        200: {
+            type: 'array',
+            items: {
+                properties: {
+                    productID: { type: 'integer' },
+                    productName: { type: 'string' },
+                    // supplierID: { type: 'integer' },
+                    supplierName: { type: 'string' },
+                    category: { type: 'string' },
+                    price: { type: 'integer' },
+                    quantity: { type: 'integer' },
+                    soldQuantity: { type: 'integer' },
+                    // unitInOrder: { type: 'integer' },
+                    images: {
+                        type: 'array',
+                        items: { type: 'string' }
+                    },
+                    discount: { type: 'number' },
+                    description: { type: 'string' },
+                    rating: { type: 'number' },
+                    // ratingCount: { type: 'integer' },
+                    // commentCount: { type: 'integer' },
+                }
+            }
+        }
+    }
+}
 async function productRoutes(app: FastifyInstance, options: RegisterOptions) {
     app.get('/:id', {
         handler: handleGetProductByID,
@@ -194,6 +225,10 @@ async function productRoutes(app: FastifyInstance, options: RegisterOptions) {
     app.get('/suggest', {
         handler: handleSuggestProductByID,
         schema: suggestProductSchema
+    })
+    app.get('/home', {
+        handler: handleSuggest,
+        schema: suggestProductHomeSchema
     })
 }
 

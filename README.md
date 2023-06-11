@@ -12,8 +12,6 @@
 - Run `prepare.bat` or `prepare.sh` to generate .env file and install libs for server and client.
 - Restore database in `./database/db_backup.sql`
 
-- `yarn start` or `npm start`
-
 ## Build
 
 - Run `build.bat` or `build.sh` to build ReactJS and start server

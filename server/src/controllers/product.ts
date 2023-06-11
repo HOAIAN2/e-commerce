@@ -35,7 +35,7 @@ async function handleGetProductByID(request: FastifyRequest, reply: FastifyReply
     let tokenData: TokenData | null = null
     try {
         if (token) {
-            if (await verifyAccessToken(token)) tokenData = readTokenFromRequest(request)
+            tokenData = await verifyAccessToken(token)
         }
     } catch (error) { }
     try {
@@ -100,7 +100,6 @@ async function handleSearchProduct(request: FastifyRequest, reply: FastifyReply)
 }
 async function handleSuggestProductByID(request: FastifyRequest, reply: FastifyReply) {
     const { id, count } = request.query as SuggestProductByIDParam
-    console.log(request.query)
     try {
         const product = await dbSelectProductByID(id)
         if (!product) return reply.status(404).send()
@@ -123,9 +122,14 @@ async function handleSuggestProductByID(request: FastifyRequest, reply: FastifyR
         return reply.status(500).send(generateErrorMessage("Server error"))
     }
 }
+async function handleSuggest(request: FastifyRequest, reply: FastifyReply) {
+    const result = productsCache.toArray() as Product[]
+    return reply.send(result.slice(result.length - 60))
+}
 export {
     handleGetProductByID,
     handleSearchProduct,
     handleSuggestProductByID,
+    handleSuggest,
     handleAddProductRate
 }

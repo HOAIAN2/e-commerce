@@ -13,6 +13,7 @@ import { initializeData } from "./cache/index.js"
 import fastifySwagger, { SwaggerOptions } from "@fastify/swagger"
 import fastifySwaggerUi, { FastifySwaggerUiOptions } from "@fastify/swagger-ui"
 import fastifyMultipart, { FastifyMultipartOptions } from "@fastify/multipart"
+import cors from '@fastify/cors'
 
 const app = fastify({
     logger: true
@@ -62,6 +63,8 @@ app.register(fastifySwagger, swaggerOptions);
 app.register(fastifySwaggerUi, swaggerUiOptions);
 //
 
+
+// Only God know what I'm doing
 app.register((instance, opts, next) => {
     instance.register(fastifyStatic, {
         root: path.join(__dirname, '../public'),
@@ -77,6 +80,9 @@ app.register((instance, opts, next) => {
     next()
 })
 
+app.register(cors, {
+    origin: "http://localhost:3000"
+})
 app.register(userRoutes, { prefix: '/api/user' })
 app.register(authRoutes, { prefix: '/api/auth' })
 app.register(productRoutes, { prefix: '/api/product' })
