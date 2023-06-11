@@ -2,7 +2,13 @@ import fastify, { FastifyReply, FastifyRequest } from "fastify"
 import fastifyStatic from "@fastify/static"
 import path from "path"
 import { SERVER_PORT, __dirname } from "./config.js"
-import { userRoutes, authRoutes, productRoutes, orderRoutes } from "./routes/index.js"
+import {
+    userRoutes,
+    authRoutes,
+    productRoutes,
+    orderRoutes,
+    commentRoutes
+} from "./routes/index.js"
 import { initializeData } from "./cache/index.js"
 import fastifySwagger, { SwaggerOptions } from "@fastify/swagger"
 import fastifySwaggerUi, { FastifySwaggerUiOptions } from "@fastify/swagger-ui"
@@ -36,11 +42,6 @@ const swaggerOptions: SwaggerOptions = {
         schemes: ["http", "https"],
         consumes: ['application/json', 'multipart/form-data'],
         produces: ["application/json"],
-        tags: [
-            { name: "Auth", description: "auth routes" },
-            { name: "User", description: "user routes" },
-            { name: "Product", description: "product routes" }
-        ],
     },
     // mode: 'static',
     // specification: {
@@ -80,6 +81,7 @@ app.register(userRoutes, { prefix: '/api/user' })
 app.register(authRoutes, { prefix: '/api/auth' })
 app.register(productRoutes, { prefix: '/api/product' })
 app.register(orderRoutes, { prefix: '/api/order' })
+app.register(commentRoutes, { prefix: '/api/comment' })
 
 app.setNotFoundHandler((request: any, reply: any) => { // same of `setErrorHandler`
     return reply.sendFile('index.html', path.join(__dirname, '/public'))

@@ -24,4 +24,4 @@
 
 ## API docs
 
-![Docs](./Swagger.png)
+![Docs](./API_Swagger.png)

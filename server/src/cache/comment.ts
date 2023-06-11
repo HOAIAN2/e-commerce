@@ -35,7 +35,7 @@ interface DBComment {
 //     }
 // }
 
-async function dbQueryComments(productID: number, startIndex: number, sortMode: string) {
+async function dbQueryComments(productID: number, startIndex: number | undefined, sortMode: string) {
     let replace = '>'
     if (sortMode === 'DESC') replace = '<'
     const comments: Comment[] = []

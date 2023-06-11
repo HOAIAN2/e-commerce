@@ -1,7 +1,7 @@
 import { FastifyInstance, RegisterOptions, FastifySchema } from "fastify"
 import { handleGetInfo, handleEditInfo, handleAddAvatar } from "../controllers/index.js"
 import { authenticateToken } from "../services/auth.js"
-import { errorReply, trimBody } from "../services/index.js"
+import { trimBody } from "../services/index.js"
 
 const userSchema: FastifySchema = {
     tags: ['User'],
@@ -74,8 +74,8 @@ const userChangeInfoSchema: FastifySchema = {
     }
 }
 const avatarSchema: FastifySchema = {
-    consumes: ["multipart/form-data"],
     tags: ['User'],
+    consumes: ["multipart/form-data"],
     headers: {
         type: 'object',
         properties: {

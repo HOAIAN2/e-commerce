@@ -3,6 +3,7 @@ import { handleGetProductByID, handleSearchProduct, handleSuggestProductByID } f
 import { authenticateToken } from "../services/auth.js"
 
 const getProductSchema: FastifySchema = {
+    tags: ['Product'],
     querystring: {
         type: 'object',
         properties: {
@@ -10,7 +11,6 @@ const getProductSchema: FastifySchema = {
         },
         required: ['id'],
     },
-    tags: ['Product'],
     response: {
         200: {
             type: 'object',
@@ -38,6 +38,7 @@ const getProductSchema: FastifySchema = {
     }
 }
 const searchProductSchema: FastifySchema = {
+    tags: ['Product'],
     querystring: {
         type: 'object',
         properties: {
@@ -47,7 +48,6 @@ const searchProductSchema: FastifySchema = {
         },
         required: ['query'],
     },
-    tags: ['Product'],
     response: {
         200: {
             type: 'object',
@@ -83,6 +83,7 @@ const searchProductSchema: FastifySchema = {
     }
 }
 const suggestProductSchema: FastifySchema = {
+    tags: ['Product'],
     querystring: {
         type: 'object',
         properties: {
@@ -91,7 +92,6 @@ const suggestProductSchema: FastifySchema = {
         },
         required: ['id', 'count'],
     },
-    tags: ['Product'],
     response: {
         200: {
             type: 'array',
