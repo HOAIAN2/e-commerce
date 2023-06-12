@@ -150,7 +150,7 @@ async function authRoutes(app: FastifyInstance, options: RegisterOptions) {
         handler: handleRefreshToken,
         schema: refreshTokenSchema
     })
-    app.post('/change-password', {
+    app.post('/password', {
         preHandler: [authenticateToken],
         handler: handleChangePassword,
         schema: changePasswordSchema

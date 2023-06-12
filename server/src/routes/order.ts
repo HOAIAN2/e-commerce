@@ -18,11 +18,12 @@ const getOrderByIDSchema: FastifySchema = {
         },
         required: ['authorization']
     },
-    params: {
+    querystring: {
         type: 'object',
         properties: {
-            id: { type: 'integer' },
-        }
+            id: { type: 'integer', minimum: 1 },
+        },
+        required: ['id']
     },
     response: {
         200: {
@@ -72,8 +73,9 @@ const getOrdersSchema: FastifySchema = {
     querystring: {
         type: 'object',
         properties: {
-            from: { type: 'integer' },
+            id: { type: 'integer', minimum: 1 },
         },
+        required: ['id']
     },
     response: {
         200: {
@@ -126,8 +128,8 @@ const createOrderSchema: FastifySchema = {
     body: {
         type: 'object',
         properties: {
-            productID: { type: 'integer' },
-            quantity: { type: 'integer' }
+            productID: { type: 'integer', minimum: 1 },
+            quantity: { type: 'integer', minimum: 1 }
         },
         required: ['productID', 'quantity'],
     },
@@ -233,14 +235,16 @@ const deleteProductSchema: FastifySchema = {
     body: {
         type: 'object',
         properties: {
-            orderID: { type: 'integer' },
+            orderID: { type: 'integer', minimum: 1 },
             productIDs: {
                 type: 'array',
+                minItems: 1,
                 items: {
-                    type: 'integer'
+                    type: 'integer', minimum: 1
                 }
             }
-        }
+        },
+        required: ['orderID', 'productIDs']
     },
     response: {
         200: {
@@ -290,8 +294,8 @@ const makePaymentSchema: FastifySchema = {
     body: {
         type: 'object',
         properties: {
-            orderID: { type: 'integer' },
-            paidMethodID: { type: 'integer' },
+            orderID: { type: 'integer', minimum: 1 },
+            paidMethodID: { type: 'integer', minimum: 1 },
         },
         required: ['orderID', 'paidMethodID'],
     },
@@ -332,12 +336,12 @@ const makePaymentSchema: FastifySchema = {
     }
 }
 async function orderRoutes(app: FastifyInstance, options: RegisterOptions) {
-    app.get('/:id', {
+    app.get('/', {
         preHandler: [authenticateToken],
         handler: handleGetOrderByID,
         schema: getOrderByIDSchema
     })
-    app.get('/', {
+    app.get('/from', {
         preHandler: [authenticateToken],
         handler: handleGetOrders,
         schema: getOrdersSchema

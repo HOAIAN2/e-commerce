@@ -20,7 +20,7 @@ const getProductSchema: FastifySchema = {
     querystring: {
         type: 'object',
         properties: {
-            id: { type: 'integer' }
+            id: { type: 'integer', minimum: 1 }
         },
         required: ['id'],
     },
@@ -104,7 +104,7 @@ const searchProductSchema: FastifySchema = {
         properties: {
             query: { type: 'string' },
             sessionID: { type: 'string' },
-            from: { type: 'integer' }
+            from: { type: 'integer', minimum: 1 }
         },
         required: ['query'],
     },
@@ -147,8 +147,8 @@ const suggestProductSchema: FastifySchema = {
     querystring: {
         type: 'object',
         properties: {
-            id: { type: 'integer' },
-            count: { type: 'integer' }
+            id: { type: 'integer', minimum: 1 },
+            count: { type: 'integer', minimum: 1 }
         },
         required: ['id', 'count'],
     },
@@ -211,7 +211,7 @@ const suggestProductHomeSchema: FastifySchema = {
     }
 }
 async function productRoutes(app: FastifyInstance, options: RegisterOptions) {
-    app.get('/:id', {
+    app.get('/', {
         handler: handleGetProductByID,
         schema: getProductSchema
     })

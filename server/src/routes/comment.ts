@@ -8,8 +8,8 @@ const getCommentsSchema: FastifySchema = {
     querystring: {
         type: 'object',
         properties: {
-            id: { type: 'integer' },
-            startIndex: { type: 'integer' },
+            id: { type: 'integer', minimum: 1 },
+            startIndex: { type: 'integer', minimum: 1 },
             sortMode: { type: 'string', pattern: "ASC|DESC" },
         },
         required: ['id', 'sortMode'],
@@ -47,14 +47,16 @@ const addCommentSchema: FastifySchema = {
     params: {
         type: 'object',
         properties: {
-            id: { type: 'integer' },
-        }
+            id: { type: 'integer', minimum: 1 },
+        },
+        required: ['integer']
     },
     body: {
         type: 'object',
         properties: {
             content: { type: 'string' }
-        }
+        },
+        required: ['content']
     },
     response: {
         200: {
@@ -80,7 +82,7 @@ async function commentRoutes(app: FastifyInstance, options: RegisterOptions) {
         handler: handleGetComments,
         schema: getCommentsSchema
     })
-    app.post('/:id', {
+    app.post('/', {
         preHandler: [authenticateToken, trimBody],
         handler: handleInsertComment,
         schema: addCommentSchema
