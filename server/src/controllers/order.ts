@@ -118,23 +118,11 @@ async function handleMakePayment(request: FastifyRequest, reply: FastifyReply) {
         return reply.status(500).send(generateErrorMessage("Server error"))
     }
 }
-async function handleCheckUserBought(request: FastifyRequest, reply: FastifyReply) {
-    const token = readTokenFromRequest(request)
-    if (!token) return reply.status(401).send()
-    const { id } = request.params as GetOrderByID
-    try {
-        const result = await dbCheckUserBought(token.id, id)
-        return reply.send(result)
-    } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
-    }
-}
 export {
     handleGetOrderByID,
     handleGetOrders,
     handleCreateOrder,
     handleAddProduct,
     handleDeleteProduct,
-    handleMakePayment,
-    handleCheckUserBought
+    handleMakePayment
 }

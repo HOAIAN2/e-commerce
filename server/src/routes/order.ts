@@ -5,8 +5,7 @@ import {
     handleCreateOrder,
     handleGetOrders,
     handleGetOrderByID,
-    handleMakePayment,
-    handleCheckUserBought
+    handleMakePayment
 } from "../controllers/index.js"
 import { authenticateToken } from "../services/auth.js"
 
@@ -332,30 +331,6 @@ const makePaymentSchema: FastifySchema = {
         }
     }
 }
-const checkBoughtSchema: FastifySchema = {
-    tags: ['Order'],
-    headers: {
-        type: 'object',
-        properties: {
-            'authorization': { type: 'string' }
-        },
-        required: ['authorization']
-    },
-    params: {
-        type: 'object',
-        properties: {
-            id: { type: 'integer' },
-        }
-    },
-    response: {
-        200: {
-            type: 'object',
-            properties: {
-                bought: { type: 'boolean' },
-            }
-        }
-    }
-}
 async function orderRoutes(app: FastifyInstance, options: RegisterOptions) {
     app.get('/:id', {
         preHandler: [authenticateToken],
@@ -384,11 +359,6 @@ async function orderRoutes(app: FastifyInstance, options: RegisterOptions) {
     app.post('/pay', {
         handler: handleMakePayment,
         schema: makePaymentSchema
-    })
-    app.get('/bought/:id', {
-        preHandler: [authenticateToken],
-        handler: handleCheckUserBought,
-        schema: checkBoughtSchema
     })
 }
 

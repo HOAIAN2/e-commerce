@@ -6,7 +6,8 @@ import {
     productsCache,
     dbSelectRating,
     dbInsertRating,
-    dbUpdateRating
+    dbUpdateRating,
+    dbCheckUserBought
 } from "../cache/index.js"
 import { generateErrorMessage } from "../services/index.js"
 import { SearchSession, Product } from "../models/index.js"
@@ -42,8 +43,12 @@ async function handleGetProductByID(request: FastifyRequest, reply: FastifyReply
         const product = await dbSelectProductByID(id)
         if (!product) return reply.status(404).send()
         if (tokenData) {
-            const rate = await dbSelectRating(tokenData.id, product.productID)
-            return reply.send({ ...product, userRate: rate?.rate })
+            const bought = await dbCheckUserBought(tokenData.id, id)
+            if (bought.bought === true) {
+                const rate = await dbSelectRating(tokenData.id, product.productID)
+                return reply.send({ ...product, bought: bought.bought, userRate: rate?.rate })
+            }
+            return reply.send(product)
         }
         return reply.send(product)
     } catch (error) {
@@ -60,7 +65,7 @@ async function handleAddProductRate(request: FastifyRequest, reply: FastifyReply
         const dbRate = await dbSelectRating(token.id, product.productID)
         if (dbRate) dbUpdateRating(token.id, product.productID, rating)
         else dbInsertRating(token.id, product.productID, rating)
-        return reply.send({ ...product, userRate: rating })
+        return reply.send({ ...product, bought: true, userRate: rating })
     } catch (error) {
         return reply.status(500).send(generateErrorMessage("Server error"))
     }

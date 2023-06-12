@@ -46,6 +46,7 @@ const getProductSchema: FastifySchema = {
                 rating: { type: 'number' },
                 ratingCount: { type: 'integer' },
                 commentCount: { type: 'integer' },
+                bought: { type: 'boolean' },
                 userRate: { type: 'integer' }
             }
         }
@@ -90,6 +91,7 @@ const postProductRateSchema: FastifySchema = {
                 rating: { type: 'number' },
                 ratingCount: { type: 'integer' },
                 commentCount: { type: 'integer' },
+                bought: { type: 'boolean' },
                 userRate: { type: 'integer' }
             }
         }

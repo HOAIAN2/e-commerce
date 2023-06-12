@@ -111,11 +111,15 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `before_order_detail_insert` BEFORE INSERT ON `order_details` FOR EACH ROW UPDATE products
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `before_order_detail_insert` BEFORE INSERT ON `order_details` FOR EACH ROW BEGIN
+    IF ((SELECT paid FROM orders WHERE order_id = NEW.order_id) = 1) THEN
+		SIGNAL sqlstate '45001' set message_text = "No way ! This order has paid !";
+	END IF;
+    UPDATE products
+    SET unit_in_order = unit_in_order + NEW.quantity
+    WHERE NEW.product_id = products.product_id;
 
-SET unit_in_order = unit_in_order + NEW.quantity
-
-WHERE NEW.product_id = products.product_id */;;
+END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -131,17 +135,14 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `before_order_detail_update` BEFORE UPDATE ON `order_details` FOR EACH ROW BEGIN
-
+    IF ((SELECT paid FROM orders WHERE order_id = NEW.order_id) = 1) THEN
+		SIGNAL sqlstate '45001' set message_text = "No way ! This order has paid !";
+	END IF;
       IF (NEW.quantity <> OLD.quantity) THEN
-
             UPDATE products
-
             SET unit_in_order = unit_in_order + (NEW.quantity - OLD.quantity)
-
             WHERE NEW.product_id = products.product_id AND NEW.quantity <> OLD.quantity;
-
       END IF;
-
     END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -157,11 +158,14 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `before_order_detail_delete` BEFORE DELETE ON `order_details` FOR EACH ROW UPDATE products
-
-SET unit_in_order = unit_in_order - OLD.quantity
-
-WHERE OLD.product_id = products.product_id */;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `before_order_detail_delete` BEFORE DELETE ON `order_details` FOR EACH ROW BEGIN
+    IF ((SELECT paid FROM orders WHERE order_id = OLD.order_id) = 1) THEN
+		SIGNAL sqlstate '45001' set message_text = "No way ! This order has paid !";
+	END IF;
+    UPDATE products
+    SET unit_in_order = unit_in_order - OLD.quantity
+    WHERE OLD.product_id = products.product_id;
+END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -210,27 +214,16 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `before_orders_update` BEFORE UPDATE ON `orders` FOR EACH ROW BEGIN
-
       IF (NEW.paid = 1) THEN
-
             UPDATE products JOIN order_details ON products.product_id = order_details.product_id
-
 			JOIN orders ON order_details.order_id = NEW.order_id
-
 			SET products.quantity = products.quantity - order_details.quantity,
-
             products.sold_quantity = products.sold_quantity + order_details.quantity,
-
 			unit_in_order = unit_in_order - order_details.quantity,
-
 			order_details.price = products.price,
-
 			order_details.discount = products.discount
-
 			WHERE products.product_id = order_details.product_id;
-
       END IF;
-
     END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -341,23 +334,14 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `before_ratings_insert` BEFORE INSERT ON `ratings` FOR EACH ROW BEGIN
-
 	IF ((SELECT  COUNT(*) FROM ratings WHERE user_id = NEW.user_id AND product_id = NEW.product_id) = 1) THEN
-
 		SIGNAL sqlstate '45001' set message_text = "No way ! You rated this product !";
-
 	END IF;
-
 	IF ((SELECT COUNT(*) FROM orders JOIN order_details
-
 		ON orders.order_id = order_details.order_id
-
 		WHERE product_id = NEW.product_id AND paid = 1 AND user_id = NEW.user_id) = 0) THEN
-
 		SIGNAL sqlstate '45001' set message_text = "No way ! You have to buy this product !";
-
 	END IF;
-
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -522,4 +506,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-11 18:09:19
+-- Dump completed on 2023-06-12  7:57:53

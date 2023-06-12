@@ -249,18 +249,18 @@ async function dbInsertOrder(userID: number, productID: number, quantity: number
     }
 }
 async function dbInsertOrderDetail(orderID: number, productID: number, quantity: number) {
-    const order = await dbSelectOrderByID(orderID)
-    if (!order) throw new Error(`No order with id: ${orderID}`)
-    if (order.paid) throw new Error('This order was paid')
-    const product = await dbSelectProductByID(productID)
-    if (!product) throw new Error(`No product with id: ${productID}`)
     const queryString = [
         'INSERT INTO order_details(order_id, product_id, quantity)',
         'VALUE(?, ?, ?)'
     ].join(' ')
     try {
+        const product = await dbSelectProductByID(productID)
+        if (!product) throw new Error(`No product with id: ${productID}`)
         await database.query(queryString, [orderID, productID, quantity])
-        order.addProduct(product.productID, product.productName, quantity, product.price, product.discount)
+        const order = await dbSelectOrderByID(orderID)
+        if (!order) throw new Error(`No order with id: ${orderID}`)
+        // Only God know why this work
+        if (order.has(productID) === false) order.addProduct(product.productID, product.productName, quantity, product.price, product.discount)
         product.updateUnitInOrder(quantity)
         // products.products.sort((x, y) => y.unitInOrder - x.unitInOrder)
         return order
@@ -270,18 +270,17 @@ async function dbInsertOrderDetail(orderID: number, productID: number, quantity:
     }
 }
 async function dbUpdateOrderDetail(orderID: number, productID: number, quantity: number) {
-    const order = await dbSelectOrderByID(orderID)
-    if (!order) throw new Error(`No order with id: ${orderID}`)
-    if (order.paid) throw new Error('This order was paid')
-    const product = await dbSelectProductByID(productID)
-    if (!product) throw new Error(`No product with id: ${productID}`)
     const queryString = [
         'UPDATE order_details',
         'SET quantity = ?',
         'WHERE order_id = ? AND product_id = ?'
     ].join(' ')
     try {
+        const product = await dbSelectProductByID(productID)
+        if (!product) throw new Error(`No product with id: ${productID}`)
         await database.query(queryString, [quantity, orderID, productID])
+        const order = await dbSelectOrderByID(orderID)
+        if (!order) throw new Error(`No order with id: ${orderID}`)
         const productInOrder = order.products.find(product => product.productID === productID)
         if (!productInOrder) throw new Error(`No product with id: ${productID} in order`)
         const delta = quantity - productInOrder.quantity
@@ -295,16 +294,14 @@ async function dbUpdateOrderDetail(orderID: number, productID: number, quantity:
     }
 }
 async function dbDeleteOrderDetail(orderID: number, productIDs: number[]) {
-    const order = await dbSelectOrderByID(orderID)
-    if (!order) throw new Error(`No order with id: ${orderID}`)
-    if (order.paid) throw new Error('This order was paid')
     const queryString = [
         'DELETE FROM order_details',
         'WHERE order_id = ? AND product_id IN (?)'
     ].join(' ')
     try {
         await database.query(queryString, [orderID, productIDs])
-        const order = ordersCache.get(orderID) as Order
+        const order = await dbSelectOrderByID(orderID)
+        if (!order) throw new Error(`No order with id: ${orderID}`)
         productIDs.forEach(id => {
             const productInOrder = order.products.find(item => item.productID === id)
             if (!productInOrder) return

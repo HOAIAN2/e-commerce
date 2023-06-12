@@ -16,7 +16,10 @@ import fastifyMultipart, { FastifyMultipartOptions } from "@fastify/multipart"
 import cors from '@fastify/cors'
 
 const app = fastify({
-    logger: true
+    // logger: {
+    //     level: 'info',
+    //     file: '../log.txt' // Will use pino.destination()
+    // }
 })
 
 const multipartOptions: FastifyMultipartOptions = {

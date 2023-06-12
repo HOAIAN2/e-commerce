@@ -125,12 +125,21 @@ CREATE TABLE sessions (
     session_id VARCHAR(512) PRIMARY KEY,
     valid_until DATETIME
 );
+--
+DELIMITER $$
+
 CREATE TRIGGER before_order_detail_insert
 BEFORE INSERT ON order_details
 FOR EACH ROW
-UPDATE products
-SET unit_in_order = unit_in_order + NEW.quantity
-WHERE NEW.product_id = products.product_id;
+BEGIN
+    IF ((SELECT paid FROM orders WHERE order_id = NEW.order_id) = 1) THEN
+		SIGNAL sqlstate '45001' set message_text = "No way ! This order has paid !";
+	END IF;
+    UPDATE products
+    SET unit_in_order = unit_in_order + NEW.quantity
+    WHERE NEW.product_id = products.product_id;
+END;
+DELIMITER ;
 --
 DELIMITER $$
 
@@ -153,22 +162,31 @@ DELIMITER ;
 DELIMITER $$
 
     CREATE TRIGGER before_order_detail_update BEFORE UPDATE ON order_details
-    FOR EACH ROW BEGIN
+    FOR EACH ROW
+    BEGIN
+    IF ((SELECT paid FROM orders WHERE order_id = NEW.order_id) = 1) THEN
+		SIGNAL sqlstate '45001' set message_text = "No way ! This order has paid !";
+	END IF;
       IF (NEW.quantity <> OLD.quantity) THEN
             UPDATE products
             SET unit_in_order = unit_in_order + (NEW.quantity - OLD.quantity)
             WHERE NEW.product_id = products.product_id AND NEW.quantity <> OLD.quantity;
       END IF;
-    END$$
+    END;
 
 DELIMITER ;
 --
 CREATE TRIGGER before_order_detail_delete
 BEFORE DELETE ON order_details
 FOR EACH ROW
-UPDATE products
-SET unit_in_order = unit_in_order - OLD.quantity
-WHERE OLD.product_id = products.product_id;
+BEGIN
+    IF ((SELECT paid FROM orders WHERE order_id = OLD.order_id) = 1) THEN
+		SIGNAL sqlstate '45001' set message_text = "No way ! This order has paid !";
+	END IF;
+    UPDATE products
+    SET unit_in_order = unit_in_order - OLD.quantity
+    WHERE OLD.product_id = products.product_id;
+END;
 --
 DELIMITER $$
 
@@ -184,6 +202,6 @@ DELIMITER $$
 			order_details.discount = products.discount
 			WHERE products.product_id = order_details.product_id;
       END IF;
-    END$$
+    END;
 
 DELIMITER ;
