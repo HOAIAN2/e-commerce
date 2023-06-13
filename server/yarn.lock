@@ -604,10 +604,10 @@ is-property@^1.0.2:
   resolved "https://registry.yarnpkg.com/is-property/-/is-property-1.0.2.tgz#57fe1c4e48474edd65b09911f26b1cd4095dda84"
   integrity sha512-Ks/IoX00TtClbGQr4TWXemAnktAQvYB7HzcCxDGqEZU6oCmb2INHuOoKxbtR+HFkmYWBKv/dOZtGRiAjDhj92g==
 
-js-simple-cache@1.2.6:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/js-simple-cache/-/js-simple-cache-1.2.6.tgz#7e6b5a4da0f040b82ce782e0121768a786384851"
-  integrity sha512-5c+VejVyem34hvae1JOKFIFoHsDoiik7PnI12dkcSodiD8HBqAG2/4bEuU7w+u3+2MIDraOp/YdmEN29h56tBQ==
+js-simple-cache@1.2.7:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/js-simple-cache/-/js-simple-cache-1.2.7.tgz#025e463de34c15c2f980d855ff54b3974509449d"
+  integrity sha512-G4EkTVXwDosNJqgK9wprKIVPgDJ9IG2TVXvK8pJ95fMoA2z+5shauAar2Wu3YFYTqyj11c6zvIscv9z2PcsXpg==
   dependencies:
     flat "^5.0.2"
     typescript "^5.0.4"
