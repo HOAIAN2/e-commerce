@@ -1,7 +1,7 @@
 import { FastifyInstance, RegisterOptions, FastifySchema } from "fastify"
 import { handleGetComments, handleInsertComment } from "../controllers/index.js"
 import { authenticateToken } from "../services/auth.js"
-import { trimBody } from "../services/index.js"
+import { trimBody, errorReply } from "../services/index.js"
 
 const getCommentsSchema: FastifySchema = {
     tags: ['Comment'],
@@ -32,7 +32,9 @@ const getCommentsSchema: FastifySchema = {
                     commentDate: { type: 'string' }
                 }
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const addCommentSchema: FastifySchema = {
@@ -73,7 +75,9 @@ const addCommentSchema: FastifySchema = {
                 soldQuantity: { type: 'integer' },
                 commentDate: { type: 'string' }
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 

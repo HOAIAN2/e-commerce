@@ -8,6 +8,7 @@ import {
     handleMakePayment
 } from "../controllers/index.js"
 import { authenticateToken } from "../services/auth.js"
+import { errorReply } from "../services/index.js"
 
 const getOrderByIDSchema: FastifySchema = {
     tags: ['Order'],
@@ -58,7 +59,9 @@ const getOrderByIDSchema: FastifySchema = {
                     }
                 }
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const getOrdersSchema: FastifySchema = {
@@ -113,7 +116,9 @@ const getOrdersSchema: FastifySchema = {
                     }
                 }
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const createOrderSchema: FastifySchema = {
@@ -166,7 +171,9 @@ const createOrderSchema: FastifySchema = {
                     }
                 }
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const addProductSchema: FastifySchema = {
@@ -220,7 +227,9 @@ const addProductSchema: FastifySchema = {
                     }
                 }
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const deleteProductSchema: FastifySchema = {
@@ -279,7 +288,9 @@ const deleteProductSchema: FastifySchema = {
                     }
                 }
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const makePaymentSchema: FastifySchema = {
@@ -332,7 +343,9 @@ const makePaymentSchema: FastifySchema = {
                     }
                 }
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 async function orderRoutes(app: FastifyInstance, options: RegisterOptions) {

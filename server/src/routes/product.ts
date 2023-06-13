@@ -7,6 +7,7 @@ import {
     handleSuggest
 } from "../controllers/index.js"
 import { authenticateToken } from "../services/auth.js"
+import { errorReply } from "../services/index.js"
 
 const getProductSchema: FastifySchema = {
     tags: ['Product'],
@@ -49,7 +50,9 @@ const getProductSchema: FastifySchema = {
                 bought: { type: 'boolean' },
                 userRate: { type: 'integer' }
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const postProductRateSchema: FastifySchema = {
@@ -94,7 +97,9 @@ const postProductRateSchema: FastifySchema = {
                 bought: { type: 'boolean' },
                 userRate: { type: 'integer' }
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const searchProductSchema: FastifySchema = {
@@ -139,7 +144,9 @@ const searchProductSchema: FastifySchema = {
                     }
                 }
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const suggestProductSchema: FastifySchema = {
@@ -177,7 +184,9 @@ const suggestProductSchema: FastifySchema = {
                     // commentCount: { type: 'integer' },
                 }
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const suggestProductHomeSchema: FastifySchema = {
@@ -207,7 +216,9 @@ const suggestProductHomeSchema: FastifySchema = {
                     // commentCount: { type: 'integer' },
                 }
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 async function productRoutes(app: FastifyInstance, options: RegisterOptions) {

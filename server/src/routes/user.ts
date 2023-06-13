@@ -1,7 +1,7 @@
 import { FastifyInstance, RegisterOptions, FastifySchema } from "fastify"
 import { handleGetInfo, handleEditInfo, handleAddAvatar } from "../controllers/index.js"
 import { authenticateToken } from "../services/auth.js"
-import { trimBody } from "../services/index.js"
+import { trimBody, errorReply } from "../services/index.js"
 
 const userSchema: FastifySchema = {
     tags: ['User'],
@@ -28,7 +28,9 @@ const userSchema: FastifySchema = {
                 avatar: { type: 'string' },
                 orderCount: { type: 'integer' },
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const userChangeInfoSchema: FastifySchema = {
@@ -70,7 +72,9 @@ const userChangeInfoSchema: FastifySchema = {
                 avatar: { type: 'string' },
                 orderCount: { type: 'integer' },
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const avatarSchema: FastifySchema = {
@@ -99,7 +103,9 @@ const avatarSchema: FastifySchema = {
                 avatar: { type: 'string' },
                 orderCount: { type: 'integer' },
             }
-        }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 async function userRoutes(app: FastifyInstance, options: RegisterOptions) {

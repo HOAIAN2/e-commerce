@@ -1,7 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify"
 import { dbQueryComments, dbInsertComment } from "../cache/index.js"
 import { generateErrorMessage } from "../services/index.js"
-import { SearchSession, Product } from "../models/index.js"
 import { readTokenFromRequest } from "../services/auth.js"
 
 interface GetComments {

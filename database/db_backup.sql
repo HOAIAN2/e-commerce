@@ -53,7 +53,7 @@ CREATE TABLE `comments` (
   `comment_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `product_id` int NOT NULL,
-  `comment` varchar(255) DEFAULT NULL,
+  `comment` varchar(255) NOT NULL,
   `comment_date` date NOT NULL,
   PRIMARY KEY (`comment_id`),
   KEY `user_id` (`user_id`),

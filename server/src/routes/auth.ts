@@ -27,9 +27,8 @@ const loginSchema: FastifySchema = {
                 refreshToken: { type: 'string' },
             }
         },
-        404: errorReply,
-        400: errorReply,
-        500: errorReply
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const registerSchema: FastifySchema = {
@@ -57,9 +56,8 @@ const registerSchema: FastifySchema = {
                 refreshToken: { type: 'string' },
             }
         },
-        404: errorReply,
-        400: errorReply,
-        500: errorReply
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const logoutSchema: FastifySchema = {
@@ -79,9 +77,8 @@ const logoutSchema: FastifySchema = {
         required: ['refreshToken']
     },
     response: {
-        404: errorReply,
-        400: errorReply,
-        500: errorReply
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const refreshTokenSchema: FastifySchema = {
@@ -108,9 +105,8 @@ const refreshTokenSchema: FastifySchema = {
                 refreshToken: { type: 'string' },
             }
         },
-        404: errorReply,
-        400: errorReply,
-        500: errorReply
+        '4xx': errorReply,
+        '5xx': errorReply
     }
 }
 const changePasswordSchema: FastifySchema = {

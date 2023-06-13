@@ -68,7 +68,7 @@ CREATE TABLE comments(
     comment_id INT NOT NULL AUTO_INCREMENT,
 	user_id INT NOT NULL,
 	product_id INT NOT NULL,
-	comment VARCHAR(255),
+	comment VARCHAR(255) NOT NULL,
     comment_date DATE NOT NULL,
     PRIMARY KEY (comment_id),
 	FOREIGN KEY (user_id) REFERENCES users(user_id),
