@@ -22,7 +22,6 @@ interface SuggestProductByIDParam {
 }
 interface SearchProductParams {
     query: string
-    sessionID: string
     from: number
 }
 interface RateProductBody {
@@ -72,34 +71,34 @@ async function handleAddProductRate(request: FastifyRequest, reply: FastifyReply
 }
 async function handleSearchProduct(request: FastifyRequest, reply: FastifyReply) {
     let result: SearchSession | undefined
-    const { query, sessionID, from } = request.query as SearchProductParams
-    console.log(request.query)
+    const { query, from } = request.query as SearchProductParams
     try {
-        if (sessionID) {
-            if (searchCache.has(sessionID)) result = searchCache.get(sessionID) as SearchSession
+        if (searchCache.has(query)) {
+            result = searchCache.get(query) as SearchSession
             const finalResult = structuredClone(result)
             if (!finalResult) return reply.status(400).send()
             if (from) {
                 const index = finalResult?.data.findIndex(item => item.productID === from)
                 if (index !== -1) {
                     finalResult.data = finalResult.data.slice((index + 1), (index + 61))
-                    return reply.send(finalResult)
+                    return reply.send(finalResult.data)
                 }
             }
             else {
                 finalResult.data = finalResult.data.slice(0, 60)
-                return reply.send(finalResult)
+                return reply.send(finalResult.data)
             }
         }
         else {
             const searchResult = await dbSelectProduct(query)
-            result = new SearchSession(searchResult)
+            result = new SearchSession(query, searchResult)
             searchCache.set(result, (60 * 10 * 1000))
             const finalResult = structuredClone(result)
             finalResult.data = finalResult.data.slice(0, 60)
-            return reply.send(finalResult)
+            return reply.send(finalResult.data)
         }
     } catch (error) {
+        console.log(error)
         return reply.status(500).send(generateErrorMessage("Server error"))
     }
 }
@@ -131,10 +130,20 @@ async function handleSuggest(request: FastifyRequest, reply: FastifyReply) {
     const result = productsCache.toArray() as Product[]
     return reply.send(result.slice(result.length - 60))
 }
+async function handleAutoComplete(request: FastifyRequest, reply: FastifyReply) {
+    const { query } = request.query as SearchProductParams
+    const result = productsCache.search({
+        searchValue: query,
+        searchFields: ['productName', 'category', 'supplierName'],
+        deepScan: true
+    }) as Product[]
+    return reply.send(result.slice(result.length - 5))
+}
 export {
     handleGetProductByID,
     handleSearchProduct,
     handleSuggestProductByID,
     handleSuggest,
-    handleAddProductRate
+    handleAddProductRate,
+    handleAutoComplete
 }

@@ -4,7 +4,7 @@ import database from "./database.js"
 import { RowDataPacket } from "mysql2/promise"
 
 const productsCache = new Cache('productID', 10000)
-const searchCache = new Cache('sessionID', 1000)
+const searchCache = new Cache('query', 1000)
 
 interface DBProduct {
     "product_id": number

@@ -4,7 +4,8 @@ import {
     handleSearchProduct,
     handleSuggestProductByID,
     handleAddProductRate,
-    handleSuggest
+    handleSuggest,
+    handleAutoComplete
 } from "../controllers/index.js"
 import { authenticateToken } from "../services/auth.js"
 import { errorReply } from "../services/index.js"
@@ -108,40 +109,33 @@ const searchProductSchema: FastifySchema = {
         type: 'object',
         properties: {
             query: { type: 'string' },
-            sessionID: { type: 'string' },
             from: { type: 'integer', minimum: 1 }
         },
         required: ['query'],
     },
     response: {
         200: {
-            type: 'object',
-            properties: {
-                sessionID: { type: 'string' },
-                data: {
-                    type: 'array',
-                    items: {
-                        properties: {
-                            productID: { type: 'integer' },
-                            productName: { type: 'string' },
-                            // supplierID: { type: 'integer' },
-                            supplierName: { type: 'string' },
-                            category: { type: 'string' },
-                            price: { type: 'integer' },
-                            quantity: { type: 'integer' },
-                            soldQuantity: { type: 'integer' },
-                            // unitInOrder: { type: 'integer' },
-                            images: {
-                                type: 'array',
-                                items: { type: 'string' }
-                            },
-                            discount: { type: 'number' },
-                            // description: { type: 'string' },
-                            rating: { type: 'number' },
-                            // ratingCount: { type: 'integer' },
-                            // commentCount: { type: 'integer' },
-                        }
-                    }
+            type: 'array',
+            items: {
+                properties: {
+                    productID: { type: 'integer' },
+                    productName: { type: 'string' },
+                    // supplierID: { type: 'integer' },
+                    supplierName: { type: 'string' },
+                    category: { type: 'string' },
+                    price: { type: 'integer' },
+                    quantity: { type: 'integer' },
+                    soldQuantity: { type: 'integer' },
+                    // unitInOrder: { type: 'integer' },
+                    images: {
+                        type: 'array',
+                        items: { type: 'string' }
+                    },
+                    discount: { type: 'number' },
+                    // description: { type: 'string' },
+                    rating: { type: 'number' },
+                    // ratingCount: { type: 'integer' },
+                    // commentCount: { type: 'integer' },
                 }
             }
         },
@@ -221,6 +215,45 @@ const suggestProductHomeSchema: FastifySchema = {
         '5xx': errorReply
     }
 }
+const autoCompleteSchema: FastifySchema = {
+    tags: ['Product'],
+    querystring: {
+        type: 'object',
+        properties: {
+            query: { type: 'string' }
+        },
+        required: ['query'],
+    },
+    response: {
+        200: {
+            type: 'array',
+            items: {
+                properties: {
+                    productID: { type: 'integer' },
+                    productName: { type: 'string' },
+                    // supplierID: { type: 'integer' },
+                    supplierName: { type: 'string' },
+                    category: { type: 'string' },
+                    price: { type: 'integer' },
+                    // quantity: { type: 'integer' },
+                    // soldQuantity: { type: 'integer' },
+                    // unitInOrder: { type: 'integer' },
+                    images: {
+                        type: 'array',
+                        items: { type: 'string' }
+                    },
+                    discount: { type: 'number' },
+                    // description: { type: 'string' },
+                    // rating: { type: 'number' },
+                    // ratingCount: { type: 'integer' },
+                    // commentCount: { type: 'integer' },
+                }
+            }
+        },
+        '4xx': errorReply,
+        '5xx': errorReply
+    }
+}
 async function productRoutes(app: FastifyInstance, options: RegisterOptions) {
     app.get('/', {
         handler: handleGetProductByID,
@@ -242,6 +275,10 @@ async function productRoutes(app: FastifyInstance, options: RegisterOptions) {
     app.get('/home', {
         handler: handleSuggest,
         schema: suggestProductHomeSchema
+    })
+    app.get('/auto-complete', {
+        handler: handleAutoComplete,
+        schema: autoCompleteSchema
     })
 }
 

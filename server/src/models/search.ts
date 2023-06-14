@@ -2,10 +2,10 @@ import Product from "./product.js"
 import crypto from "crypto"
 
 class SearchSession {
-    sessionID: string
+    query: string
     data: Product[]
-    constructor(data: Product[]) {
-        this.sessionID = crypto.randomUUID()
+    constructor(query: string, data: Product[]) {
+        this.query = query
         this.data = data
     }
 }

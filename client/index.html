@@ -1,13 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + React + TS</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <div class="loading">
+    <div class="container">
+      <div style="--index: 1;"></div>
+      <div style="--index: 2;"></div>
+      <div style="--index: 3;"></div>
+      <div style="--index: 4;"></div>
+      <div style="--index: 5;"></div>
+      <div style="--index: 6;"></div>
+    </div>
+  </div>
+  <style class="pre-load">
+    .loading {
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+    }
+
+    .container {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      animation: infinity-rotate 2s ease infinite;
+    }
+
+    .container>div {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(calc(var(--index) * 60deg));
+    }
+
+    .container>div::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 10px;
+      height: 10px;
+      border: 5px solid black;
+      border-radius: 50%;
+    }
+
+    @keyframes infinity-rotate {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>
