@@ -1,0 +1,110 @@
+@use "../colors";
+
+.header {
+    width: 100%;
+    height: 75px;
+    display: flex;
+    position: fixed;
+    border-bottom: 1px solid black;
+
+    & .left {
+        height: 100%;
+        flex: 0.5;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+        & .title {
+            width: 60%;
+            height: 100%;
+            position: relative;
+
+            & * {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            img {
+                height: 90%;
+            }
+
+            span {
+                font-size: 2.5vw;
+                left: 100px;
+            }
+        }
+
+        & .options {
+            height: fit-content;
+            width: fit-content;
+            background-color: colors.$color-low-white;
+            border-radius: 20px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 5px 20px 5px 20px;
+        }
+    }
+
+    & .right {
+        flex: 0.5;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+        & .account {
+            height: 40px;
+            width: fit-content;
+            // background-color: colors.$color-low-white;
+            border-radius: 5px;
+            text-align: center;
+            position: relative;
+
+            // didn't logon
+            .not-logon {
+                margin-top: 8%;
+
+                span {
+                    margin: 10px;
+                }
+
+                a {
+                    color: black;
+
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+
+                & svg {
+                    height: 30px;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        & .search-bar {
+            position: relative;
+
+            input {
+                width: 300px;
+                height: 40px;
+                padding-left: 15px;
+                padding-right: 30px;
+                border-radius: 20px;
+                border: none;
+                outline: none;
+                background-color: colors.$color-low-white;
+            }
+
+            div {
+                right: 10px;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+            }
+        }
+    }
+}
