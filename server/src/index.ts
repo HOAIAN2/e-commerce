@@ -2,6 +2,7 @@ import fastify, { FastifyReply, FastifyRequest } from "fastify"
 import fastifyStatic from "@fastify/static"
 import path from "path"
 import { SERVER_PORT, __dirname } from "./config.js"
+import fs from "fs"
 import {
     userRoutes,
     authRoutes,
@@ -16,10 +17,15 @@ import fastifyMultipart, { FastifyMultipartOptions } from "@fastify/multipart"
 import cors from '@fastify/cors'
 
 const app = fastify({
-    // logger: {
-    //     level: 'info',
-    //     file: '../log.txt' // Will use pino.destination()
-    // }
+    logger: {
+        level: 'info',
+        // file: '../log.txt' // Will use pino.destination()
+    },
+    http2: true,
+    https: {
+        key: fs.readFileSync(path.join(__dirname, '..', 'src/services/security', 'server.key')),
+        cert: fs.readFileSync(path.join(__dirname, '..', 'src/services/security', 'server.crt'))
+    }
 })
 
 const multipartOptions: FastifyMultipartOptions = {

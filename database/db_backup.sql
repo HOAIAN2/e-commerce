@@ -303,11 +303,10 @@ DROP TABLE IF EXISTS `ratings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ratings` (
-  `rating_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `product_id` int NOT NULL,
   `rate` int unsigned DEFAULT NULL,
-  PRIMARY KEY (`rating_id`),
+  PRIMARY KEY (`user_id`,`product_id`),
   KEY `user_id` (`user_id`),
   KEY `product_id` (`product_id`),
   CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
@@ -334,9 +333,6 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `before_ratings_insert` BEFORE INSERT ON `ratings` FOR EACH ROW BEGIN
-	IF ((SELECT  COUNT(*) FROM ratings WHERE user_id = NEW.user_id AND product_id = NEW.product_id) = 1) THEN
-		SIGNAL sqlstate '45001' set message_text = "No way ! You rated this product !";
-	END IF;
 	IF ((SELECT COUNT(*) FROM orders JOIN order_details
 		ON orders.order_id = order_details.order_id
 		WHERE product_id = NEW.product_id AND paid = 1 AND user_id = NEW.user_id) = 0) THEN
