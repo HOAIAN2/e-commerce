@@ -56,10 +56,64 @@
         & .account {
             height: 40px;
             width: fit-content;
-            // background-color: colors.$color-low-white;
             border-radius: 5px;
-            text-align: center;
+            // text-align: center;
             position: relative;
+
+            // logon
+            .logon {
+                height: 40px;
+                aspect-ratio: 1;
+                cursor: pointer;
+                position: relative;
+
+                & .avatar {
+                    height: 40px;
+                    aspect-ratio: 1;
+                    overflow: hidden;
+                    border: 3px solid colors.$color-low-white;
+                    border-radius: 50%;
+
+                    & img {
+                        width: 40px;
+                    }
+                }
+
+                & .account-drop-list {
+                    width: 200px;
+                    border-radius: 5px;
+                    background-color: white;
+                    // box-shadow: 0px 0px 10px black;
+                    border: 3px solid colors.$color-low-white;
+                    position: absolute;
+                    top: 45px;
+                    right: 0;
+
+                    &.hide {
+                        display: none;
+                    }
+
+                    & div {
+                        height: 30px;
+                        transition: 0.2s;
+                        padding: 0px 10px 0px 10px;
+                        background-color: white;
+
+                        & * {
+                            margin-top: 7px;
+                        }
+
+                        & span {
+                            margin-left: 10px;
+                        }
+
+                        &:hover {
+                            background-color: colors.$color-low-white;
+                        }
+                    }
+                }
+
+            }
 
             // didn't logon
             .not-logon {
