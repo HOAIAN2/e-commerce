@@ -6,6 +6,7 @@
     display: flex;
     position: fixed;
     border-bottom: 1px solid black;
+    background-color: white;
 
     & .left {
         height: 100%;
@@ -153,6 +154,7 @@
                 border: none;
                 outline: none;
                 background-color: colors.$color-low-white;
+                font-size: medium;
             }
 
             div {

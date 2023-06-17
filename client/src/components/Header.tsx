@@ -34,7 +34,11 @@ function Header() {
             </div>
             <div className='right'>
                 <div className='search-bar'>
-                    <input type='text' value={query} onChange={e => { setQuery(e.target.value) }} />
+                    <input
+                        type='text'
+                        placeholder='search'
+                        value={query}
+                        onChange={e => { setQuery(e.target.value) }} />
                     {query !== '' ? <div>
                         <FontAwesomeIcon icon={faSearch} />
                     </div> : null}
