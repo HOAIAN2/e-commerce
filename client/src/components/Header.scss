@@ -73,6 +73,9 @@
                     overflow: hidden;
                     border: 3px solid colors.$color-low-white;
                     border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
 
                     & img {
                         width: 40px;

@@ -4,6 +4,7 @@ import { faSearch, faUser, faSignOut, faCartShopping } from '@fortawesome/free-s
 import icon from '/vite.svg'
 import { Link } from 'react-router-dom'
 import useUserData from '../context/hooks'
+import { reqLogout } from '../utils/auth'
 
 import './Header.scss'
 
@@ -11,7 +12,12 @@ function Header() {
     const [query, setQuery] = useState('')
     const dropListRef = useRef<HTMLElement>(null)
     const { user } = useUserData()
-    // const user = {} // demo, gonna change when call api
+    function handleLogout() {
+        reqLogout()
+            .then(() => {
+                window.location.reload()
+            })
+    }
     return (
         <div className='header'>
             <div className='left'>
@@ -40,9 +46,9 @@ function Header() {
                                 dropListRef.current?.classList.toggle('hide')
                             }}>
                             <div className='avatar'>
-                                <img src={icon} alt='' />
+                                <img src={user.avatar} alt='' />
                             </div>
-                            <div ref={dropListRef as RefObject<HTMLDivElement>} className='account-drop-list'>
+                            <div ref={dropListRef as RefObject<HTMLDivElement>} className='account-drop-list hide'>
                                 <div>
                                     <FontAwesomeIcon icon={faUser} />
                                     <span>Info</span>
@@ -51,7 +57,7 @@ function Header() {
                                     <FontAwesomeIcon icon={faCartShopping} />
                                     <span>Order</span>
                                 </div>
-                                <div>
+                                <div onClick={handleLogout}>
                                     <FontAwesomeIcon icon={faSignOut} />
                                     <span>Logout</span>
                                 </div>

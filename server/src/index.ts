@@ -15,6 +15,7 @@ import fastifySwagger, { SwaggerOptions } from "@fastify/swagger"
 import fastifySwaggerUi, { FastifySwaggerUiOptions } from "@fastify/swagger-ui"
 import fastifyMultipart, { FastifyMultipartOptions } from "@fastify/multipart"
 import cors from '@fastify/cors'
+import fastifyRateLimit from "@fastify/rate-limit"
 
 const app = fastify({
     logger: {
@@ -67,6 +68,10 @@ const swaggerUiOptions: FastifySwaggerUiOptions = {
     routePrefix: "/docs",
     // exposeRoute: true,
 }
+await app.register(fastifyRateLimit.default, {
+    max: 100,
+    timeWindow: '1 minute'
+})
 app.register(fastifyMultipart, multipartOptions)
 app.register(fastifySwagger, swaggerOptions);
 app.register(fastifySwaggerUi, swaggerUiOptions);

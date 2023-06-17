@@ -83,13 +83,13 @@ const logoutSchema: FastifySchema = {
 }
 const refreshTokenSchema: FastifySchema = {
     tags: ['Auth'],
-    headers: {
-        type: 'object',
-        properties: {
-            'authorization': { type: 'string' }
-        },
-        required: ['authorization']
-    },
+    // headers: {
+    //     type: 'object',
+    //     properties: {
+    //         'authorization': { type: 'string' }
+    //     },
+    //     required: ['authorization']
+    // },
     body: {
         type: 'object',
         properties: {

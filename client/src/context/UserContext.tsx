@@ -60,5 +60,10 @@ function UserProvider({ children }: { children: ReactNode }) {
 
 export {
     UserProvider,
-    UserContext
+    UserContext,
+    // eslint-disable-next-line react-refresh/only-export-components
+    USER_ACTION
+}
+export type {
+    UserData
 }
