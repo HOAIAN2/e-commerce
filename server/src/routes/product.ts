@@ -134,7 +134,7 @@ const searchProductSchema: FastifySchema = {
                     discount: { type: 'number' },
                     // description: { type: 'string' },
                     rating: { type: 'number' },
-                    // ratingCount: { type: 'integer' },
+                    ratingCount: { type: 'integer' },
                     // commentCount: { type: 'integer' },
                 }
             }
@@ -174,7 +174,7 @@ const suggestProductSchema: FastifySchema = {
                     discount: { type: 'number' },
                     description: { type: 'string' },
                     rating: { type: 'number' },
-                    // ratingCount: { type: 'integer' },
+                    ratingCount: { type: 'integer' },
                     // commentCount: { type: 'integer' },
                 }
             }
@@ -206,7 +206,7 @@ const suggestProductHomeSchema: FastifySchema = {
                     discount: { type: 'number' },
                     description: { type: 'string' },
                     rating: { type: 'number' },
-                    // ratingCount: { type: 'integer' },
+                    ratingCount: { type: 'integer' },
                     // commentCount: { type: 'integer' },
                 }
             }

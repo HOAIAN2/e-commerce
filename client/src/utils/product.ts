@@ -12,6 +12,7 @@ export interface ProductItem {
     soldQuantity: number
     images: string[]
     discount: number
+    ratingCount: number
     description: string
     rating: number
 }

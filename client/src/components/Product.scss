@@ -2,9 +2,11 @@
 
 .product {
     width: 250px;
-    height: 350px;
+    height: 360px;
     border: 1px solid black;
     overflow: hidden;
+    display: block;
+    border-radius: 5px;
     // background-color: colors.$color-low-white;
 
     & .img-container {
@@ -17,16 +19,78 @@
 
         & img {
             height: 90%;
+            transition: 0.5s;
+
+            &:hover {
+                height: 93%;
+            }
         }
     }
 
     & .content-container {
         width: 100%;
         height: 100px;
+        display: grid;
+        grid-template-columns: 0px 120px;
+        grid-template-rows: 40px 30px 40px;
+        grid-template-areas:
+            "aa aa aa"
+            "ss ss ss"
+            "bb bb cc";
 
-        & .top,
-        .bottom {
-            height: 50%;
+        & .name {
+            padding-left: 10px;
+            padding-right: 10px;
+            grid-area: aa;
+            font-weight: 600;
+            // make ...
+            display: -webkit-box;
+            word-break: break-all;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        & .price {
+            padding-top: 5px;
+            padding-left: 10px;
+            grid-area: bb;
+            font-weight: 600;
+        }
+
+        & .rate {
+            margin-left: 10px;
+            grid-area: ss;
+
+            & .product-rating {
+                display: inline-block;
+            }
+        }
+
+        // & .top,
+        // .bottom {
+        //     height: 50%;
+        // }
+
+        & button {
+            grid-area: cc;
+            width: 120px;
+            height: 30px;
+            padding-left: 15px;
+            padding-right: 30px;
+            border-radius: 20px;
+            border: 1px solid black;
+            outline: none;
+            background-color: white;
+            cursor: pointer;
+            transition: 0.2s;
+
+            &:hover {
+                color: white;
+                border: 1px solid black;
+                background-color: black;
+            }
         }
     }
 }
