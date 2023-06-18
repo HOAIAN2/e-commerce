@@ -1,0 +1,34 @@
+@use '../colors';
+
+.product-rating {
+    position: relative;
+    width: 90px;
+    height: 20px;
+
+    & div {
+        height: 100%;
+        position: absolute;
+        display: inline;
+
+        svg {
+            height: 13px;
+            padding-right: 3px;
+        }
+
+        &:last-child {
+            display: inline;
+            position: absolute;
+            height: 100%;
+            // width: attr(rate-percent);
+            width: var(--rate-percent);
+            // color: colors.$color-red;
+            color: black;
+            overflow: hidden;
+
+            div {
+                width: 90px;
+                height: 100%;
+            }
+        }
+    }
+}

@@ -69,7 +69,7 @@ const swaggerUiOptions: FastifySwaggerUiOptions = {
     // exposeRoute: true,
 }
 await app.register(fastifyRateLimit.default, {
-    max: 100,
+    max: 300,
     timeWindow: '1 minute'
 })
 app.register(fastifyMultipart, multipartOptions)
