@@ -8,6 +8,7 @@ async function reqLogin(username: string, password: string) {
         })
         localStorage.setItem('token', JSON.stringify(res.data))
         // return res.data as Token
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         if (!error.response) throw new Error(error.message)
         const message = error.response.data.message
@@ -24,6 +25,7 @@ async function reqLogout() {
             }
         })
         localStorage.removeItem('token')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         if (!error.response) throw new Error(error.message)
         const message = error.response.data.message
@@ -38,6 +40,7 @@ async function reqGetToken() {
             refreshToken: getToken().refreshToken
         })
         localStorage.setItem('token', JSON.stringify(res.data))
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         if (error.response.status === 500) localStorage.removeItem('token')
         throw new Error(error.response.data.message)

@@ -1,0 +1,25 @@
+@use "../colors";
+
+.home-container {
+    width: 100%;
+    position: relative;
+    top: 75px;
+
+    & .banner {
+        border: 1px solid black;
+        height: 200px;
+        margin-bottom: 20px;
+    }
+
+    & .products-list {
+        width: fit-content;
+        margin: 0 auto;
+        display: grid;
+        grid-auto-rows: 400px;
+        grid-template-columns: 300px 300px 300px 300px;
+
+        & .product {
+            margin: 0 auto;
+        }
+    }
+}
