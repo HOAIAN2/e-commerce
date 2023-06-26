@@ -1,5 +1,4 @@
 import Product from "./product.js"
-import crypto from "crypto"
 
 class SearchSession {
     query: string
