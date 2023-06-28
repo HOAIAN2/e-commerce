@@ -12,8 +12,11 @@ import {
 import { generateErrorMessage } from "../services/index.js"
 import { readTokenFromRequest } from "../services/auth.js"
 
-interface GetOrders {
+interface GetOrder {
     id: number
+}
+interface GetOrders {
+    from: number
 }
 interface CreateOrder {
     productID: number
@@ -35,7 +38,7 @@ interface MakePayment {
 async function handleGetOrderByID(request: FastifyRequest, reply: FastifyReply) {
     const token = readTokenFromRequest(request)
     if (!token) return reply.status(401).send()
-    const { id } = request.query as GetOrders
+    const { id } = request.query as GetOrder
     try {
         let order = await dbSelectOrderByID(id)
         if (!order) return reply.status(404).send()
@@ -48,11 +51,11 @@ async function handleGetOrderByID(request: FastifyRequest, reply: FastifyReply) 
 async function handleGetOrders(request: FastifyRequest, reply: FastifyReply) {
     const token = readTokenFromRequest(request)
     if (!token) return reply.status(401).send()
-    const { id } = request.query as GetOrders
+    const { from } = request.query as GetOrders
     try {
         const user = await dbSelectUserByUsername(token.username)
         if (!user) return reply.status(404).send()
-        const orders = await dbSelectOrderFromUser(user.userID, id)
+        const orders = await dbSelectOrderFromUser(user.userID, from)
         return reply.send(orders)
     } catch (error) {
         return reply.status(500).send(generateErrorMessage("Server error"))
