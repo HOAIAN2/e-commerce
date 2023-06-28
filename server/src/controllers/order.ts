@@ -8,17 +8,12 @@ import {
     dbMakePayment,
     dbSelectUserByUsername,
     dbSelectOrderFromUser,
-    userOrders
 } from "../cache/index.js"
 import { generateErrorMessage } from "../services/index.js"
 import { readTokenFromRequest } from "../services/auth.js"
-import { OrderList } from "../models/index.js"
 
-interface GetOrder {
-    id: number
-}
 interface GetOrders {
-    from: number
+    id: number
 }
 interface CreateOrder {
     productID: number
@@ -40,7 +35,7 @@ interface MakePayment {
 async function handleGetOrderByID(request: FastifyRequest, reply: FastifyReply) {
     const token = readTokenFromRequest(request)
     if (!token) return reply.status(401).send()
-    const { id } = request.query as GetOrder
+    const { id } = request.query as GetOrders
     try {
         let order = await dbSelectOrderByID(id)
         if (!order) return reply.status(404).send()
@@ -53,24 +48,13 @@ async function handleGetOrderByID(request: FastifyRequest, reply: FastifyReply) 
 async function handleGetOrders(request: FastifyRequest, reply: FastifyReply) {
     const token = readTokenFromRequest(request)
     if (!token) return reply.status(401).send()
-    const { from } = request.query as GetOrders
-    const key = `${token.id}-${from}`
-    let result: OrderList | undefined
+    const { id } = request.query as GetOrders
     try {
         const user = await dbSelectUserByUsername(token.username)
         if (!user) return reply.status(404).send()
-        if (userOrders.has(key)) {
-            result = userOrders.get(key) as OrderList
-            if (!result) return reply.status(400).send()
-            return reply.send(result.data)
-        }
-        else {
-            const orders = await dbSelectOrderFromUser(user.userID, from)
-            userOrders.set(new OrderList(key, orders))
-            return reply.send(orders)
-        }
+        const orders = await dbSelectOrderFromUser(user.userID, id)
+        return reply.send(orders)
     } catch (error) {
-        console.log(error)
         return reply.status(500).send(generateErrorMessage("Server error"))
     }
 }

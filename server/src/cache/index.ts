@@ -41,8 +41,7 @@ import {
     dbCheckUserBought,
     dbAddVoucher,
     dbMakePayment,
-    ordersCache,
-    userOrders
+    ordersCache
 } from "./order.js"
 
 import {
@@ -119,6 +118,5 @@ export {
     categoriesCache,
     suppliersCache,
     vouchersCache,
-    ordersCache,
-    userOrders
+    ordersCache
 }

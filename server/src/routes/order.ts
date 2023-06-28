@@ -76,7 +76,7 @@ const getOrdersSchema: FastifySchema = {
     querystring: {
         type: 'object',
         properties: {
-            from: { type: 'integer', minimum: 1 },
+            id: { type: 'integer', minimum: 1 },
         },
         required: ['id']
     },

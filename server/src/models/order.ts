@@ -70,15 +70,4 @@ class Detail {
     }
 }
 
-class OrderList {
-    key: string
-    data: Order[]
-    constructor(key: string, data: Order[]) {
-        this.key = key
-        this.data = data
-    }
-}
-export {
-    OrderList,
-    Order,
-}
+export default Order

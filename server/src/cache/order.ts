@@ -8,7 +8,6 @@ import { dbSelectProductByID } from "./product.js"
 
 // const orders = []
 const ordersCache = new Cache('orderID', 1000)
-const userOrders = new Cache('key', 1000)
 interface DBOrder {
     "order_id": number
     "user_id": number
@@ -36,8 +35,7 @@ async function initializeOrder() {
             "JOIN orders ON orders.order_id = order_details.order_id",
             "LEFT JOIN payment_methods ON orders.paid_method_id = payment_methods.method_id",
             "GROUP BY orders.order_id",
-            "ORDER BY orders.order_id DESC",
-            "LIMIT 1000"
+            "ORDER BY orders.order_id DESC"
         ].join(' ')
         const [rows] = await database.query(queryString) as RowDataPacket[]
         rows.forEach((item: DBOrder) => {
@@ -331,6 +329,5 @@ export {
     dbSelectOrderByID,
     dbSelectOrderFromUser,
     dbCheckUserBought,
-    ordersCache,
-    userOrders
+    ordersCache
 }
