@@ -22,11 +22,11 @@ const app = fastify({
         level: 'info',
         // file: '../log.txt' // Will use pino.destination()
     },
-    http2: true,
-    https: {
-        key: fs.readFileSync(path.join(__dirname, '..', 'src/services/security', 'server.key')),
-        cert: fs.readFileSync(path.join(__dirname, '..', 'src/services/security', 'server.crt'))
-    }
+    // http2: true,
+    // https: {
+    //     key: fs.readFileSync(path.join(__dirname, '..', 'src/services/security', 'server.key')),
+    //     cert: fs.readFileSync(path.join(__dirname, '..', 'src/services/security', 'server.crt'))
+    // }
 })
 
 const multipartOptions: FastifyMultipartOptions = {

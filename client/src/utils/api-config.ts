@@ -12,8 +12,8 @@ const devOrigin = [
 let baseURL = ''
 let baseIMG = ''
 if (devOrigin.includes(window.location.origin)) {
-    baseURL = 'https://localhost:4000/api/'
-    baseIMG = 'https://localhost:4000/static/'
+    baseURL = 'http://localhost:4000/api/'
+    baseIMG = 'http://localhost:4000/static/'
 }
 else {
     baseURL = `${window.location.origin}/api/`
