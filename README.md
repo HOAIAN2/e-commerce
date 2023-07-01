@@ -9,6 +9,7 @@
 
 - `git clone https://github.com/HOAIAN2/e-commerce.git`
 - `cd e-commerce`
+- `chmod +x ./prepare.sh` `chmod +x ./build.sh`
 - Run `prepare.bat` or `prepare.sh` to generate .env file and install libs for server and client.
 - Restore database in `./database/db_backup.sql`
 

@@ -95,7 +95,7 @@ app.register((instance, opts, next) => {
 })
 
 app.register(cors, {
-    origin: "http://localhost:3000"
+    origin: "*"
 })
 app.register(userRoutes, { prefix: '/api/user' })
 app.register(authRoutes, { prefix: '/api/auth' })
@@ -109,7 +109,8 @@ app.setNotFoundHandler((request: any, reply: any) => { // same of `setErrorHandl
 
 initializeData().then(() => {
     app.listen({
-        port: SERVER_PORT
+        port: SERVER_PORT,
+        host: '0.0.0.0'
     })
 }).catch((error) => {
     console.log('\x1b[31m%s\x1b[0m', error.message)
