@@ -1,7 +1,7 @@
 import fastify, { FastifyReply, FastifyRequest } from "fastify"
 import fastifyStatic from "@fastify/static"
 import path from "path"
-import { SERVER_PORT, __dirname } from "./config.js"
+import { SERVER_HOST, SERVER_PORT, __dirname } from "./config.js"
 import fs from "fs"
 import {
     userRoutes,
@@ -110,7 +110,7 @@ app.setNotFoundHandler((request: any, reply: any) => { // same of `setErrorHandl
 initializeData().then(() => {
     app.listen({
         port: SERVER_PORT,
-        host: '0.0.0.0'
+        host: SERVER_HOST
     })
 }).catch((error) => {
     console.log('\x1b[31m%s\x1b[0m', error.message)

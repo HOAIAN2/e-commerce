@@ -1,7 +1,7 @@
 import { useState, useRef, RefObject } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faUser, faSignOut, faCartShopping } from '@fortawesome/free-solid-svg-icons'
-import icon from '/vite.svg'
+import icon from '/logo.svg'
 import { Link } from 'react-router-dom'
 import useUserData from '../context/hooks'
 import { reqLogout } from '../utils/auth'
@@ -21,10 +21,10 @@ function Header() {
     return (
         <div className='header'>
             <div className='left'>
-                <div className='title'>
+                <Link className='title' to='/s'>
                     <img src={icon} alt='' />
                     <span>Online shoping</span>
-                </div>
+                </Link>
                 <div className='options'>
                     <span>Categories</span>
                 </div>
