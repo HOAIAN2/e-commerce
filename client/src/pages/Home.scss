@@ -3,14 +3,17 @@
 .home-container {
     width: 100%;
     position: relative;
+    overflow: hidden;
     top: 75px;
 
     & .banner {
         // border: 1px solid black;
-        height: 600px;
-        margin-bottom: 20px;
+        // height: 600px;
+        height: 43vw;
+
         position: relative;
         overflow: hidden;
+        transition: 0.2s;
 
         & img {
             position: absolute;
@@ -23,11 +26,17 @@
     }
 
     & .products-list {
-        width: fit-content;
+        width: 90%;
+        width: calc(100vw - (100vw*0.05));
+        min-width: 650px;
         margin: 0 auto;
         display: grid;
-        grid-auto-rows: 400px;
-        grid-template-columns: 300px 300px 300px 300px;
+        grid-auto-rows: 450px;
+        // grid-template-columns: 300px 300px 300px 300px;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        // grid-template-columns: repeat(auto-fit, 300px);
+        // grid-gap: 30px;
+        align-items: center;
 
         & .product {
             margin: 0 auto;
