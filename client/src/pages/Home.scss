@@ -7,10 +7,7 @@
     top: 75px;
 
     & .banner {
-        // border: 1px solid black;
-        // height: 600px;
         height: 43vw;
-
         position: relative;
         overflow: hidden;
         transition: 0.2s;
@@ -32,10 +29,7 @@
         margin: 0 auto;
         display: grid;
         grid-auto-rows: 450px;
-        // grid-template-columns: 300px 300px 300px 300px;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        // grid-template-columns: repeat(auto-fit, 300px);
-        // grid-gap: 30px;
         align-items: center;
 
         & .product {
