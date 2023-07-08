@@ -104,7 +104,7 @@ app.register(orderRoutes, { prefix: '/api/order' })
 app.register(commentRoutes, { prefix: '/api/comment' })
 
 app.setNotFoundHandler((request: any, reply: any) => { // same of `setErrorHandler`
-    return reply.sendFile('index.html', path.join(__dirname, '/public'))
+    return reply.status(200).sendFile('index.html', path.join(__dirname, '../public'))
 })
 
 initializeData().then(() => {

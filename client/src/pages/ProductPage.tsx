@@ -8,6 +8,7 @@ function ProductPage() {
     useEffect(() => {
         reqGetProduct(Number(id))
             .then(data => {
+                document.title = data.productName
                 setData(data)
             })
     }, [id])

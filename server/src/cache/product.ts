@@ -30,8 +30,8 @@ async function initializeProduct() {
             'SELECT products.product_id, product_name, suppliers.supplier_name, products.supplier_id, categories.category_name, price, quantity, sold_quantity,',
             'unit_in_order, discount, images, products.description, rates.rating, rates.rating_count, comments.comment_count',
             'FROM products JOIN suppliers ON products.supplier_id = suppliers.supplier_id',
-            'LEFT JOIN (SELECT ratings.product_id, AVG(rate) AS rating, COUNT(*) AS rating_count FROM ratings GROUP BY ratings.product_id) AS rates ON rates.product_id = products.product_id ',
-            'LEFT JOIN (SELECT comments.product_id, COUNT(*) AS comment_count FROM comments GROUP BY comments.product_id) AS comments ON comments.product_id = products.product_id ',
+            'LEFT JOIN (SELECT ratings.product_id, AVG(rate) AS rating, COUNT(ratings.product_id) AS rating_count FROM ratings GROUP BY ratings.product_id) AS rates ON rates.product_id = products.product_id ',
+            'LEFT JOIN (SELECT comments.product_id, COUNT(comments.product_id) AS comment_count FROM comments GROUP BY comments.product_id) AS comments ON comments.product_id = products.product_id ',
             'JOIN categories ON products.category_id = categories.category_id',
             'ORDER BY products.unit_in_order DESC'
         ].join(' ')
@@ -69,8 +69,8 @@ async function dbSelectProductByID(productID: number) {
             'SELECT products.product_id, product_name, suppliers.supplier_name, products.supplier_id, categories.category_name, price, quantity, sold_quantity,',
             'unit_in_order, discount, images, products.description, rates.rating, rates.rating_count, comments.comment_count',
             'FROM products JOIN suppliers ON products.supplier_id = suppliers.supplier_id',
-            'LEFT JOIN (SELECT ratings.product_id, AVG(rate) AS rating, COUNT(*) AS rating_count FROM ratings GROUP BY ratings.product_id) AS rates ON rates.product_id = products.product_id ',
-            'LEFT JOIN (SELECT comments.product_id, COUNT(*) AS comment_count FROM comments GROUP BY comments.product_id) AS comments ON comments.product_id = products.product_id ',
+            'LEFT JOIN (SELECT ratings.product_id, AVG(rate) AS rating, COUNT(comments.product_id) AS rating_count FROM ratings GROUP BY ratings.product_id) AS rates ON rates.product_id = products.product_id ',
+            'LEFT JOIN (SELECT comments.product_id, COUNT(comments.product_id) AS comment_count FROM comments GROUP BY comments.product_id) AS comments ON comments.product_id = products.product_id ',
             'JOIN categories ON products.category_id = categories.category_id',
             'WHERE products.product_id = ?'
         ].join(' ')
