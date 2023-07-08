@@ -3,7 +3,9 @@ import { Routes, Route } from 'react-router-dom'
 import './App.scss'
 import Home from './pages/Home'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import Login from './pages/Login'
+import ProductPage from './pages/ProductPage'
 import useUserData from './context/hooks'
 import { USER_ACTION } from './context/UserContext'
 import { reqGetUser } from './utils/user'
@@ -37,7 +39,9 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/product/:id' element={<ProductPage />} />
       </Routes>
+      <Footer />
     </>
   )
 }

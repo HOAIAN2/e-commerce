@@ -21,7 +21,7 @@ function Header() {
     return (
         <div className='header'>
             <div className='left'>
-                <Link className='title' to='/s'>
+                <Link className='title' to='/'>
                     <img src={icon} alt='' />
                     <span>Online shoping</span>
                 </Link>
