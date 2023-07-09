@@ -115,11 +115,11 @@ async function handleSuggestProductByID(request: FastifyRequest, reply: FastifyR
         }) as Product[]
         const set = new Set()
         while (set.size < count) {
-            set.add(Math.floor(Math.random() * result.length) + 1)
+            set.add(Math.floor(Math.random() * (result.length - 1)))
         }
         const finalResult: Product[] = []
         set.forEach((key: any) => {
-            finalResult.push(result[key])
+            if (result[key]) finalResult.push(result[key])
         })
         return reply.send(finalResult)
     } catch (error) {

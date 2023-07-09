@@ -1,7 +1,8 @@
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import NotFound from './NotFound'
 import { reqGetProduct, reqGetProductsSuggest, ProductFull, ProductList } from '../utils/product'
+import NotFound from './NotFound'
+import Loading from '../components/Loading'
 
 function ProductPage() {
     const [data, setData] = useState<ProductFull | null>(null)
@@ -14,20 +15,21 @@ function ProductPage() {
                 document.title = data.productName
                 setData(data)
             })
-            .catch((error: any) => {
+            .catch(() => {
                 setNotFound(true)
             })
         reqGetProductsSuggest(Number(id))
             .then(data => {
                 setSuggestProducts(data)
             })
-            .catch((error: any) => {
+            .catch(() => {
                 setNotFound(true)
             })
     }, [id])
     data && console.log(data)
     suggestProducts && console.log(suggestProducts)
     if (notFound) return <NotFound />
+    if (!data) return <Loading />
     return (
         <div className='product-page'></div>
     )

@@ -1,11 +1,10 @@
 import { useState, useRef, RefObject } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faUser, faSignOut, faCartShopping } from '@fortawesome/free-solid-svg-icons'
-import icon from '/logo.svg'
+import icon from '/logo.png'
 import { Link } from 'react-router-dom'
 import useUserData from '../context/hooks'
 import { reqLogout } from '../utils/auth'
-
 import './Header.scss'
 
 function Header() {
