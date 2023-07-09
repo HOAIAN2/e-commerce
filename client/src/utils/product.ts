@@ -78,7 +78,25 @@ async function reqGetProduct(id: number) {
     }
 }
 
+async function reqGetProductsSuggest(id: number) {
+    try {
+        const res = await request.get('/product/suggest', {
+            params: {
+                id: id,
+                count: 5
+            }
+        })
+        return res.data as ProductList
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+        if (!error.response) throw new Error(error.message)
+        const message = error.response.data.message
+        throw new Error(message)
+    }
+}
+
 export {
     reqGetProductsHome,
-    reqGetProduct
+    reqGetProduct,
+    reqGetProductsSuggest
 }

@@ -4,6 +4,7 @@ import './App.scss'
 import Home from './pages/Home'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 import ProductPage from './pages/ProductPage'
 import useUserData from './context/hooks'
@@ -40,6 +41,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/product/:id' element={<ProductPage />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />
     </>
