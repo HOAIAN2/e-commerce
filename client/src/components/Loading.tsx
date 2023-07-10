@@ -3,7 +3,7 @@
 import './Loading.scss'
 function Loading() {
     return (
-        <div className="loading">
+        <div id="loading">
             <div className="container">
                 <div style={{ "--index": 1 }}></div>
                 <div style={{ "--index": 2 }}></div>

@@ -1,4 +1,4 @@
-.loading {
+#loading {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -8,34 +8,35 @@
     justify-content: center;
     align-items: center;
     background-color: white;
-}
 
-.container {
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    animation: infinity-rotate 2s ease infinite;
-
-    div {
+    & .container {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        transform: rotate(calc(var(--index) * 60deg));
+        width: 120px;
+        height: 120px;
+        animation: infinity-rotate 2s ease infinite;
 
-        &::before {
-            content: "";
+        div {
             position: absolute;
             top: 0;
             left: 0;
-            width: 10px;
-            height: 10px;
-            border: 5px solid black;
-            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            transform: rotate(calc(var(--index) * 60deg));
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 10px;
+                height: 10px;
+                border: 5px solid black;
+                border-radius: 50%;
+            }
         }
     }
 }
+
 
 @keyframes infinity-rotate {
     100% {

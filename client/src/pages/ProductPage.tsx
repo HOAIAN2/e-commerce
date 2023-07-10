@@ -8,15 +8,18 @@ function ProductPage() {
     const [data, setData] = useState<ProductFull | null>(null)
     const [suggestProducts, setSuggestProducts] = useState<ProductList | null>(null)
     const [notFound, setNotFound] = useState(false)
+    const [loading, setLoading] = useState(true)
     const { id } = useParams()
     useEffect(() => {
         reqGetProduct(Number(id))
             .then(data => {
                 document.title = data.productName
                 setData(data)
+                setLoading(false)
             })
             .catch(() => {
                 setNotFound(true)
+                setLoading(false)
             })
         reqGetProductsSuggest(Number(id))
             .then(data => {
@@ -29,7 +32,7 @@ function ProductPage() {
     data && console.log(data)
     suggestProducts && console.log(suggestProducts)
     if (notFound) return <NotFound />
-    if (!data) return <Loading />
+    if (loading) return <Loading />
     return (
         <div className='product-page'></div>
     )
