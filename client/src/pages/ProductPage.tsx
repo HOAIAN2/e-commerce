@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react'
 import { reqGetProduct, reqGetProductsSuggest, ProductFull, ProductList } from '../utils/product'
 import NotFound from './NotFound'
 import Loading from '../components/Loading'
+import ProductRating from '../components/ProductRating'
+import { baseIMG } from '../utils/api-config'
+import './ProductPage.scss'
 
 function ProductPage() {
     const [data, setData] = useState<ProductFull | null>(null)
@@ -34,7 +37,24 @@ function ProductPage() {
     if (notFound) return <NotFound />
     if (loading) return <Loading />
     return (
-        <div className='product-page'></div>
+        <div className='product-page'>
+            <div className='content'>
+                <div className='left'>
+                    <img src={baseIMG + 'products/' + data?.images} alt="" />
+                </div>
+                <div className='right'>
+                    <div className='title'>{data?.productName}</div>
+                    <div className='sub-title'>
+                        <span>{data?.rating}</span>
+                        {data && <ProductRating rate={data?.rating} />}
+                        <span>{'total rating count: ' + data?.ratingCount}</span>
+                        <span>{'sold quantity: ' + data?.soldQuantity}</span>
+                    </div>
+                    <div>{data?.price.toLocaleString('en-us') + ' VND'}</div>
+                    {data?.discount ? <span>{'-' + data?.discount * 100 + '%'}</span> : null}
+                </div>
+            </div>
+        </div>
     )
 }
 
