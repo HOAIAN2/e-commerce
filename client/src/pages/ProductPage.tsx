@@ -59,10 +59,29 @@ function ProductPage() {
                             }>
                             {'(' + data?.ratingCount + ')'}
                         </span>
-                        <span>{data?.soldQuantity + ' sold'}</span>
+                        <span
+                            style={
+                                {
+                                    borderRight: '1px solid black',
+                                    marginRight: '15px',
+                                    paddingRight: '15px'
+                                }
+                            }
+                        >{data?.soldQuantity + ' sold'}</span>
+                        <span>Only <span
+                            className='items-left'
+                        >{data?.quantity} items</span>left</span>
                     </div>
                     <div className='price'>{data?.price.toLocaleString('en-us') + ' VND'}</div>
                     {data?.discount ? <span>{'-' + data?.discount * 100 + '%'}</span> : null}
+                    <div className='select-quantity'>
+                        <button>-</button>
+                        <div>
+                            <span>1</span>
+                        </div>
+                        <button>+</button>
+                    </div>
+                    <button className='add-to-cart'>Add to cart</button>
                 </div>
             </div>
             <div className='suggest-products'>
