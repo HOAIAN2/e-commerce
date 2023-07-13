@@ -8,7 +8,7 @@
     top: 75px;
     left: 50%;
     transform: translate(-50%);
-    border-top: 1px solid black;
+    border-top: 2px solid colors.$color-low-white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,6 +21,10 @@
 
         a {
             cursor: pointer;
+
+            &:hover {
+                opacity: 0.7;
+            }
         }
     }
 }

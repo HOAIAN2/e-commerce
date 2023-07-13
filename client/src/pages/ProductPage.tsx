@@ -4,6 +4,7 @@ import { reqGetProduct, reqGetProductsSuggest, ProductFull, ProductList } from '
 import NotFound from './NotFound'
 import Loading from '../components/Loading'
 import ProductRating from '../components/ProductRating'
+import Product from '../components/Product'
 import { baseIMG } from '../utils/api-config'
 import './ProductPage.scss'
 
@@ -14,6 +15,7 @@ function ProductPage() {
     const [loading, setLoading] = useState(true)
     const { id } = useParams()
     useEffect(() => {
+        window.scrollTo(0, 0)
         reqGetProduct(Number(id))
             .then(data => {
                 document.title = data.productName
@@ -24,7 +26,7 @@ function ProductPage() {
                 setNotFound(true)
                 setLoading(false)
             })
-        reqGetProductsSuggest(Number(id))
+        reqGetProductsSuggest(Number(id), 4)
             .then(data => {
                 setSuggestProducts(data)
             })
@@ -47,12 +49,24 @@ function ProductPage() {
                     <div className='sub-title'>
                         <span>{data?.rating}</span>
                         {data && <ProductRating rate={data?.rating} />}
-                        <span>{'total rating count: ' + data?.ratingCount}</span>
-                        <span>{'sold quantity: ' + data?.soldQuantity}</span>
+                        <span
+                            style={
+                                {
+                                    borderRight: '1px solid black',
+                                    marginRight: '15px',
+                                    paddingRight: '15px'
+                                }
+                            }>
+                            {'(' + data?.ratingCount + ')'}
+                        </span>
+                        <span>{data?.soldQuantity + ' sold'}</span>
                     </div>
-                    <div>{data?.price.toLocaleString('en-us') + ' VND'}</div>
+                    <div className='price'>{data?.price.toLocaleString('en-us') + ' VND'}</div>
                     {data?.discount ? <span>{'-' + data?.discount * 100 + '%'}</span> : null}
                 </div>
+            </div>
+            <div className='suggest-products'>
+                {suggestProducts?.map(product => <Product key={product.productID} data={product} />)}
             </div>
         </div>
     )

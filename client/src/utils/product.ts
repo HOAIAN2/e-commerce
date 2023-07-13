@@ -78,12 +78,12 @@ async function reqGetProduct(id: number) {
     }
 }
 
-async function reqGetProductsSuggest(id: number) {
+async function reqGetProductsSuggest(id: number, count: number) {
     try {
         const res = await request.get('/product/suggest', {
             params: {
                 id: id,
-                count: 5
+                count: count
             }
         })
         return res.data as ProductList

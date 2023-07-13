@@ -3,10 +3,15 @@
 .product {
     width: 275px;
     height: 400px;
-    outline: 1px solid black;
+    // outline: 1px solid black;
+    // outline: 1px solid colors.$color-low-white;
     overflow: hidden;
     display: block;
     border-radius: 5px;
+
+    &:hover {
+        outline: 2px solid colors.$color-low-white;
+    }
 
     & .img-container {
         width: inherit;

@@ -1,38 +1,70 @@
+@use "../colors";
+
 .product-page {
-    width: 90%;
+    width: 100%;
     min-height: 800px;
+    height: fit-content;
     position: relative;
     top: 75px;
 
     & .content {
-        width: 100%;
+        width: 90%;
         height: 500px;
-        border: 1px solid black;
+        border: 2px solid colors.$color-low-white;
+        border-radius: 10px;
         display: flex;
+        margin: 20px auto;
+
+        & .left {
+            width: fit-content;
+            height: 100%;
+            position: relative;
+
+            & img {
+                margin-top: 10%;
+            }
+        }
 
         & .right {
+            position: relative;
             width: 100%;
+            padding-top: 5%;
 
             & .title {
-                font-size: large;
+                font-size: 32px;
                 font-weight: bold;
             }
 
             & .sub-title {
                 width: 100%;
+                margin-top: 10px;
 
                 & * {
                     display: inline-block;
                 }
 
                 & span {
-                    margin-right: 10px;
-                }
-
-                .product-rating {
-                    margin-right: 20px;
+                    margin-right: 5px;
+                    padding-right: 5px;
                 }
             }
+
+            & .price {
+                margin-top: 30px;
+                font-size: 28px;
+                font-weight: 600;
+                color: colors.$color-red;
+            }
         }
+    }
+
+    & .suggest-products {
+        margin: 0 auto;
+        width: 90%;
+        min-height: 500px;
+        height: fit-content;
+        display: flex;
+        justify-content: space-between;
+        flex-flow: wrap;
     }
 }

@@ -113,6 +113,7 @@ async function handleSuggestProductByID(request: FastifyRequest, reply: FastifyR
             searchFields: ['productName', 'category', 'supplierName'],
             deepScan: true
         }) as Product[]
+        result.splice(result.findIndex(product => product.productID === id), 1)
         const set = new Set()
         while (set.size < count) {
             set.add(Math.floor(Math.random() * (result.length - 1)))

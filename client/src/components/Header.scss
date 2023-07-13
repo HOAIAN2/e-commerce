@@ -5,7 +5,8 @@
     height: 75px;
     display: flex;
     position: fixed;
-    border-bottom: 1px solid black;
+    top: 0;
+    border-bottom: 2px solid colors.$color-low-white;
     background-color: white;
     z-index: 10;
 
