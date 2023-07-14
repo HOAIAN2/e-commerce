@@ -13,7 +13,16 @@ function ProductPage() {
     const [suggestProducts, setSuggestProducts] = useState<ProductList | null>(null)
     const [notFound, setNotFound] = useState(false)
     const [loading, setLoading] = useState(true)
+    const [quantity, setQuantity] = useState(1)
     const { id } = useParams()
+    function handleUpdateQuantity(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        if (e.currentTarget.textContent === '+') {
+            if (data && quantity < data?.quantity) setQuantity(quantity + 1)
+        }
+        else {
+            if (quantity >= 2) setQuantity(quantity - 1)
+        }
+    }
     useEffect(() => {
         window.scrollTo(0, 0)
         reqGetProduct(Number(id))
@@ -34,8 +43,8 @@ function ProductPage() {
                 setNotFound(true)
             })
     }, [id])
-    data && console.log(data)
-    suggestProducts && console.log(suggestProducts)
+    // data && console.log(data)
+    // suggestProducts && console.log(suggestProducts)
     if (notFound) return <NotFound />
     if (loading) return <Loading />
     return (
@@ -75,11 +84,11 @@ function ProductPage() {
                     <div className='price'>{data?.price.toLocaleString('en-us') + ' VND'}</div>
                     {data?.discount ? <span>{'-' + data?.discount * 100 + '%'}</span> : null}
                     <div className='select-quantity'>
-                        <button>-</button>
+                        <button onClick={handleUpdateQuantity}>-</button>
                         <div>
-                            <span>1</span>
+                            <span>{quantity}</span>
                         </div>
-                        <button>+</button>
+                        <button onClick={handleUpdateQuantity}>+</button>
                     </div>
                     <button className='add-to-cart'>Add to cart</button>
                 </div>

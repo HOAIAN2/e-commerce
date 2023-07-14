@@ -2,15 +2,19 @@ import { useState, useRef, RefObject } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faUser, faSignOut, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import icon from '/logo.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import useUserData from '../context/hooks'
 import { reqLogout } from '../utils/auth'
+// import { reqGetProductsAutoComplete, ProductList } from '../utils/product'
 import './Header.scss'
 
 function Header() {
-    const [query, setQuery] = useState('')
+    const [searchParam] = useSearchParams()
+    const [query, setQuery] = useState(searchParam.get('name') || '')
+    // const [data, setData] = useState<ProductList>([])
     const dropListRef = useRef<HTMLElement>(null)
     const { user } = useUserData()
+    const navigate = useNavigate()
     function handleLogout() {
         reqLogout()
             .then(() => {
@@ -32,16 +36,24 @@ function Header() {
                 </div>
             </div>
             <div className='right'>
-                <div className='search-bar'>
+                <form className='search-bar'
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        navigate(`/search?name=${query}`)
+                    }}
+                >
                     <input
                         type='text'
                         placeholder='search'
                         value={query}
-                        onChange={e => { setQuery(e.target.value) }} />
-                    {query !== '' ? <div>
-                        <FontAwesomeIcon icon={faSearch} />
-                    </div> : null}
-                </div>
+                        onChange={e => {
+                            setQuery(e.target.value)
+                        }} />
+                    {query !== '' ?
+                        <div onClick={() => { navigate(`/search?name=${query}`) }}>
+                            <FontAwesomeIcon icon={faSearch} />
+                        </div> : null}
+                </form>
                 <div className='account'>
                     {user !== null ?
                         <div className='logon'

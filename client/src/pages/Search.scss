@@ -1,0 +1,63 @@
+@use "../colors";
+
+.search-page {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    top: 75px;
+
+    // & .banner {
+    //     height: 43vw;
+    //     position: relative;
+    //     overflow: hidden;
+    //     transition: 0.2s;
+
+    //     & img {
+    //         position: absolute;
+    //         left: 50%;
+    //         top: 50%;
+    //         transform: translate(-50%, -50%);
+    //         width: 90%;
+    //         border-radius: 10px;
+    //     }
+    // }
+
+    & .products-list {
+        width: fit-content;
+        min-width: 80vw;
+        margin: 50px auto;
+        display: grid;
+        // grid-auto-rows: 450px;
+        // grid-auto-rows: auto;
+        // grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, 275px);
+        align-items: center;
+        grid-gap: 50px;
+
+        & .product {
+            margin: 0 auto;
+        }
+
+    }
+
+    & .load-more {
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        width: 100px;
+        height: 32px;
+        border-radius: 20px;
+        border: 1px solid black;
+        outline: none;
+        background-color: white;
+        cursor: pointer;
+        transition: 0.2s;
+
+        &:hover {
+            color: white;
+            border: 1px solid black;
+            background-color: black;
+        }
+    }
+
+}

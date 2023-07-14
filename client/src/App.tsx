@@ -6,6 +6,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import NotFound from './pages/NotFound'
 import Login from './pages/Login'
+import Search from './pages/Search'
 import ProductPage from './pages/ProductPage'
 import useUserData from './context/hooks'
 import { USER_ACTION } from './context/UserContext'
@@ -40,6 +41,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/search' element={<Search />} />
         <Route path='/product/:id' element={<ProductPage />} />
         <Route path='*' element={<NotFound />} />
       </Routes>

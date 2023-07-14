@@ -68,10 +68,10 @@ const swaggerUiOptions: FastifySwaggerUiOptions = {
     routePrefix: "/docs",
     // exposeRoute: true,
 }
-await app.register(fastifyRateLimit.default, {
-    max: 1000,
-    timeWindow: '1 minute'
-})
+// await app.register(fastifyRateLimit.default, {
+//     max: 1000,
+//     timeWindow: '1 minute'
+// })
 app.register(fastifyMultipart, multipartOptions)
 app.register(fastifySwagger, swaggerOptions);
 app.register(fastifySwaggerUi, swaggerUiOptions);
