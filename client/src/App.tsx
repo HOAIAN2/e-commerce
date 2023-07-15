@@ -8,6 +8,7 @@ import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 import Search from './pages/Search'
 import ProductPage from './pages/ProductPage'
+import Profile from './pages/Profile'
 import useUserData from './context/hooks'
 import { USER_ACTION } from './context/UserContext'
 import { reqGetUser } from './utils/user'
@@ -42,6 +43,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/search' element={<Search />} />
+        <Route path='/profile' element={<Profile />} />
         <Route path='/product/:id' element={<ProductPage />} />
         <Route path='*' element={<NotFound />} />
       </Routes>

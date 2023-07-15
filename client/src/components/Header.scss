@@ -102,17 +102,22 @@
                         display: none;
                     }
 
-                    & div {
+                    & div,
+                    a {
+                        width: 100%;
+                        display: block;
                         height: 30px;
                         transition: 0.2s;
                         padding: 0px 10px 0px 10px;
                         background-color: white;
+                        color: black;
 
                         & * {
                             margin-top: 7px;
                         }
 
                         & span {
+                            color: black;
                             margin-left: 10px;
                         }
 

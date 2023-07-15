@@ -1,0 +1,79 @@
+@use "../colors";
+
+.profile-page {
+    width: 100%;
+    height: calc(100% - 75px);
+    position: relative;
+    top: 75px;
+
+    & .container {
+        width: 90%;
+        height: 90%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 10px;
+        outline: 2px solid colors.$color-low-white;
+        display: grid;
+        grid-template-columns: 20% 80%;
+
+        & .left {
+            position: relative;
+
+            & .avatar {
+                width: 80%;
+                aspect-ratio: 1;
+                overflow: hidden;
+                border: 5px solid #f4f4f4;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 10%;
+                margin-left: 10%;
+                cursor: pointer;
+
+                & img {
+                    width: 100%;
+                }
+
+                & input {
+                    display: none;
+                }
+            }
+
+            & button {
+                position: absolute;
+                left: 50%;
+                transform: translate(-50%);
+                width: 120px;
+                height: 32px;
+                // padding-left: 15px;
+                // padding-right: 30px;
+                border-radius: 20px;
+                border: 1px solid black;
+                outline: none;
+                background-color: white;
+                cursor: pointer;
+                transition: 0.2s;
+
+                &:hover {
+                    color: white;
+                    border: 1px solid black;
+                    background-color: black;
+                }
+            }
+
+            & span {
+                color: red;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%);
+            }
+        }
+
+        & .right {}
+    }
+}

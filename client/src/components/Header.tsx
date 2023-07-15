@@ -64,10 +64,10 @@ function Header() {
                                 <img src={user.avatar} alt='' />
                             </div>
                             <div ref={dropListRef as RefObject<HTMLDivElement>} className='account-drop-list hide'>
-                                <div>
+                                <Link to='/profile'>
                                     <FontAwesomeIcon icon={faUser} />
                                     <span>Info</span>
-                                </div>
+                                </Link>
                                 <div>
                                     <FontAwesomeIcon icon={faCartShopping} />
                                     <span>Order</span>
