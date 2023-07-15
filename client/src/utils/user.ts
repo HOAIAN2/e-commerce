@@ -31,6 +31,27 @@ async function reqGetUser() {
     }
 }
 
+async function reqPostAvatar(file: File) {
+    if (!getToken().accessToken) throw new Error('no token')
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+        const res = await request.post('/user/avatar', formData, {
+            headers: {
+                Authorization: getTokenHeader(),
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        return res.data as UserData
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+        if (!error.response) throw new Error(error.message)
+        const message = error.response.data.message
+        throw new Error(message)
+    }
+}
+
 export {
-    reqGetUser
+    reqGetUser,
+    reqPostAvatar
 }

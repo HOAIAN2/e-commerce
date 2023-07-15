@@ -20,9 +20,15 @@
 
         & .left {
             position: relative;
+            display: flex;
+            flex-direction: column;
+            border-right: 2px solid colors.$color-low-white;
+            align-items: center;
+            justify-content: center;
 
             & .avatar {
                 width: 80%;
+                min-width: 100px;
                 aspect-ratio: 1;
                 overflow: hidden;
                 border: 5px solid #f4f4f4;
@@ -30,8 +36,6 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                margin-top: 10%;
-                margin-left: 10%;
                 cursor: pointer;
 
                 & img {
@@ -44,13 +48,9 @@
             }
 
             & button {
-                position: absolute;
-                left: 50%;
-                transform: translate(-50%);
+                margin-top: 10px;
                 width: 120px;
                 height: 32px;
-                // padding-left: 15px;
-                // padding-right: 30px;
                 border-radius: 20px;
                 border: 1px solid black;
                 outline: none;
@@ -67,13 +67,19 @@
 
             & span {
                 color: red;
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%);
+                margin-top: 10px;
             }
         }
 
-        & .right {}
+        & .right {
+            & .info-container {
+                width: 80%;
+                border: 1px solid red;
+
+                & div {
+                    background-color: colors.$color-low-white;
+                }
+            }
+        }
     }
 }

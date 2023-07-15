@@ -7,7 +7,7 @@ interface UserData {
     username: string
     firstName: string
     lastName: string
-    birthDate: Date | string
+    birthDate: Date
     sex: string
     address: string
     email: string
