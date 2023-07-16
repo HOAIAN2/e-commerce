@@ -9,6 +9,21 @@ function Profile() {
     const { user, dispatchUser } = useUserData()
     const [avatar, setAvatar] = useState(user?.avatar)
     const [error, setError] = useState('')
+    /// State for edit info
+    const [firstName, setFirstName] = useState(user?.firstName || '')
+    const [lastName, setLastName] = useState(user?.lastName || '')
+    const [birthDate, setBirthDate] = useState(() => {
+        const year = user?.birthDate.toLocaleString('default', { year: 'numeric' })
+        const month = user?.birthDate.toLocaleString('default', { month: '2-digit' })
+        const day = user?.birthDate.toLocaleString('default', { day: '2-digit' })
+        return [year, month, day].join('-')
+    })
+    const [sex, setSex] = useState(user?.sex || 'male')
+    const [address, setAddress] = useState(user?.address || '')
+    const [email, setEmail] = useState(user?.email || '')
+    const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || '')
+    const [edited, setEdited] = useState(false)
+    ///
     const inputFileRef = useRef<HTMLInputElement>(null)
     const imageRef = useRef<HTMLImageElement>(null)
     const location = useLocation()
@@ -56,28 +71,60 @@ function Profile() {
                     <span className='title'>Basic Info</span>
                     <div className="info-container">
                         <div className='info-data'>
-                            <span>Full name: </span> <span>{`${user.lastName} ${user.firstName}`}</span> <br />
+                            <span>First name: </span> <input
+                                value={firstName}
+                                onInput={e => { setFirstName(e.currentTarget.value) }}
+                            /> <br />
                         </div>
                         <div className='info-data'>
+                            <span>Last name: </span>  <input
+                                value={lastName}
+                                onInput={e => { setLastName(e.currentTarget.value) }}
+                            /> <br />
+                        </div>
+                        {/* <div className='info-data'>
                             <span>Birth date: </span> <span>{user.birthDate.toLocaleDateString('vi-vn')}</span> <br />
+                        </div> */}
+                        <div className='info-data'>
+                            <span>Birth date: </span>  <input
+                                type='date'
+                                value={birthDate}
+                                onInput={e => { setBirthDate(e.currentTarget.value) }}
+                            /> <br />
                         </div>
                         <div className='info-data'>
-                            <span>Sex: </span> <span>{user.sex}</span> <br />
+                            <span>Sex: </span>  <input
+                                value={sex}
+                                onInput={e => { setSex(e.currentTarget.value) }}
+                            /> <br />
                         </div>
                         <div className='info-data'>
-                            <span>Email: </span> <span>{user.email}</span> <br />
+                            <span>Email: </span>  <input
+                                value={email}
+                                onInput={e => { setEmail(e.currentTarget.value) }}
+                            /> <br />
                         </div>
                         <div className='info-data'>
-                            <span>Phone number: </span> <span>{user.phoneNumber}</span> <br />
+                            <span>Phone number: </span>  <input
+                                value={phoneNumber}
+                                onInput={e => { setPhoneNumber(e.currentTarget.value) }}
+                            /> <br />
                         </div>
                         <div className='info-data'>
-                            <span>Address: </span> <span>{user.address}</span> <br />
+                            <span>Address: </span> <input
+                                value={address}
+                                onInput={e => {
+                                    setAddress(e.currentTarget.value)
+                                    setEdited(true)
+                                }}
+                            /> <br />
                         </div>
-                        <button>Edit</button>
+                        {edited && <button>Save</button>}
                     </div>
                 </div>
             </div>
-        </div>)
+        </div>
+    )
 }
 
 export default Profile

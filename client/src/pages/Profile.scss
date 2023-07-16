@@ -69,6 +69,7 @@
                 color: red;
                 margin-top: 10px;
             }
+
         }
 
         & .right {
@@ -85,6 +86,7 @@
 
             & .info-container {
                 width: 80%;
+                height: calc(7 * 50px + 40px);
                 position: absolute;
                 top: 50%;
                 left: 50%;
@@ -97,15 +99,27 @@
                     margin-top: 10px;
                     border-radius: 5px;
                     font-size: 20px;
+                    display: flex;
+                    align-items: center;
 
                     & * {
-                        display: inline-block;
-                        margin-top: 10px;
+                        // display: inline-block;
+                        // margin-top: 10px;
                         padding-left: 10px;
                     }
 
                     &:hover {
                         background-color: colors.$color-low-white;
+                    }
+
+                    & input {
+                        border: none;
+                        outline: none;
+                        background: none;
+                        height: 95%;
+                        flex: 1;
+                        font-size: 20px;
+
                     }
                 }
 

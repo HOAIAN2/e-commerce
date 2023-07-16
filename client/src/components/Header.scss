@@ -124,6 +124,10 @@
                         &:hover {
                             background-color: colors.$color-low-white;
                         }
+
+                        & svg {
+                            width: 18px;
+                        }
                     }
                 }
 
