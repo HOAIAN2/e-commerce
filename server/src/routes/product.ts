@@ -115,28 +115,34 @@ const searchProductSchema: FastifySchema = {
     },
     response: {
         200: {
-            type: 'array',
-            items: {
-                properties: {
-                    productID: { type: 'integer' },
-                    productName: { type: 'string' },
-                    // supplierID: { type: 'integer' },
-                    supplierName: { type: 'string' },
-                    category: { type: 'string' },
-                    price: { type: 'integer' },
-                    quantity: { type: 'integer' },
-                    soldQuantity: { type: 'integer' },
-                    // unitInOrder: { type: 'integer' },
-                    images: {
-                        type: 'array',
-                        items: { type: 'string' }
-                    },
-                    discount: { type: 'number' },
-                    // description: { type: 'string' },
-                    rating: { type: 'number' },
-                    ratingCount: { type: 'integer' },
-                    // commentCount: { type: 'integer' },
-                }
+            type: 'object',
+            properties: {
+                data: {
+                    type: 'array',
+                    items: {
+                        properties: {
+                            productID: { type: 'integer' },
+                            productName: { type: 'string' },
+                            // supplierID: { type: 'integer' },
+                            supplierName: { type: 'string' },
+                            category: { type: 'string' },
+                            price: { type: 'integer' },
+                            quantity: { type: 'integer' },
+                            soldQuantity: { type: 'integer' },
+                            // unitInOrder: { type: 'integer' },
+                            images: {
+                                type: 'array',
+                                items: { type: 'string' }
+                            },
+                            discount: { type: 'number' },
+                            // description: { type: 'string' },
+                            rating: { type: 'number' },
+                            ratingCount: { type: 'integer' },
+                            // commentCount: { type: 'integer' },
+                        }
+                    }
+                },
+                hasNext: { type: 'boolean' }
             }
         },
         '4xx': errorReply,

@@ -71,6 +71,7 @@ async function handleAddProductRate(request: FastifyRequest, reply: FastifyReply
 }
 async function handleSearchProduct(request: FastifyRequest, reply: FastifyReply) {
     let result: SearchSession | undefined
+    let hasNext = true
     const { query, from } = request.query as SearchProductParams
     try {
         if (searchCache.has(query)) {
@@ -81,12 +82,14 @@ async function handleSearchProduct(request: FastifyRequest, reply: FastifyReply)
                 const index = finalResult?.data.findIndex(item => item.productID === from)
                 if (index !== -1) {
                     finalResult.data = finalResult.data.slice((index + 1), (index + 61))
-                    return reply.send(finalResult.data)
+                    if (!result.data[index + 62]) hasNext = false
+                    return reply.send({ data: finalResult.data, hasNext: hasNext })
                 }
             }
             else {
                 finalResult.data = finalResult.data.slice(0, 60)
-                return reply.send(finalResult.data)
+                if (!result.data[61]) hasNext = false
+                return reply.send({ data: finalResult.data, hasNext: hasNext })
             }
         }
         else {
@@ -95,7 +98,8 @@ async function handleSearchProduct(request: FastifyRequest, reply: FastifyReply)
             searchCache.set(result, (60 * 10 * 1000))
             const finalResult = structuredClone(result)
             finalResult.data = finalResult.data.slice(0, 60)
-            return reply.send(finalResult.data)
+            if (!result.data[61]) hasNext = false
+            return reply.send({ data: finalResult.data, hasNext: hasNext })
         }
     } catch (error) {
         console.log(error)

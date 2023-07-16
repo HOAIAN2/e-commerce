@@ -2,6 +2,11 @@ import request, { getTokenHeader, getToken } from './api-config'
 
 export type ProductList = ProductItem[]
 
+export type ProductSearch = {
+    data: ProductItem[]
+    hasNext: boolean
+}
+
 export interface ProductItem {
     productID: number
     productName: string
@@ -119,7 +124,7 @@ async function reqGetProductsSearch(query: string, from?: number) {
                 from: from
             }
         })
-        return res.data as ProductList
+        return res.data as ProductSearch
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         if (!error.response) throw new Error(error.message)

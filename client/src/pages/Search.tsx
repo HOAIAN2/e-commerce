@@ -8,11 +8,13 @@ import './Search.scss'
 function Search() {
     const [products, setProducts] = useState([] as ProductList)
     const [loading, setLoading] = useState(true)
+    const [hasNext, setHasNext] = useState(true)
     const [searchParam] = useSearchParams()
     function handleLoadMore() {
         reqGetProductsSearch(searchParam.get('name') as string, products.at(-1)?.productID)
             .then(data => {
-                setProducts([...products, ...data])
+                setProducts([...products, ...data.data])
+                setHasNext(data.hasNext)
             })
     }
     useEffect(() => {
@@ -20,7 +22,8 @@ function Search() {
         reqGetProductsSearch(searchParam.get('name') as string)
             .then(data => {
                 window.scrollTo(0, 0)
-                setProducts(data)
+                setProducts(data.data)
+                setHasNext(data.hasNext)
                 setLoading(false)
             })
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -31,9 +34,9 @@ function Search() {
             <div className='products-list'>
                 {products.map(product => <Product key={product.productID} data={product} />)}
             </div>
-            <button
+            {hasNext && <button
                 onClick={handleLoadMore}
-                className='load-more'>Load more</button>
+                className='load-more'>Load more</button>}
         </div>
     )
 }

@@ -18,7 +18,8 @@ function Header() {
     function handleLogout() {
         reqLogout()
             .then(() => {
-                window.location.reload()
+                if (['/orders', '/profile'].includes(window.location.pathname)) window.location.pathname = '/'
+                else window.location.reload()
             })
     }
     return (
