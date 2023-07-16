@@ -17,7 +17,7 @@ function Profile() {
         const acceptFormats = ['image/png', 'image/jpg', 'image/jpeg']
         const limitSize = 500 * 1024
         if (!e.target.files) return
-        if (e.target.files[0]?.size > limitSize) return setError(`File must be smaller than ${limitSize / 1024} MB`)
+        if (e.target.files[0]?.size > limitSize) return setError(`File must be smaller than ${limitSize / 1024} KB`)
         if (!acceptFormats.includes(e.target.files[0]?.type)) return setError('Only accept png, jpg, jpeg')
         const file = new FileReader()
         file.addEventListener("load", () => {
@@ -53,25 +53,27 @@ function Profile() {
                     {error && <span>{error}</span>}
                 </div>
                 <div className="right">
+                    <span className='title'>Basic Info</span>
                     <div className="info-container">
-                        <div>
+                        <div className='info-data'>
                             <span>Full name: </span> <span>{`${user.lastName} ${user.firstName}`}</span> <br />
                         </div>
-                        <div>
+                        <div className='info-data'>
                             <span>Birth date: </span> <span>{user.birthDate.toLocaleDateString('vi-vn')}</span> <br />
                         </div>
-                        <div>
+                        <div className='info-data'>
                             <span>Sex: </span> <span>{user.sex}</span> <br />
                         </div>
-                        <div>
+                        <div className='info-data'>
                             <span>Email: </span> <span>{user.email}</span> <br />
                         </div>
-                        <div>
+                        <div className='info-data'>
                             <span>Phone number: </span> <span>{user.phoneNumber}</span> <br />
                         </div>
-                        <div>
+                        <div className='info-data'>
                             <span>Address: </span> <span>{user.address}</span> <br />
                         </div>
+                        <button>Edit</button>
                     </div>
                 </div>
             </div>
