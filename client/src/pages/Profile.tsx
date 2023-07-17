@@ -2,7 +2,7 @@ import { RefObject, useRef, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import useUserData from '../context/hooks'
 import { USER_ACTION } from '../context/UserContext'
-import { reqPostAvatar } from '../utils/user'
+import { reqPostAvatar, reqPostInfo } from '../utils/user'
 import './Profile.scss'
 
 function Profile() {
@@ -10,6 +10,7 @@ function Profile() {
     const [avatar, setAvatar] = useState(user?.avatar)
     const [error, setError] = useState('')
     /// State for edit info
+    const [username, setUsername] = useState(user?.username || '')
     const [firstName, setFirstName] = useState(user?.firstName || '')
     const [lastName, setLastName] = useState(user?.lastName || '')
     const [birthDate, setBirthDate] = useState(() => {
@@ -48,6 +49,20 @@ function Profile() {
                 dispatchUser({ type: USER_ACTION.SET, payload: data })
             })
     }
+    function handlePostUserInfo() {
+        reqPostInfo({
+            username,
+            firstName,
+            lastName,
+            birthDate,
+            sex: sex === 'male' ? 'm' : 'f',
+            address,
+            email,
+            phoneNumber
+        }).then(data => {
+            dispatchUser({ type: USER_ACTION.SET, payload: data })
+        })
+    }
     if (!user) return <Navigate to='/login' replace state={{ from: location }} />
     return (
         <div className="profile-page">
@@ -70,6 +85,12 @@ function Profile() {
                 <div className="right">
                     <span className='title'>Basic Info</span>
                     <div className="info-container">
+                        <div className='info-data'>
+                            <span>Username: </span> <input
+                                value={username}
+                                onInput={e => { setUsername(e.currentTarget.value) }}
+                            /> <br />
+                        </div>
                         <div className='info-data'>
                             <span>First name: </span> <input
                                 value={firstName}
@@ -119,7 +140,7 @@ function Profile() {
                                 }}
                             /> <br />
                         </div>
-                        {edited && <button>Save</button>}
+                        {edited && <button onClick={handlePostUserInfo}>Save</button>}
                     </div>
                 </div>
             </div>

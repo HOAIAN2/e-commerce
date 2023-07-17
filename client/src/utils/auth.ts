@@ -1,4 +1,4 @@
-import request, { getTokenHeader, getToken } from './api-config'
+import request, { getToken } from './api-config'
 
 async function reqLogin(username: string, password: string) {
     try {
@@ -19,10 +19,6 @@ async function reqLogout() {
     try {
         await request.post('/auth/logout', {
             refreshToken: getToken().refreshToken
-        }, {
-            headers: {
-                Authorization: getTokenHeader()
-            }
         })
         localStorage.removeItem('token')
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

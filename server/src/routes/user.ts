@@ -52,7 +52,7 @@ const userChangeInfoSchema: FastifySchema = {
             sex: { type: 'string', maxLength: 1 },
             address: { type: 'string', maxLength: 255 },
             email: { type: 'string', maxLength: 255, pattern: '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$' },
-            phoneNumber: { type: 'string', minLength: 13, pattern: '0\d{9}' },
+            phoneNumber: { type: 'string', minLength: 13, pattern: '^[+]84\d{9}' },
         },
         required: ['username', 'firstName', 'lastName', 'birthDate', 'sex', 'address']
     },

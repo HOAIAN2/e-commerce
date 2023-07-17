@@ -2,7 +2,7 @@ import { useState, useRef, RefObject } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faUser, faSignOut, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import icon from '/logo.png'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import useUserData from '../context/hooks'
 import { reqLogout } from '../utils/auth'
 // import { reqGetProductsAutoComplete, ProductList } from '../utils/product'
@@ -15,6 +15,7 @@ function Header() {
     const dropListRef = useRef<HTMLElement>(null)
     const { user } = useUserData()
     const navigate = useNavigate()
+    const location = useLocation()
     function handleLogout() {
         reqLogout()
             .then(() => {
@@ -80,7 +81,7 @@ function Header() {
                             </div>
                         </div>
                         : <div className='not-logon'>
-                            <Link to='/login'>Login</Link>
+                            <Link to='/login' state={{ from: location }}>Login</Link>
                             <span>|</span>
                             <Link to='/register'>Register</Link>
                         </div>

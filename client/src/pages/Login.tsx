@@ -58,6 +58,7 @@ function Login() {
                     <input type="text" placeholder='Username'
                         value={username}
                         onChange={e => { setUsername(e.target.value) }}
+                        autoFocus
                     />
                 </div>
                 <div>

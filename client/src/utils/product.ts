@@ -59,21 +59,25 @@ async function reqGetProductsHome() {
 }
 
 async function reqGetProduct(id: number) {
-    let options: Options = {
-        headers: {
-            Authorization: getTokenHeader()
-        },
-        params: {
-            id: id
-        }
-    }
-    if (!getToken().accessToken) options = {
-        params: {
-            id: id
-        }
-    }
+    // let options: Options = {
+    //     headers: {
+    //         Authorization: getTokenHeader()
+    //     },
+    //     params: {
+    //         id: id
+    //     }
+    // }
+    // if (!getToken().accessToken) options = {
+    //     params: {
+    //         id: id
+    //     }
+    // }
     try {
-        const res = await request.get('/product', options)
+        const res = await request.get('/product', {
+            params: {
+                id: id
+            }
+        })
         return res.data as ProductFull
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
