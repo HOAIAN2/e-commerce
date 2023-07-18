@@ -1,4 +1,4 @@
-import request, { getTokenHeader, getToken } from './api-config'
+import request from './api-config'
 
 export type ProductList = ProductItem[]
 
@@ -38,14 +38,7 @@ export interface ProductFull {
     ratingCount: number
     commentCount: number
 }
-interface Options {
-    headers?: {
-        Authorization: string
-    },
-    params: {
-        id: number
-    }
-}
+
 async function reqGetProductsHome() {
     try {
         const res = await request.get('/product/home')
@@ -59,19 +52,6 @@ async function reqGetProductsHome() {
 }
 
 async function reqGetProduct(id: number) {
-    // let options: Options = {
-    //     headers: {
-    //         Authorization: getTokenHeader()
-    //     },
-    //     params: {
-    //         id: id
-    //     }
-    // }
-    // if (!getToken().accessToken) options = {
-    //     params: {
-    //         id: id
-    //     }
-    // }
     try {
         const res = await request.get('/product', {
             params: {

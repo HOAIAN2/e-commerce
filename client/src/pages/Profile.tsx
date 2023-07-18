@@ -1,4 +1,4 @@
-import { RefObject, useRef, useState } from 'react'
+import { RefObject, useEffect, useRef, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import useUserData from '../context/hooks'
 import { USER_ACTION } from '../context/UserContext'
@@ -8,7 +8,8 @@ import './Profile.scss'
 function Profile() {
     const { user, dispatchUser } = useUserData()
     const [avatar, setAvatar] = useState(user?.avatar)
-    const [error, setError] = useState('')
+    const [avatarError, setAvatarError] = useState('')
+    const [infoError, setInfoError] = useState('')
     /// State for edit info
     const [username, setUsername] = useState(user?.username || '')
     const [firstName, setFirstName] = useState(user?.firstName || '')
@@ -29,16 +30,16 @@ function Profile() {
     const imageRef = useRef<HTMLImageElement>(null)
     const location = useLocation()
     async function handleChangeAvatar(e: React.ChangeEvent<HTMLInputElement>) {
-        setError('')
+        setAvatarError('')
         const acceptFormats = ['image/png', 'image/jpg', 'image/jpeg']
         const limitSize = 500 * 1024
         if (!e.target.files) return
-        if (e.target.files[0]?.size > limitSize) return setError(`File must be smaller than ${limitSize / 1024} KB`)
-        if (!acceptFormats.includes(e.target.files[0]?.type)) return setError('Only accept png, jpg, jpeg')
+        if (e.target.files[0]?.size > limitSize) return setAvatarError(`File must be smaller than ${limitSize / 1024} KB`)
+        if (!acceptFormats.includes(e.target.files[0]?.type)) return setAvatarError('Only accept png, jpg, jpeg')
         const file = new FileReader()
         file.addEventListener("load", () => {
             setAvatar(file.result as string)
-            setError('')
+            setAvatarError('')
         })
         e.currentTarget.files && file.readAsDataURL(e.currentTarget.files[0])
     }
@@ -50,6 +51,7 @@ function Profile() {
             })
     }
     function handlePostUserInfo() {
+        // if(username,firstName,lastName,sex)
         reqPostInfo({
             username,
             firstName,
@@ -63,6 +65,16 @@ function Profile() {
             dispatchUser({ type: USER_ACTION.SET, payload: data })
         })
     }
+    useEffect(() => {
+        const required = { username, firstName, lastName, birthDate, sex, address }
+        for (const key in required) {
+            if (required[key as keyof typeof required].trim() === '') {
+                setInfoError(`Please type ${key}`)
+                break
+            }
+            else setInfoError('')
+        }
+    }, [username, firstName, lastName, birthDate, sex, address, email, phoneNumber])
     if (!user) return <Navigate to='/login' replace state={{ from: location }} />
     return (
         <div className="profile-page">
@@ -80,7 +92,7 @@ function Profile() {
                             className="inputfile" />
                     </div>
                     {avatar !== user.avatar && <button onClick={handleUpdateAvatar} >Save</button>}
-                    {error && <span>{error}</span>}
+                    {avatarError && <span>{avatarError}</span>}
                 </div>
                 <div className="right">
                     <span className='title'>Basic Info</span>
@@ -88,19 +100,28 @@ function Profile() {
                         <div className='info-data'>
                             <span>Username: </span> <input
                                 value={username}
-                                onInput={e => { setUsername(e.currentTarget.value) }}
+                                onInput={e => {
+                                    setUsername(e.currentTarget.value)
+                                    setEdited(true)
+                                }}
                             /> <br />
                         </div>
                         <div className='info-data'>
                             <span>First name: </span> <input
                                 value={firstName}
-                                onInput={e => { setFirstName(e.currentTarget.value) }}
+                                onInput={e => {
+                                    setFirstName(e.currentTarget.value)
+                                    setEdited(true)
+                                }}
                             /> <br />
                         </div>
                         <div className='info-data'>
                             <span>Last name: </span>  <input
                                 value={lastName}
-                                onInput={e => { setLastName(e.currentTarget.value) }}
+                                onInput={e => {
+                                    setLastName(e.currentTarget.value)
+                                    setEdited(true)
+                                }}
                             /> <br />
                         </div>
                         {/* <div className='info-data'>
@@ -110,25 +131,52 @@ function Profile() {
                             <span>Birth date: </span>  <input
                                 type='date'
                                 value={birthDate}
-                                onInput={e => { setBirthDate(e.currentTarget.value) }}
+                                onInput={e => {
+                                    setBirthDate(e.currentTarget.value)
+                                    setEdited(true)
+                                }}
                             /> <br />
                         </div>
                         <div className='info-data'>
                             <span>Sex: </span>  <input
-                                value={sex}
-                                onInput={e => { setSex(e.currentTarget.value) }}
-                            /> <br />
+                                name='sex'
+                                type='radio'
+                                // value={sex}
+                                checked={sex === 'male'}
+                                value='male'
+                                onChange={e => {
+                                    setSex(e.currentTarget.value)
+                                    setEdited(true)
+                                }}
+                            /> <label>male</label>
+                            <input
+                                name='sex'
+                                type='radio'
+                                checked={sex === 'female'}
+                                value='female'
+                                onChange={e => {
+                                    setSex(e.currentTarget.value)
+                                    setEdited(true)
+                                }}
+                            /> <label>female</label>
+                            <br />
                         </div>
                         <div className='info-data'>
                             <span>Email: </span>  <input
                                 value={email}
-                                onInput={e => { setEmail(e.currentTarget.value) }}
+                                onInput={e => {
+                                    setEmail(e.currentTarget.value)
+                                    setEdited(true)
+                                }}
                             /> <br />
                         </div>
                         <div className='info-data'>
                             <span>Phone number: </span>  <input
                                 value={phoneNumber}
-                                onInput={e => { setPhoneNumber(e.currentTarget.value) }}
+                                onInput={e => {
+                                    setPhoneNumber(e.currentTarget.value)
+                                    setEdited(true)
+                                }}
                             /> <br />
                         </div>
                         <div className='info-data'>
@@ -141,6 +189,7 @@ function Profile() {
                             /> <br />
                         </div>
                         {edited && <button onClick={handlePostUserInfo}>Save</button>}
+                        {infoError && <span className='info-error'>{infoError}</span>}
                     </div>
                 </div>
             </div>

@@ -27,6 +27,9 @@ async function reqGetUser() {
 }
 
 async function reqPostInfo(data: PostUserData) {
+    for (const key in data) {
+        if (data[key as keyof typeof data] === '') delete data[key as keyof typeof data]
+    }
     if (!getToken().accessToken) throw new Error('no token')
     try {
         const res = await request.post('/user/info', data)

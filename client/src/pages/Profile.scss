@@ -119,7 +119,15 @@
                         height: 95%;
                         flex: 1;
                         font-size: 20px;
+                    }
 
+                    & input[type="radio"] {
+                        flex: 0;
+                        margin-left: 10px;
+                    }
+
+                    & label {
+                        font-size: 20px;
                     }
                 }
 
@@ -140,6 +148,12 @@
                         border: 1px solid black;
                         background-color: black;
                     }
+                }
+
+                & span.info-error {
+                    display: block;
+                    color: red;
+                    margin-top: 10px;
                 }
             }
         }

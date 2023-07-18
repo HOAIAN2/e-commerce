@@ -39,7 +39,7 @@ async function handleEditInfo(request: FastifyRequest, reply: FastifyReply) {
         user.setFirstName(data.firstName)
         user.setLastName(data.lastName)
         user.setSex(data.sex)
-        user.setAddress(data.birthDate)
+        user.setAddress(data.address)
         user.setBirthDate(data.birthDate)
         user.setEmail(data.email)
         user.setPhoneNumber(data.phoneNumber)
