@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import useUserData from '../context/hooks'
 import { USER_ACTION } from '../context/UserContext'
@@ -28,6 +28,7 @@ function Profile() {
     ///
     const inputFileRef = useRef<HTMLInputElement>(null)
     const imageRef = useRef<HTMLImageElement>(null)
+    const saveBtnRef = useRef<HTMLButtonElement>(null)
     const location = useLocation()
     async function handleChangeAvatar(e: React.ChangeEvent<HTMLInputElement>) {
         setAvatarError('')
@@ -70,9 +71,13 @@ function Profile() {
         for (const key in required) {
             if (required[key as keyof typeof required].trim() === '') {
                 setInfoError(`Please type ${key}`)
+                saveBtnRef.current?.classList.add('disable')
                 break
             }
-            else setInfoError('')
+            else {
+                setInfoError('')
+                saveBtnRef.current?.classList.remove('disable')
+            }
         }
     }, [username, firstName, lastName, birthDate, sex, address, email, phoneNumber])
     if (!user) return <Navigate to='/login' replace state={{ from: location }} />
@@ -82,9 +87,9 @@ function Profile() {
                 <div className="left">
                     <div className="avatar">
                         <img src={avatar} alt=""
-                            ref={imageRef as RefObject<HTMLImageElement>}
+                            ref={imageRef}
                             onClick={() => { inputFileRef.current?.click() }} />
-                        <input ref={inputFileRef as RefObject<HTMLInputElement>}
+                        <input ref={inputFileRef}
                             onChange={handleChangeAvatar}
                             type="file"
                             accept="image/png, image/jpeg, image/jpg"
@@ -188,7 +193,10 @@ function Profile() {
                                 }}
                             /> <br />
                         </div>
-                        {edited && <button onClick={handlePostUserInfo}>Save</button>}
+                        {edited &&
+                            <button
+                                ref={saveBtnRef}
+                                onClick={handlePostUserInfo}>Save</button>}
                         {infoError && <span className='info-error'>{infoError}</span>}
                     </div>
                 </div>

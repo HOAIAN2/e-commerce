@@ -1,4 +1,4 @@
-import { useState, useRef, RefObject } from 'react'
+import { useState, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faUser, faSignOut, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import icon from '/logo.png'
@@ -12,7 +12,7 @@ function Header() {
     const [searchParam] = useSearchParams()
     const [query, setQuery] = useState(searchParam.get('name') || '')
     // const [data, setData] = useState<ProductList>([])
-    const dropListRef = useRef<HTMLElement>(null)
+    const dropListRef = useRef<HTMLDivElement>(null)
     const { user } = useUserData()
     const navigate = useNavigate()
     const location = useLocation()
@@ -65,7 +65,7 @@ function Header() {
                             <div className='avatar'>
                                 <img src={user.avatar} alt='' />
                             </div>
-                            <div ref={dropListRef as RefObject<HTMLDivElement>} className='account-drop-list hide'>
+                            <div ref={dropListRef} className='account-drop-list hide'>
                                 <Link to='/profile'>
                                     <FontAwesomeIcon icon={faUser} />
                                     <span>Info</span>

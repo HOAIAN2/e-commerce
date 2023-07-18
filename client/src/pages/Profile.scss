@@ -143,6 +143,11 @@
                     font-size: 18px;
                     margin-top: 20px;
 
+                    &.disable {
+                        pointer-events: none;
+                        cursor: default;
+                    }
+
                     &:hover {
                         color: white;
                         border: 1px solid black;
