@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ProductList, reqGetProductsSearch } from '../utils/product'
 import Product from '../components/Product'
 import Loading from '../components/Loading'
@@ -9,6 +9,7 @@ function Search() {
     const [products, setProducts] = useState([] as ProductList)
     const [loading, setLoading] = useState(true)
     const [hasNext, setHasNext] = useState(true)
+    const navigate = useNavigate()
     const [searchParam] = useSearchParams()
     function handleLoadMore() {
         reqGetProductsSearch(searchParam.get('name') as string, products.at(-1)?.productID)
@@ -25,6 +26,9 @@ function Search() {
                 setProducts(data.data)
                 setHasNext(data.hasNext)
                 setLoading(false)
+            })
+            .catch(() => {
+                navigate('/')
             })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchParam.get('name')])
