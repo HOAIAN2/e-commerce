@@ -2,6 +2,7 @@ import { Cache } from "js-simple-cache"
 import { Comment } from "../models/index.js"
 import database from "./database.js"
 import { RowDataPacket } from "mysql2/promise"
+import { dbSelectProductByID } from "./product.js"
 
 interface DBComment {
     "comment_id": number
@@ -94,6 +95,8 @@ async function dbInsertComment(userID: number, productID: number, content: strin
         const rate = data['rate']
         const commentDate = data['comment_date']
         const comment = new Comment(commentID, userID, avatar, firstName, lastName, productID, commentContent, rate, commentDate)
+        const product = await dbSelectProductByID(productID)
+        product?.updateCommentCount(1)
         newComment = comment
         return newComment
     } catch (error: any) {

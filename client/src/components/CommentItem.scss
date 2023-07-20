@@ -1,0 +1,65 @@
+@use '../colors';
+
+.comment-item {
+    background-color: rgb(250, 250, 250);
+    width: 98%;
+    height: fit-content;
+    min-height: 100px;
+    margin-top: 10px;
+    display: flex;
+    border-radius: 10px;
+
+    & .content-left {
+        width: 65px;
+
+        // position: absolute;
+        // height: 500%;
+        & .avatar {
+            margin-left: 5px;
+            margin-top: 5px;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            overflow: hidden;
+
+            img {
+                width: 55px;
+            }
+        }
+
+    }
+
+    & .content-right {
+        width: calc(100% - 30px);
+        height: fit-content;
+        margin-left: 10px;
+
+        & .content-title {
+            width: inherit;
+
+            & .name {
+                font-weight: bold;
+            }
+
+            & .product-rating {
+                display: inline-block;
+                margin-left: 10px;
+                height: 20px;
+            }
+
+            & .date {
+                font-size: small;
+                opacity: 0.5;
+            }
+        }
+
+        & .content-data {
+            width: inherit;
+            overflow: hidden;
+
+            p {
+                white-space: pre-line;
+            }
+        }
+    }
+}

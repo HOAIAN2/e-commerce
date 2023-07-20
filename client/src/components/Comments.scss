@@ -1,0 +1,134 @@
+@use '../colors';
+
+.comments {
+    background-color: white;
+    width: 90%;
+    height: fit-content;
+    min-height: 500px;
+    margin: 20px auto;
+    border-radius: 5px;
+
+    & .comment-count {
+        position: relative;
+        height: 60px;
+        width: 100%;
+
+        & span {
+            height: 40px;
+            margin-left: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        & select {
+            position: absolute;
+            border-radius: 5px;
+            outline: none;
+            right: 0px;
+            margin-right: 10px;
+            width: 100px;
+            height: 40px;
+            font-size: large;
+        }
+    }
+
+    & .comment-writter {
+        width: 100%;
+        height: auto;
+        // border: 1px solid red;
+        display: flex;
+
+        & .left {
+            width: 70px;
+            margin-top: 0px;
+            height: auto;
+            margin-left: 15px;
+
+            & .avatar {
+                margin-left: 5px;
+                width: 55px;
+                height: 55px;
+                border-radius: 50%;
+                overflow: hidden;
+
+                img {
+                    width: inherit;
+                }
+            }
+
+        }
+
+        & .right {
+            width: calc(100% - 70px);
+            position: relative;
+            margin-left: 5px;
+            height: fit-content;
+
+            & textarea {
+                display: block;
+                font-size: 16px;
+                padding-top: 15px;
+                padding-left: 10px;
+                padding-right: 50px;
+                height: fit-content;
+                width: 100%;
+                border-radius: 5px;
+                resize: none;
+                outline: none;
+                overflow: hidden;
+                border: none;
+                font-family: 'Times New Roman', Times, serif;
+                background-color: rgb(250, 250, 250);
+            }
+
+            & button {
+                position: absolute;
+                font-size: 16px;
+                // margin-top: -10px;
+                background-color: colors.$color-red;
+                color: white;
+                outline: none;
+                border: none;
+                border-radius: 50%;
+                height: 40px;
+                width: 40px;
+                cursor: pointer;
+                font-weight: bold;
+                padding-right: 2px;
+                right: 10px;
+                bottom: 5px;
+            }
+
+            & svg {
+                font-size: 20px;
+            }
+        }
+    }
+
+    & .comment-list {
+        padding-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & button {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            width: 120px;
+            height: 40px;
+            border-radius: 20px;
+            border: 1px solid black;
+            outline: none;
+            background-color: white;
+            cursor: pointer;
+            transition: 0.2s;
+
+            &:hover {
+                color: white;
+                border: 1px solid black;
+                background-color: black;
+            }
+        }
+    }
+}

@@ -51,7 +51,7 @@ const addCommentSchema: FastifySchema = {
         properties: {
             id: { type: 'integer', minimum: 1 },
         },
-        required: ['integer']
+        required: ['id']
     },
     body: {
         type: 'object',
@@ -86,7 +86,7 @@ async function commentRoutes(app: FastifyInstance, options: RegisterOptions) {
         handler: handleGetComments,
         schema: getCommentsSchema
     })
-    app.post('/', {
+    app.post('/:id', {
         preHandler: [authenticateToken, trimBody],
         handler: handleInsertComment,
         schema: addCommentSchema

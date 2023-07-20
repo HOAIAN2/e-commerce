@@ -5,6 +5,7 @@ import NotFound from './NotFound'
 import Loading from '../components/Loading'
 import ProductRating from '../components/ProductRating'
 import Product from '../components/Product'
+import Comments from '../components/Comments'
 import { baseIMG } from '../utils/api-config'
 import './ProductPage.scss'
 
@@ -96,6 +97,7 @@ function ProductPage() {
             <div className='suggest-products'>
                 {suggestProducts?.map(product => <Product key={product.productID} data={product} />)}
             </div>
+            {data !== null ? <Comments product={data} setProduct={setData} /> : null}
         </div>
     )
 }
