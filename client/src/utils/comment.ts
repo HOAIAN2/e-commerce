@@ -13,7 +13,7 @@ export interface Comment {
     commentDate: string
 }
 
-async function reqGetComments(id: number, startIndex?: number, sortMode = 'ASC' || 'DESC') {
+async function reqGetComments(id: number, sortMode = 'ASC' || 'DESC', startIndex?: number) {
     try {
         const res = await request.get('/comment', {
             params: {

@@ -12,7 +12,7 @@ import './Comments.scss'
 
 function Comments({ product, setProduct }: { product: ProductFull, setProduct: React.Dispatch<React.SetStateAction<ProductFull | null>> }) {
     const { user } = useUserData()
-    const [commentOrder, setCommentOrder] = useState('latest')
+    const [commentOrder, setCommentOrder] = useState('Latest')
     const [comment, setComment] = useState('')
     const [comments, setComments] = useState<Comment[]>([])
     const commentRef = useRef<HTMLTextAreaElement>(null)
@@ -48,6 +48,15 @@ function Comments({ product, setProduct }: { product: ProductFull, setProduct: R
                 setComments(data)
             })
     }, [product.productID])
+    useEffect(() => {
+        let orderMode = 'DESC'
+        if (commentOrder === 'Oldest') orderMode = 'ASC'
+        reqGetComments(product.productID, orderMode)
+            .then(data => {
+                setComments(data)
+            })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [commentOrder])
     return (
         <div className='comments' >
             <div className='comment-count'>
@@ -72,7 +81,6 @@ function Comments({ product, setProduct }: { product: ProductFull, setProduct: R
                         placeholder='Write comment'
                         value={comment}
                         onFocus={() => {
-                            console.log(user)
                             if (!user) {
                                 navigate('/login', { state: { from: location } })
                             }
