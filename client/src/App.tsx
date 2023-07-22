@@ -6,6 +6,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import NotFound from './pages/NotFound'
 import Login from './pages/Login'
+import Register from './pages/Register'
 import Search from './pages/Search'
 import ProductPage from './pages/ProductPage'
 import Profile from './pages/Profile'
@@ -42,6 +43,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
         <Route path='/search' element={<Search />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/product/:id' element={<ProductPage />} />
