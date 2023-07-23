@@ -129,24 +129,54 @@ const changePasswordSchema: FastifySchema = {
 }
 async function authRoutes(app: FastifyInstance, options: RegisterOptions) {
     app.post('/login', {
+        config: {
+            rateLimit: {
+                max: 30,
+                timeWindow: '1 minute'
+            }
+        },
         handler: handleLogin,
         schema: loginSchema
     })
     app.post('/register', {
+        config: {
+            rateLimit: {
+                max: 30,
+                timeWindow: '1 minute'
+            }
+        },
         preHandler: [trimBody],
         handler: handleRegister,
         schema: registerSchema
     })
     app.post('/logout', {
+        config: {
+            rateLimit: {
+                max: 30,
+                timeWindow: '1 minute'
+            }
+        },
         preHandler: [authenticateToken],
         handler: handleLogout,
         schema: logoutSchema
     })
     app.post('/refresh', {
+        config: {
+            rateLimit: {
+                max: 30,
+                timeWindow: '1 minute'
+            }
+        },
         handler: handleRefreshToken,
         schema: refreshTokenSchema
     })
     app.post('/password', {
+        config: {
+            rateLimit: {
+                max: 30,
+                timeWindow: '1 minute'
+            }
+        },
         preHandler: [authenticateToken],
         handler: handleChangePassword,
         schema: changePasswordSchema

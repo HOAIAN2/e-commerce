@@ -40,8 +40,7 @@ function ProductPage() {
                 setNotFound(true)
             })
     }, [id])
-    // data && console.log(data)
-    // suggestProducts && console.log(suggestProducts)
+    if (!data) return null
     if (notFound) return <NotFound />
     return (
         <div className='product-page'>

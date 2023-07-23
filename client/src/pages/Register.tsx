@@ -85,7 +85,6 @@ function Register() {
                     <input type="text" placeholder='First name'
                         value={firstName}
                         onChange={e => { setFirstName(e.target.value) }}
-                        autoFocus
                     />
                 </div>
                 <div>
@@ -93,7 +92,6 @@ function Register() {
                     <input type="text" placeholder='Last name'
                         value={lastName}
                         onChange={e => { setLastName(e.target.value) }}
-                        autoFocus
                     />
                 </div>
                 <div>
@@ -101,7 +99,6 @@ function Register() {
                     <input type="date" placeholder='Birth date'
                         value={birthDate}
                         onChange={e => { setBirthDate(e.target.value) }}
-                        autoFocus
                     />
                 </div>
                 <div className='select-sex'>
@@ -136,7 +133,6 @@ function Register() {
                     <input type="text" placeholder='Address'
                         value={address}
                         onChange={e => { setAddress(e.target.value) }}
-                        autoFocus
                     />
                 </div>
                 <div>
@@ -144,7 +140,6 @@ function Register() {
                     <input type="text" placeholder='Email'
                         value={email}
                         onChange={e => { setEmail(e.target.value) }}
-                        autoFocus
                     />
                 </div>
                 <div>
@@ -152,7 +147,6 @@ function Register() {
                     <input type="text" placeholder='Phone number'
                         value={phoneNumber}
                         onChange={e => { setPhoneNumber(e.target.value) }}
-                        autoFocus
                     />
                 </div>
                 <div>

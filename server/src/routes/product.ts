@@ -262,27 +262,63 @@ const autoCompleteSchema: FastifySchema = {
 }
 async function productRoutes(app: FastifyInstance, options: RegisterOptions) {
     app.get('/', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         handler: handleGetProductByID,
         schema: getProductSchema
     })
     app.post('/rate', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         preHandler: [authenticateToken],
         handler: handleAddProductRate,
         schema: postProductRateSchema
     })
     app.get('/search', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         handler: handleSearchProduct,
         schema: searchProductSchema
     })
     app.get('/suggest', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         handler: handleSuggestProductByID,
         schema: suggestProductSchema
     })
     app.get('/home', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         handler: handleSuggest,
         schema: suggestProductHomeSchema
     })
     app.get('/auto-complete', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         handler: handleAutoComplete,
         schema: autoCompleteSchema
     })

@@ -350,30 +350,66 @@ const makePaymentSchema: FastifySchema = {
 }
 async function orderRoutes(app: FastifyInstance, options: RegisterOptions) {
     app.get('/', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         preHandler: [authenticateToken],
         handler: handleGetOrderByID,
         schema: getOrderByIDSchema
     })
     app.get('/from', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         preHandler: [authenticateToken],
         handler: handleGetOrders,
         schema: getOrdersSchema
     })
     app.post('/create', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         preHandler: [authenticateToken],
         handler: handleCreateOrder,
         schema: createOrderSchema
     })
     app.post('/product', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         handler: handleAddProduct,
         schema: addProductSchema
     })
     app.delete('/product', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         preHandler: [authenticateToken],
         handler: handleDeleteProduct,
         schema: deleteProductSchema
     })
     app.post('/pay', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         handler: handleMakePayment,
         schema: makePaymentSchema
     })

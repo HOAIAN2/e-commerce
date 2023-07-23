@@ -110,16 +110,34 @@ const avatarSchema: FastifySchema = {
 }
 async function userRoutes(app: FastifyInstance, options: RegisterOptions) {
     app.get('/info', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         preHandler: [authenticateToken],
         handler: handleGetInfo,
         schema: userSchema
     })
     app.post('/info', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         preHandler: [authenticateToken, trimBody],
         handler: handleEditInfo,
         schema: userChangeInfoSchema
     })
     app.post('/avatar', {
+        config: {
+            rateLimit: {
+                max: 100,
+                timeWindow: '1 minute'
+            }
+        },
         preHandler: [authenticateToken],
         handler: handleAddAvatar,
         schema: avatarSchema
