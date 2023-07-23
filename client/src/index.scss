@@ -27,3 +27,26 @@ a {
   // color: transparent;
   text-decoration: none;
 }
+
+button {
+  width: 120px;
+  height: 40px;
+  border-radius: 20px;
+  border: 1px solid black;
+  outline: none;
+  background-color: white;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &.disable {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &:hover {
+    color: white;
+    border: 1px solid black;
+    background-color: black;
+  }
+}

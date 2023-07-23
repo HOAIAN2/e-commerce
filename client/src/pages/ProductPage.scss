@@ -91,6 +91,7 @@
                 }
 
                 & button {
+                    all: unset;
                     background-color: colors.$color-low-white;
                     border: none;
                     outline: none;

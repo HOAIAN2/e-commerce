@@ -26,49 +26,51 @@
             align-items: center;
             justify-content: center;
 
-            & .avatar {
+            & .data {
                 width: 80%;
-                min-width: 100px;
-                aspect-ratio: 1;
-                overflow: hidden;
-                border: 5px solid #f4f4f4;
-                border-radius: 50%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
+                height: 60%;
+                text-align: center;
 
-                & img {
+                & #avatar-loader {
                     width: 100%;
+                    min-width: 100px;
+                    aspect-ratio: 1;
+                    overflow: hidden;
+                    border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+
+                    & .avatar {
+                        width: 95%;
+                        height: 95%;
+                        border-radius: 50%;
+                        overflow: hidden;
+
+                        & img {
+                            width: 100%;
+                        }
+                    }
+
+
+                    & input {
+                        display: none;
+                    }
                 }
 
-                & input {
-                    display: none;
+                & button {
+                    margin-top: 10px;
+                    width: 120px;
+                    height: 32px;
+                }
+
+                & span {
+                    color: red;
+                    margin-top: 10px;
                 }
             }
 
-            & button {
-                margin-top: 10px;
-                width: 120px;
-                height: 32px;
-                border-radius: 20px;
-                border: 1px solid black;
-                outline: none;
-                background-color: white;
-                cursor: pointer;
-                transition: 0.2s;
-
-                &:hover {
-                    color: white;
-                    border: 1px solid black;
-                    background-color: black;
-                }
-            }
-
-            & span {
-                color: red;
-                margin-top: 10px;
-            }
 
         }
 
@@ -135,25 +137,8 @@
                     width: 120px;
                     height: 40px;
                     border-radius: 20px;
-                    border: 1px solid black;
-                    outline: none;
-                    background-color: white;
-                    cursor: pointer;
-                    transition: 0.2s;
                     font-size: 18px;
                     margin-top: 20px;
-
-                    &.disable {
-                        pointer-events: none;
-                        opacity: 0.5;
-                        cursor: default;
-                    }
-
-                    &:hover {
-                        color: white;
-                        border: 1px solid black;
-                        background-color: black;
-                    }
                 }
 
                 & span.info-error {

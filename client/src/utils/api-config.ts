@@ -48,8 +48,8 @@ request.interceptors.request.use(async (config) => {
     if (config.method === 'get' && !ignoreLoaders.includes(config.url || '')) {
         config.onDownloadProgress = (progressEvent) => {
             const loaderElement = document.querySelector('#loader') as HTMLDivElement
-            if (progressEvent.total) {
-                const percent = 100 * (progressEvent.loaded / progressEvent.total)
+            if (progressEvent.progress) {
+                const percent = 100 * progressEvent.progress
                 if (percent !== 100) loaderElement.style.width = `${percent}%`
                 else loaderElement.style.width = '0%'
             }

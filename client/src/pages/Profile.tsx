@@ -33,7 +33,7 @@ function Profile() {
     async function handleChangeAvatar(e: React.ChangeEvent<HTMLInputElement>) {
         setAvatarError('')
         const acceptFormats = ['image/png', 'image/jpg', 'image/jpeg']
-        const limitSize = 500 * 1024
+        const limitSize = 1024 * 1024
         if (!e.target.files) return
         if (e.target.files[0]?.size > limitSize) return setAvatarError(`File must be smaller than ${limitSize / 1024} KB`)
         if (!acceptFormats.includes(e.target.files[0]?.type)) return setAvatarError('Only accept png, jpg, jpeg')
@@ -44,7 +44,8 @@ function Profile() {
         })
         e.currentTarget.files && file.readAsDataURL(e.currentTarget.files[0])
     }
-    function handleUpdateAvatar() {
+    function handleUpdateAvatar(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        e.currentTarget.classList.add('disable')
         if (!inputFileRef.current?.files) return
         reqPostAvatar(inputFileRef.current?.files[0])
             .then(data => {
@@ -67,6 +68,12 @@ function Profile() {
         })
     }
     useEffect(() => {
+        setAvatar(user?.avatar)
+    }, [user?.avatar])
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+    useEffect(() => {
         const required = { username, firstName, lastName, birthDate, sex, address }
         for (const key in required) {
             if (required[key as keyof typeof required].trim() === '') {
@@ -85,19 +92,23 @@ function Profile() {
         <div className="profile-page">
             <div className="container">
                 <div className="left">
-                    <div className="avatar">
-                        <img src={avatar} alt=""
-                            ref={imageRef}
-                            onClick={() => { inputFileRef.current?.click() }} />
-                        <input ref={inputFileRef}
-                            onChange={handleChangeAvatar}
-                            type="file"
-                            accept="image/png, image/jpeg, image/jpg"
-                            id="file"
-                            className="inputfile" />
+                    <div className='data'>
+                        <div id="avatar-loader">
+                            <div className="avatar">
+                                <img src={avatar} alt=""
+                                    ref={imageRef}
+                                    onClick={() => { inputFileRef.current?.click() }} />
+                            </div>
+                            <input ref={inputFileRef}
+                                onChange={handleChangeAvatar}
+                                type="file"
+                                accept="image/png, image/jpeg, image/jpg"
+                                id="file"
+                                className="inputfile" />
+                        </div>
+                        {avatar !== user.avatar && <button onClick={handleUpdateAvatar} >Save</button>}
+                        {avatarError && <span>{avatarError}</span>}
                     </div>
-                    {avatar !== user.avatar && <button onClick={handleUpdateAvatar} >Save</button>}
-                    {avatarError && <span>{avatarError}</span>}
                 </div>
                 <div className="right">
                     <span className='title'>Basic Info</span>
