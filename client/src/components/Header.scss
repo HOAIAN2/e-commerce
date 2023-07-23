@@ -10,6 +10,13 @@
     background-color: white;
     z-index: 10;
 
+    & #loader {
+        position: absolute;
+        height: 5px;
+        background-color: colors.$color-low-white;
+        background-color: #92c72e;
+    }
+
     & .left {
         height: 100%;
         flex: 0.5;

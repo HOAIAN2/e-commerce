@@ -10,7 +10,7 @@ import Register from './pages/Register'
 import Search from './pages/Search'
 import ProductPage from './pages/ProductPage'
 import Profile from './pages/Profile'
-import useUserData from './context/hooks'
+import { useUserData } from './context/hooks'
 import { USER_ACTION } from './context/UserContext'
 import { reqGetUser } from './utils/user'
 

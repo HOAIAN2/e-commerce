@@ -5,4 +5,6 @@ function useUserData() {
     return useContext(UserContext)
 }
 
-export default useUserData
+export {
+    useUserData
+}

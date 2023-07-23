@@ -39,6 +39,16 @@ const request = axios.create({
 })
 
 request.interceptors.request.use(async (config) => {
+    if (config.method === 'get') {
+        config.onDownloadProgress = (progressEvent) => {
+            const loaderElement = document.querySelector('#loader') as HTMLDivElement
+            if (progressEvent.total) {
+                const percent = 100 * (progressEvent.loaded / progressEvent.total)
+                if (percent !== 100) loaderElement.style.width = `${percent}%`
+                else loaderElement.style.width = '0%'
+            }
+        }
+    }
     if (getToken().accessToken) {
         config.headers.Authorization = getTokenHeader()
     }

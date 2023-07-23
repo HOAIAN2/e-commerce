@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import useUserData from '../context/hooks'
+import { useUserData } from '../context/hooks'
 import { USER_ACTION } from '../context/UserContext'
 import { reqPostAvatar, reqPostInfo } from '../utils/user'
 import './Profile.scss'

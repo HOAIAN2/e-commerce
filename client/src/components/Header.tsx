@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faUser, faSignOut, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import icon from '/logo.png'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import useUserData from '../context/hooks'
+import { useUserData } from '../context/hooks'
 import { reqLogout } from '../utils/auth'
 // import { reqGetProductsAutoComplete, ProductList } from '../utils/product'
 import './Header.scss'
@@ -25,6 +25,7 @@ function Header() {
     }
     return (
         <div className='header'>
+            <div id='loader'></div>
             <div className='left'>
                 <Link className='title' to='/'>
                     <img src={icon} alt='' />

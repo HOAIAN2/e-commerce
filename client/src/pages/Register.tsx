@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { reqRegister } from '../utils/auth'
 import { reqGetUser } from '../utils/user'
-import useUserData from '../context/hooks'
+import { useUserData } from '../context/hooks'
 import { USER_ACTION } from '../context/UserContext'
 import './Register.scss'
 

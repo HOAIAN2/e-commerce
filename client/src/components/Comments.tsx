@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { ProductFull } from "../utils/product"
-import useUserData from "../context/hooks"
+import { useUserData } from "../context/hooks"
 import { baseIMG } from "../utils/api-config"
 import { useLocation, useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
