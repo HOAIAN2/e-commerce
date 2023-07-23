@@ -27,6 +27,12 @@ else {
     baseURL = `${window.location.origin}/api/`
     baseIMG = `${window.location.origin}/static/`
 }
+const ignoreLoaders = [
+    '/user/info',
+    '/comment',
+    '/product/suggest',
+    '/product/auto-complete'
+]
 function getToken() {
     const token = JSON.parse(localStorage.getItem('token') || '{}') as Token
     return token
@@ -39,7 +45,7 @@ const request = axios.create({
 })
 
 request.interceptors.request.use(async (config) => {
-    if (config.method === 'get') {
+    if (config.method === 'get' && !ignoreLoaders.includes(config.url || '')) {
         config.onDownloadProgress = (progressEvent) => {
             const loaderElement = document.querySelector('#loader') as HTMLDivElement
             if (progressEvent.total) {
