@@ -5,7 +5,7 @@
     height: 100%;
 
     & form {
-        width: 350px;
+        width: 540px;
         position: absolute;
         top: 60%;
         left: 50%;
@@ -22,11 +22,19 @@
             position: relative;
             text-align: center;
             height: 60px;
+            width: 95%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: 20px;
 
             .hide-button {
+                width: fit-content;
+                height: fit-content;
                 position: absolute;
-                top: 10px;
-                right: 30px;
+                top: 50%;
+                right: 10px;
+                transform: translate(0%, -50%);
                 cursor: pointer;
             }
 
@@ -35,8 +43,12 @@
                 font-weight: 600;
             }
 
+            label {
+                margin-right: 10px;
+            }
+
             input {
-                width: 300px;
+                width: 350px;
                 height: 40px;
                 padding-left: 15px;
                 padding-right: 30px;
@@ -44,6 +56,7 @@
                 border: none;
                 outline: none;
                 background-color: colors.$color-low-white;
+                // flex: 1;
             }
 
             button {
@@ -66,5 +79,22 @@
             }
         }
 
+        .confirm {
+            justify-content: center;
+        }
+
+        .select-sex {
+            justify-content: flex-start;
+
+            & input[type="radio"] {
+                width: 30px;
+                height: 30px;
+            }
+
+            & div {
+                margin-left: 100px;
+                width: 150px;
+            }
+        }
     }
 }

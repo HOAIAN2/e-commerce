@@ -2,7 +2,7 @@ import { FormEvent, useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
-import { reqLogin } from '../utils/auth'
+import { reqRegister } from '../utils/auth'
 import { reqGetUser } from '../utils/user'
 import useUserData from '../context/hooks'
 import { USER_ACTION } from '../context/UserContext'
@@ -11,7 +11,15 @@ import './Register.scss'
 function Register() {
     const [hidePass, setHidePass] = useState(true)
     const [username, setUsername] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [birthDate, setBirthDate] = useState('')
+    const [sex, setSex] = useState('male')
+    const [address, setAddress] = useState('')
+    const [email, setEmail] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
     const [error, setError] = useState('')
     const [checking, setChecking] = useState(true)
     const navigate = useNavigate()
@@ -23,7 +31,17 @@ function Register() {
         setError('')
         if (username.length < 8) return setError('username must have at least 8 characters')
         if (password.length < 8) return setError('password must have at least 8 characters')
-        reqLogin(username, password)
+        reqRegister({
+            username,
+            password,
+            firstName,
+            lastName,
+            birthDate,
+            sex: sex === 'male' ? 'm' : 'f',
+            address,
+            email,
+            phoneNumber
+        })
             .then(() => {
                 return reqGetUser()
             })
@@ -55,6 +73,7 @@ function Register() {
                     <span>Register</span>
                 </div>
                 <div>
+                    <label htmlFor="">Username:</label>
                     <input type="text" placeholder='Username'
                         value={username}
                         onChange={e => { setUsername(e.target.value) }}
@@ -62,48 +81,82 @@ function Register() {
                     />
                 </div>
                 <div>
+                    <label htmlFor="">First name:</label>
                     <input type="text" placeholder='First name'
-                        value={username}
-                        onChange={e => { setUsername(e.target.value) }}
+                        value={firstName}
+                        onChange={e => { setFirstName(e.target.value) }}
                         autoFocus
                     />
                 </div>
                 <div>
+                    <label htmlFor="">Last name:</label>
                     <input type="text" placeholder='Last name'
-                        value={username}
-                        onChange={e => { setUsername(e.target.value) }}
+                        value={lastName}
+                        onChange={e => { setLastName(e.target.value) }}
                         autoFocus
                     />
                 </div>
                 <div>
-                    <input type="text" placeholder='Sex'
-                        value={username}
-                        onChange={e => { setUsername(e.target.value) }}
+                    <label htmlFor="">Birth date:</label>
+                    <input type="date" placeholder='Birth date'
+                        value={birthDate}
+                        onChange={e => { setBirthDate(e.target.value) }}
                         autoFocus
                     />
                 </div>
+                <div className='select-sex'>
+                    <label htmlFor="">Sex:</label>
+                    <div>
+                        <input
+                            name='sex'
+                            type='radio'
+                            // value={sex}
+                            checked={sex === 'male'}
+                            value='male'
+                            onChange={e => {
+                                setSex(e.currentTarget.value)
+                            }}
+                        /> <label>male</label>
+                    </div>
+                    <div>
+                        <input
+                            name='sex'
+                            type='radio'
+                            // value={sex}
+                            checked={sex === 'female'}
+                            value='female'
+                            onChange={e => {
+                                setSex(e.currentTarget.value)
+                            }}
+                        /> <label>female</label>
+                    </div>
+                </div>
                 <div>
+                    <label htmlFor="">Address:</label>
                     <input type="text" placeholder='Address'
-                        value={username}
-                        onChange={e => { setUsername(e.target.value) }}
+                        value={address}
+                        onChange={e => { setAddress(e.target.value) }}
                         autoFocus
                     />
                 </div>
                 <div>
+                    <label htmlFor="">Email:</label>
                     <input type="text" placeholder='Email'
-                        value={username}
-                        onChange={e => { setUsername(e.target.value) }}
+                        value={email}
+                        onChange={e => { setEmail(e.target.value) }}
                         autoFocus
                     />
                 </div>
                 <div>
+                    <label htmlFor="">Phone number:</label>
                     <input type="text" placeholder='Phone number'
-                        value={username}
-                        onChange={e => { setUsername(e.target.value) }}
+                        value={phoneNumber}
+                        onChange={e => { setPhoneNumber(e.target.value) }}
                         autoFocus
                     />
                 </div>
                 <div>
+                    <label htmlFor="">Password:</label>
                     {hidePass === true ?
                         <input type="password" placeholder='Password'
                             value={password}
@@ -124,8 +177,30 @@ function Register() {
                         }
                     </div>
                 </div>
-                <div className='error'>{error}</div>
                 <div>
+                    <label htmlFor="">Confirm password:</label>
+                    {hidePass === true ?
+                        <input type="password" placeholder='Password'
+                            value={confirmPassword}
+                            onChange={e => { setConfirmPassword(e.target.value) }}
+                        /> :
+                        <input type="text" placeholder='Password'
+                            value={confirmPassword}
+                            onChange={e => { setConfirmPassword(e.target.value) }}
+                        />
+                    }
+                    <div className='hide-button'
+                        onClick={() => {
+                            setHidePass(!hidePass)
+                        }}
+                    >
+                        {hidePass === true ? <FontAwesomeIcon icon={faEyeSlash} /> :
+                            <FontAwesomeIcon icon={faEye} />
+                        }
+                    </div>
+                </div>
+                <div className='error'>{error}</div>
+                <div className='confirm'>
                     <button>Login</button>
                 </div>
             </form>
