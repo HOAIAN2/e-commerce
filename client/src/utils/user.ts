@@ -43,6 +43,7 @@ async function reqPostInfo(data: PostUserData) {
 }
 
 async function reqPostAvatar(file: File) {
+    const loaderElement = document.querySelector('#avatar-loader') as HTMLDivElement
     if (!getToken().accessToken) throw new Error('no token')
     const formData = new FormData()
     formData.append("file", file)
@@ -53,13 +54,12 @@ async function reqPostAvatar(file: File) {
             },
             onUploadProgress(progressEvent) {
                 if (progressEvent.progress) {
-                    const loaderElement = document.querySelector('#avatar-loader') as HTMLDivElement
                     const percent = 100 * progressEvent.progress
                     if (percent !== 100) loaderElement.style.background = `conic-gradient(#92c72e ${progressEvent.progress * 100}%, #f4f4f4 0)`
-                    else loaderElement.style.background = ''
                 }
             },
         })
+        loaderElement.style.background = ''
         return res.data as UserData
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
