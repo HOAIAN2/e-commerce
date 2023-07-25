@@ -31,7 +31,7 @@ async function reqRegister(data: RegisterData) {
         if (data[key as keyof typeof data] === '') delete data[key as keyof typeof data]
     }
     try {
-        const res = await request.post('/auth/login', data)
+        const res = await request.post('/auth/register', data)
         localStorage.setItem('token', JSON.stringify(res.data))
         // return res.data as Token
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

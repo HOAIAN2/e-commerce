@@ -1,0 +1,56 @@
+@use '../colors';
+
+.search-container {
+    z-index: 100;
+    position: absolute;
+    top: 80px;
+    width: 51%;
+    border-radius: 5px;
+    background-color: white;
+
+    & .product-item {
+        height: 75px;
+        display: flex;
+        padding: 5px;
+        border-radius: 5px;
+        transition: 0.2s;
+
+        &:hover {
+            background-color: colors.$color-background;
+        }
+
+        & img {
+            height: 100%;
+        }
+
+        & .item-content {
+            height: 100%;
+            margin-left: 5px;
+
+            & .product-name {
+                width: 98%;
+                color: black;
+                display: -webkit-box;
+                word-break: break-all;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            & .product-price {
+                & .price {
+                    color: colors.$color-red;
+                    font-weight: bold;
+                    // margin-left: 5px;
+                }
+
+                & .discount {
+                    margin-left: 20px;
+                    // text-decoration: line-through;
+                    color: colors.$color-shadow;
+                }
+            }
+        }
+    }
+}

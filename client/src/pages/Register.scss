@@ -28,6 +28,12 @@
             justify-content: space-between;
             padding-left: 20px;
 
+            &.error {
+                padding: 0;
+                width: fit-content;
+                margin: 0 auto;
+            }
+
             .hide-button {
                 width: fit-content;
                 height: fit-content;
@@ -45,6 +51,14 @@
 
             label {
                 margin-right: 10px;
+                position: relative;
+
+                &.require::before {
+                    content: "*";
+                    color: red;
+                    position: absolute;
+                    left: -10px;
+                }
             }
 
             input {

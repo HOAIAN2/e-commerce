@@ -31,6 +31,7 @@ function Register() {
         setError('')
         if (username.length < 8) return setError('username must have at least 8 characters')
         if (password.length < 8) return setError('password must have at least 8 characters')
+        if (password !== confirmPassword) return setError('Confirm password incorrect')
         reqRegister({
             username,
             password,
@@ -73,36 +74,40 @@ function Register() {
                     <span>Register</span>
                 </div>
                 <div>
-                    <label htmlFor="">Username:</label>
+                    <label className='require' htmlFor="">Username:</label>
                     <input type="text" placeholder='Username'
+                        required
                         value={username}
                         onChange={e => { setUsername(e.target.value) }}
                         autoFocus
                     />
                 </div>
                 <div>
-                    <label htmlFor="">First name:</label>
+                    <label className='require' htmlFor="">First name:</label>
                     <input type="text" placeholder='First name'
+                        required
                         value={firstName}
                         onChange={e => { setFirstName(e.target.value) }}
                     />
                 </div>
                 <div>
-                    <label htmlFor="">Last name:</label>
+                    <label className='require' htmlFor="">Last name:</label>
                     <input type="text" placeholder='Last name'
+                        required
                         value={lastName}
                         onChange={e => { setLastName(e.target.value) }}
                     />
                 </div>
                 <div>
-                    <label htmlFor="">Birth date:</label>
+                    <label className='require' htmlFor="">Birth date:</label>
                     <input type="date" placeholder='Birth date'
+                        required
                         value={birthDate}
                         onChange={e => { setBirthDate(e.target.value) }}
                     />
                 </div>
                 <div className='select-sex'>
-                    <label htmlFor="">Sex:</label>
+                    <label className='require' htmlFor="">Sex:</label>
                     <div>
                         <input
                             name='sex'
@@ -129,8 +134,9 @@ function Register() {
                     </div>
                 </div>
                 <div>
-                    <label htmlFor="">Address:</label>
+                    <label className='require' htmlFor="">Address:</label>
                     <input type="text" placeholder='Address'
+                        required
                         value={address}
                         onChange={e => { setAddress(e.target.value) }}
                     />
@@ -150,13 +156,15 @@ function Register() {
                     />
                 </div>
                 <div>
-                    <label htmlFor="">Password:</label>
+                    <label className='require' htmlFor="">Password:</label>
                     {hidePass === true ?
                         <input type="password" placeholder='Password'
+                            required
                             value={password}
                             onChange={e => { setPassword(e.target.value) }}
                         /> :
                         <input type="text" placeholder='Password'
+                            required
                             value={password}
                             onChange={e => { setPassword(e.target.value) }}
                         />
@@ -172,13 +180,15 @@ function Register() {
                     </div>
                 </div>
                 <div>
-                    <label htmlFor="">Confirm password:</label>
+                    <label className='require' htmlFor="">Confirm password:</label>
                     {hidePass === true ?
                         <input type="password" placeholder='Password'
+                            required
                             value={confirmPassword}
                             onChange={e => { setConfirmPassword(e.target.value) }}
                         /> :
                         <input type="text" placeholder='Password'
+                            required
                             value={confirmPassword}
                             onChange={e => { setConfirmPassword(e.target.value) }}
                         />
@@ -195,7 +205,7 @@ function Register() {
                 </div>
                 <div className='error'>{error}</div>
                 <div className='confirm'>
-                    <button>Login</button>
+                    <button>Register</button>
                 </div>
             </form>
         </div>
