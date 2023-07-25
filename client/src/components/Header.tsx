@@ -1,16 +1,18 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faUser, faSignOut, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import icon from '/logo.png'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useUserData } from '../context/hooks'
 import { reqLogout } from '../utils/auth'
-// import { reqGetProductsAutoComplete, ProductList } from '../utils/product'
+import { reqGetProductsAutoComplete, ProductList } from '../utils/product'
+import SearchListPopup from './SearchListPopup'
 import './Header.scss'
 
 function Header() {
     const [searchParam] = useSearchParams()
     const [query, setQuery] = useState(searchParam.get('name') || '')
+    const [autoCompleData, setAutoCompleteData] = useState<ProductList>([])
     // const [data, setData] = useState<ProductList>([])
     const dropListRef = useRef<HTMLDivElement>(null)
     const { user } = useUserData()
@@ -23,6 +25,13 @@ function Header() {
                 else window.location.reload()
             })
     }
+    useEffect(() => {
+        if (query.trim() === '') return setAutoCompleteData([])
+        reqGetProductsAutoComplete(query)
+            .then(data => {
+                setAutoCompleteData(data)
+            })
+    }, [query])
     return (
         <div className='header'>
             <div id='loader'></div>
@@ -57,6 +66,7 @@ function Header() {
                             <FontAwesomeIcon icon={faSearch} />
                         </div> : null}
                 </form>
+                <SearchListPopup data={autoCompleData} />
                 <div className='account'>
                     {user !== null ?
                         <div className='logon'
