@@ -3,7 +3,8 @@ import { baseIMG } from '../utils/api-config'
 import { ProductList } from '../utils/product'
 import './SearchListPopup.scss'
 
-function SearchListPopup({ data }: { data: ProductList }) {
+function SearchListPopup({ data, setData }:
+    { data: ProductList, setData: React.Dispatch<React.SetStateAction<ProductList>> }) {
     const renderData = data.map(product => {
         return {
             ...product,
@@ -20,7 +21,7 @@ function SearchListPopup({ data }: { data: ProductList }) {
         <div className="search-container">
             {renderData.map(product => {
                 return (
-                    <div key={product.productID} >
+                    <div key={product.productID} onClick={() => { setData([]) }} >
                         <Link className="product-item" to={`/product/${product.productID}`}>
                             <img src={product.images[0]} alt="" />
                             <div className="item-content">

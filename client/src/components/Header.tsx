@@ -8,12 +8,13 @@ import { reqLogout } from '../utils/auth'
 import { reqGetProductsAutoComplete, ProductList } from '../utils/product'
 import SearchListPopup from './SearchListPopup'
 import './Header.scss'
+import useDebounce from '../utils/hooks/useDebouce'
 
 function Header() {
     const [searchParam] = useSearchParams()
     const [query, setQuery] = useState(searchParam.get('name') || '')
     const [autoCompleData, setAutoCompleteData] = useState<ProductList>([])
-    // const [data, setData] = useState<ProductList>([])
+    const searchQuery = useDebounce(query, 200)
     const dropListRef = useRef<HTMLDivElement>(null)
     const { user } = useUserData()
     const navigate = useNavigate()
@@ -26,12 +27,23 @@ function Header() {
             })
     }
     useEffect(() => {
-        if (query.trim() === '') return setAutoCompleteData([])
-        reqGetProductsAutoComplete(query)
+        if (searchQuery.trim() === '') return setAutoCompleteData([])
+        reqGetProductsAutoComplete(searchQuery)
             .then(data => {
                 setAutoCompleteData(data)
             })
-    }, [query])
+    }, [searchQuery])
+    useEffect(() => {
+        function handleClick(e: MouseEvent) {
+            const element = e.target as HTMLElement
+            if (element.className === 'search-input') return
+            if (element.className !== 'search-container') setAutoCompleteData([])
+        }
+        document.addEventListener('click', handleClick)
+        return () => {
+            document.removeEventListener('click', handleClick)
+        }
+    }, [])
     return (
         <div className='header'>
             <div id='loader'></div>
@@ -51,10 +63,12 @@ function Header() {
                 <form className='search-bar'
                     onSubmit={(e) => {
                         e.preventDefault()
+                        setAutoCompleteData([])
                         navigate(`/search?name=${query}`)
                     }}
                 >
                     <input
+                        className='search-input'
                         type='text'
                         placeholder='search'
                         value={query}
@@ -66,7 +80,7 @@ function Header() {
                             <FontAwesomeIcon icon={faSearch} />
                         </div> : null}
                 </form>
-                <SearchListPopup data={autoCompleData} />
+                <SearchListPopup data={autoCompleData} setData={setAutoCompleteData} />
                 <div className='account'>
                     {user !== null ?
                         <div className='logon'
