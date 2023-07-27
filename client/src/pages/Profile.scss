@@ -125,7 +125,14 @@
 
                     & input[type="radio"] {
                         flex: 0;
-                        margin-left: 10px;
+
+                        &[value="male"] {
+                            margin-left: 30px;
+                        }
+
+                        &[value="female"] {
+                            margin-left: 100px;
+                        }
                     }
 
                     & label {

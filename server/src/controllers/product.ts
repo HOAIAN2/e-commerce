@@ -140,7 +140,8 @@ async function handleAutoComplete(request: FastifyRequest, reply: FastifyReply) 
     const result = productsCache.search({
         searchValue: query,
         searchFields: ['productName', 'category', 'supplierName'],
-        deepScan: true
+        deepScan: true,
+        nocase: true
     }) as Product[]
     return reply.send(result.slice(result.length - 5))
 }

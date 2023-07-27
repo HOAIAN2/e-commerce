@@ -12,6 +12,7 @@ function Home() {
             .then(data => {
                 setProducts(data)
             })
+        document.title = 'Online shoping'
     }, [])
     return (
         <div className='home-container'>

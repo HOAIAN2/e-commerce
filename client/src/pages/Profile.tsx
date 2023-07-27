@@ -72,6 +72,7 @@ function Profile() {
     }, [user?.avatar])
     useEffect(() => {
         window.scrollTo(0, 0)
+        document.title = 'Profile'
     }, [])
     useEffect(() => {
         const required = { username, firstName, lastName, birthDate, sex, address }
