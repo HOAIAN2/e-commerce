@@ -19,8 +19,9 @@ async function trimBody(request: FastifyRequest, reply: FastifyReply) {
         }
     })
 }
-async function getLanguage(request: FastifyRequest) {
-    return request.headers["accept-language"]
+function getLanguage(request: FastifyRequest) {
+    if (request.headers["accept-language"]) return request.headers["accept-language"]
+    return 'en'
 }
 
 export {

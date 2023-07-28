@@ -1,0 +1,32 @@
+{
+    "en": {
+        "dataTypeInvalid": "Invalid data type",
+        "usernameNotFound": "Cannot find username",
+        "passwordIncorrect": "Incorrect password",
+        "tokenInvalid": "Invalid token",
+        "samePassword": "Same password",
+        "passwordTooShort": "Password is too short",
+        "emailInvalid": "Email invalid",
+        "usernameExists": "Username exists",
+        "emailExists": "Email exists",
+        "phoneNumberExists": "Phone number exists",
+        "findNotFound": "No file Found",
+        "fileToLarge": "File too Large",
+        "formatNotAccept": "Format not accept"
+    },
+    "vi": {
+        "dataTypeInvalid": "Kiểu dữ liệu không hợp lệ",
+        "usernameNotFound": "Không tìm thấy tên người dùng",
+        "passwordIncorrect": "Sai mật khẩu",
+        "tokenInvalid": "Token không hợp lệ",
+        "samePassword": "Bạn đang sử dụng mật khẩu cũ",
+        "passwordTooShort": "Mật khẩu quá ngắn",
+        "emailInvalid": "Email không hợp lệ",
+        "usernameExists": "Tên đăng nhập đã tồn tại",
+        "emailExists": "Email đã tồn tại",
+        "phoneNumberExists": "Số điện thoại đã tồn tại",
+        "findNotFound": "không tìm thấy file",
+        "fileToLarge": "File quá lớn",
+        "formatNotAccept": "Định dạng file không hợp lệ"
+    }
+}

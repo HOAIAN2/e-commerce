@@ -17,8 +17,8 @@ import {
     verifyRefreshToken
 } from "../services/auth.js"
 import { NewUser } from "../database/user.js"
-import { errorMessage } from "../services/index.js"
-
+import { errorMessage, getLanguage } from "../services/index.js"
+import languages from './languages/authError.json' assert { type: "json" }
 interface UserLogin {
     username: string
     password: string
@@ -45,12 +45,13 @@ interface UserChangePassword {
     newPassword: string
 }
 async function handleLogin(request: FastifyRequest, reply: FastifyReply) {
+    const language = languages[getLanguage(request) as keyof typeof languages]
     const data = request.body as UserLogin
     try {
         const user = await dbSelectUserByUsername(data.username)
-        if (!user) return reply.status(404).send(errorMessage("cannot find user"))
+        if (!user) return reply.status(404).send(errorMessage(language.usernameNotFound))
         const isCorrect = await verifyPassword(data.password, user.hashedPassword)
-        if (!isCorrect) return reply.status(400).send(errorMessage("wrong password"))
+        if (!isCorrect) return reply.status(400).send(errorMessage(language.passwordIncorrect))
         const tokens = createTokens(user)
         const sessionID = generateSessionID(readTokenFromString(tokens.refreshToken))
         await dbInsertSession(sessionID)
@@ -60,10 +61,11 @@ async function handleLogin(request: FastifyRequest, reply: FastifyReply) {
     }
 }
 async function handleRegister(request: FastifyRequest, reply: FastifyReply) {
+    const language = languages[getLanguage(request) as keyof typeof languages]
     const data = request.body as UserRegister
     try {
         const hashedPassword = await hashPassword(data.password)
-        if (await dbSelectUserByUsername(data.username)) return reply.status(400).send(errorMessage("username exist"))
+        if (await dbSelectUserByUsername(data.username)) return reply.status(400).send(errorMessage(language.usernameExists))
         const newData: NewUser = {
             username: data.username,
             firstName: data.firstName,
@@ -77,7 +79,7 @@ async function handleRegister(request: FastifyRequest, reply: FastifyReply) {
         }
         await dbInsertUser(newData)
         const user = await dbSelectUserByUsername(data.username)
-        if (!user) return reply.status(404).send(errorMessage("cannot find user"))
+        if (!user) return reply.status(404).send(errorMessage(language.usernameNotFound))
         const tokens = createTokens(user)
         const sessionID = generateSessionID(readTokenFromString(tokens.refreshToken))
         await dbInsertSession(sessionID)
@@ -101,14 +103,15 @@ async function handleLogout(request: FastifyRequest, reply: FastifyReply) {
     }
 }
 async function handleChangePassword(request: FastifyRequest, reply: FastifyReply) {
+    const language = languages[getLanguage(request) as keyof typeof languages]
     const data = request.body as UserChangePassword
-    if (data.password === data.newPassword) return reply.status(400).send(errorMessage("You are using same password"))
+    if (data.password === data.newPassword) return reply.status(400).send(errorMessage(language.samePassword))
     const tokenData = readTokenFromRequest(request)
     if (!tokenData) return reply.status(401).send()
     try {
         const user = await dbSelectUserByUsername(tokenData.username)
         if (!user) return reply.status(404).send()
-        if (! await verifyPassword(data.password, user.hashedPassword)) return reply.status(400).send(errorMessage("wrong password"))
+        if (! await verifyPassword(data.password, user.hashedPassword)) return reply.status(400).send(errorMessage(language.passwordIncorrect))
         const hashedPassword = await hashPassword(data.newPassword)
         await dbUpdateUserPassword(user.username, hashedPassword)
         user.setPassword(hashedPassword)
@@ -119,6 +122,7 @@ async function handleChangePassword(request: FastifyRequest, reply: FastifyReply
     }
 }
 async function handleRefreshToken(request: FastifyRequest, reply: FastifyReply) {
+    const language = languages[getLanguage(request) as keyof typeof languages]
     const data = request.body as UserRefreshToken
     try {
         await verifyRefreshToken(data.refreshToken)
@@ -126,7 +130,7 @@ async function handleRefreshToken(request: FastifyRequest, reply: FastifyReply) 
         const sessionID = generateSessionID(refreshToken)
         await dbDeleteSession(sessionID)
         const user = await dbSelectUserByUsername(refreshToken.username)
-        if (!user) return reply.status(404).send(errorMessage("cannot find user"))
+        if (!user) return reply.status(404).send(errorMessage(language.usernameNotFound))
         const tokens = createTokens(user)
         const newSessionID = generateSessionID(readTokenFromString(tokens.refreshToken))
         await dbInsertSession(newSessionID)
