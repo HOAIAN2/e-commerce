@@ -8,8 +8,8 @@ import {
     dbMakePayment,
     dbSelectUserByUsername,
     dbSelectOrderFromUser,
-} from "../cache/index.js"
-import { generateErrorMessage } from "../services/index.js"
+} from "../database/index.js"
+import { errorMessage } from "../services/index.js"
 import { readTokenFromRequest } from "../services/auth.js"
 
 interface GetOrder {
@@ -45,7 +45,7 @@ async function handleGetOrderByID(request: FastifyRequest, reply: FastifyReply) 
         if (token.id !== order.userID) return reply.status(401).send()
         return reply.send(order)
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 async function handleGetOrders(request: FastifyRequest, reply: FastifyReply) {
@@ -58,7 +58,7 @@ async function handleGetOrders(request: FastifyRequest, reply: FastifyReply) {
         const orders = await dbSelectOrderFromUser(user.userID, from)
         return reply.send(orders)
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 async function handleCreateOrder(request: FastifyRequest, reply: FastifyReply) {
@@ -71,7 +71,7 @@ async function handleCreateOrder(request: FastifyRequest, reply: FastifyReply) {
         user?.setOrderCount()
         return reply.send(order)
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 async function handleAddProduct(request: FastifyRequest, reply: FastifyReply) {
@@ -86,7 +86,7 @@ async function handleAddProduct(request: FastifyRequest, reply: FastifyReply) {
         else order = await dbInsertOrderDetail(orderID, productID, quantity)
         return reply.send(order)
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 async function handleDeleteProduct(request: FastifyRequest, reply: FastifyReply) {
@@ -100,7 +100,7 @@ async function handleDeleteProduct(request: FastifyRequest, reply: FastifyReply)
         order = await dbDeleteOrderDetail(orderID, productIDs)
         return reply.send(order)
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 async function handleMakePayment(request: FastifyRequest, reply: FastifyReply) {
@@ -114,7 +114,7 @@ async function handleMakePayment(request: FastifyRequest, reply: FastifyReply) {
         order = await dbMakePayment(orderID, paidMethodID)
         return reply.send(order)
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 export {

@@ -6,7 +6,7 @@ import {
     dbInsertSession,
     dbDeleteAllUserSession,
     dbDeleteSession
-} from "../cache/index.js"
+} from "../database/index.js"
 import {
     createTokens,
     verifyPassword,
@@ -16,8 +16,8 @@ import {
     readTokenFromRequest,
     verifyRefreshToken
 } from "../services/auth.js"
-import { NewUser } from "../cache/user.js"
-import { generateErrorMessage } from "../services/index.js"
+import { NewUser } from "../database/user.js"
+import { errorMessage } from "../services/index.js"
 
 interface UserLogin {
     username: string
@@ -48,22 +48,22 @@ async function handleLogin(request: FastifyRequest, reply: FastifyReply) {
     const data = request.body as UserLogin
     try {
         const user = await dbSelectUserByUsername(data.username)
-        if (!user) return reply.status(404).send(generateErrorMessage("cannot find user"))
+        if (!user) return reply.status(404).send(errorMessage("cannot find user"))
         const isCorrect = await verifyPassword(data.password, user.hashedPassword)
-        if (!isCorrect) return reply.status(400).send(generateErrorMessage("wrong password"))
+        if (!isCorrect) return reply.status(400).send(errorMessage("wrong password"))
         const tokens = createTokens(user)
         const sessionID = generateSessionID(readTokenFromString(tokens.refreshToken))
         await dbInsertSession(sessionID)
         return reply.send(tokens)
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 async function handleRegister(request: FastifyRequest, reply: FastifyReply) {
     const data = request.body as UserRegister
     try {
         const hashedPassword = await hashPassword(data.password)
-        if (await dbSelectUserByUsername(data.username)) return reply.status(400).send(generateErrorMessage("username exist"))
+        if (await dbSelectUserByUsername(data.username)) return reply.status(400).send(errorMessage("username exist"))
         const newData: NewUser = {
             username: data.username,
             firstName: data.firstName,
@@ -77,13 +77,13 @@ async function handleRegister(request: FastifyRequest, reply: FastifyReply) {
         }
         await dbInsertUser(newData)
         const user = await dbSelectUserByUsername(data.username)
-        if (!user) return reply.status(404).send(generateErrorMessage("cannot find user"))
+        if (!user) return reply.status(404).send(errorMessage("cannot find user"))
         const tokens = createTokens(user)
         const sessionID = generateSessionID(readTokenFromString(tokens.refreshToken))
         await dbInsertSession(sessionID)
         return reply.send(tokens)
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 async function handleLogout(request: FastifyRequest, reply: FastifyReply) {
@@ -97,25 +97,25 @@ async function handleLogout(request: FastifyRequest, reply: FastifyReply) {
         await dbDeleteSession(sessionID)
         return reply.status(200).send()
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 async function handleChangePassword(request: FastifyRequest, reply: FastifyReply) {
     const data = request.body as UserChangePassword
-    if (data.password === data.newPassword) return reply.status(400).send(generateErrorMessage("You are using same password"))
+    if (data.password === data.newPassword) return reply.status(400).send(errorMessage("You are using same password"))
     const tokenData = readTokenFromRequest(request)
     if (!tokenData) return reply.status(401).send()
     try {
         const user = await dbSelectUserByUsername(tokenData.username)
         if (!user) return reply.status(404).send()
-        if (! await verifyPassword(data.password, user.hashedPassword)) return reply.status(400).send(generateErrorMessage("wrong password"))
+        if (! await verifyPassword(data.password, user.hashedPassword)) return reply.status(400).send(errorMessage("wrong password"))
         const hashedPassword = await hashPassword(data.newPassword)
         await dbUpdateUserPassword(user.username, hashedPassword)
         user.setPassword(hashedPassword)
         await dbDeleteAllUserSession(user.username)
         return reply.status(200).send()
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 async function handleRefreshToken(request: FastifyRequest, reply: FastifyReply) {
@@ -126,13 +126,13 @@ async function handleRefreshToken(request: FastifyRequest, reply: FastifyReply) 
         const sessionID = generateSessionID(refreshToken)
         await dbDeleteSession(sessionID)
         const user = await dbSelectUserByUsername(refreshToken.username)
-        if (!user) return reply.status(404).send(generateErrorMessage("cannot find user"))
+        if (!user) return reply.status(404).send(errorMessage("cannot find user"))
         const tokens = createTokens(user)
         const newSessionID = generateSessionID(readTokenFromString(tokens.refreshToken))
         await dbInsertSession(newSessionID)
         return reply.send(tokens)
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 export {

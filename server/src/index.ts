@@ -10,7 +10,7 @@ import {
     orderRoutes,
     commentRoutes
 } from "./routes/index.js"
-import { initializeData } from "./cache/index.js"
+import { initializeData } from "./database/index.js"
 import fastifySwagger, { SwaggerOptions } from "@fastify/swagger"
 import fastifySwaggerUi, { FastifySwaggerUiOptions } from "@fastify/swagger-ui"
 import fastifyMultipart, { FastifyMultipartOptions } from "@fastify/multipart"

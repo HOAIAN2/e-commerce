@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify"
-import { dbQueryComments, dbInsertComment } from "../cache/index.js"
-import { generateErrorMessage } from "../services/index.js"
+import { dbQueryComments, dbInsertComment } from "../database/index.js"
+import { errorMessage } from "../services/index.js"
 import { readTokenFromRequest } from "../services/auth.js"
 
 interface GetComments {
@@ -20,7 +20,7 @@ async function handleGetComments(request: FastifyRequest, reply: FastifyReply) {
         const comments = await dbQueryComments(id, startIndex, sortMode)
         return reply.send(comments)
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 async function handleInsertComment(request: FastifyRequest, reply: FastifyReply) {
@@ -28,12 +28,12 @@ async function handleInsertComment(request: FastifyRequest, reply: FastifyReply)
     if (!token) return reply.status(401).send()
     const { id } = request.params as AddCommentParam
     const { content } = request.body as AddCommentBody
-    if (!content) return reply.status(400).send(generateErrorMessage("Please send content"))
+    if (!content) return reply.status(400).send(errorMessage("Please send content"))
     try {
         const comment = await dbInsertComment(token.id, id, content)
         return reply.send(comment)
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 

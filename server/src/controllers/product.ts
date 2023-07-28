@@ -8,8 +8,8 @@ import {
     dbInsertRating,
     dbUpdateRating,
     dbCheckUserBought
-} from "../cache/index.js"
-import { generateErrorMessage } from "../services/index.js"
+} from "../database/index.js"
+import { errorMessage } from "../services/index.js"
 import { SearchSession, Product } from "../models/index.js"
 import { readTokenFromRequest, verifyAccessToken, TokenData } from "../services/auth.js"
 
@@ -51,7 +51,7 @@ async function handleGetProductByID(request: FastifyRequest, reply: FastifyReply
         }
         return reply.send(product)
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 async function handleAddProductRate(request: FastifyRequest, reply: FastifyReply) {
@@ -66,7 +66,7 @@ async function handleAddProductRate(request: FastifyRequest, reply: FastifyReply
         else dbInsertRating(token.id, product.productID, rating)
         return reply.send({ ...product, bought: true, userRate: rating })
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 async function handleSearchProduct(request: FastifyRequest, reply: FastifyReply) {
@@ -103,7 +103,7 @@ async function handleSearchProduct(request: FastifyRequest, reply: FastifyReply)
         }
     } catch (error) {
         console.log(error)
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 async function handleSuggestProductByID(request: FastifyRequest, reply: FastifyReply) {
@@ -128,7 +128,7 @@ async function handleSuggestProductByID(request: FastifyRequest, reply: FastifyR
         })
         return reply.send(finalResult)
     } catch (error) {
-        return reply.status(500).send(generateErrorMessage("Server error"))
+        return reply.status(500).send(errorMessage("Server error"))
     }
 }
 async function handleSuggest(request: FastifyRequest, reply: FastifyReply) {

@@ -5,7 +5,7 @@ const errorReply = {
         message: { type: 'string' }
     }
 }
-function generateErrorMessage(message: string) {
+function errorMessage(message: string) {
     return {
         message: message
     }
@@ -19,9 +19,13 @@ async function trimBody(request: FastifyRequest, reply: FastifyReply) {
         }
     })
 }
+async function getLanguage(request: FastifyRequest) {
+    return request.headers["accept-language"]
+}
 
 export {
     errorReply,
-    generateErrorMessage,
+    errorMessage,
+    getLanguage,
     trimBody
 }
