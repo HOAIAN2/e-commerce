@@ -23,6 +23,10 @@
 
 ![Docs](./database//e-commerce.png)
 
-## API docs
+## API docs and preview
 
-![Docs](./API_Swagger.png)
+![Docs](./screenshot/API_Swagger.png)
+![Docs](./screenshot/Screenshot%202023-07-28%20145959.png)
+![Docs](./screenshot/Screenshot%202023-07-28%20150014.png)
+![Docs](./screenshot/Screenshot%202023-07-28%20150031.png)
+![Docs](./screenshot/Screenshot%202023-07-28%20150044.png)

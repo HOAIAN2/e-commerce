@@ -85,8 +85,8 @@ async function handleRegister(request: FastifyRequest, reply: FastifyReply) {
         await dbInsertSession(sessionID)
         return reply.send(tokens)
     } catch (error: any) {
-        if (error.includes('UQ_email')) return reply.status(500).send(errorMessage(language.emailExists))
-        if (error.includes('UQ_phone_number')) return reply.status(500).send(errorMessage(language.emailExists))
+        if (error.includes('UQ_email')) return reply.status(400).send(errorMessage(language.emailExists))
+        if (error.includes('UQ_phone_number')) return reply.status(400).send(errorMessage(language.emailExists))
         return reply.status(500).send(errorMessage("Server error"))
     }
 }
