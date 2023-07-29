@@ -43,6 +43,8 @@ async function reqPostInfo(data: PostUserData) {
 }
 
 async function reqPostAvatar(file: File) {
+    const colorPrimary = getComputedStyle(document.documentElement).getPropertyValue('--color-primary')
+    const colorLowWhite = getComputedStyle(document.documentElement).getPropertyValue('--color-low-white')
     const loaderElement = document.querySelector('#avatar-loader') as HTMLDivElement
     if (!getToken().accessToken) throw new Error('no token')
     const formData = new FormData()
@@ -55,7 +57,7 @@ async function reqPostAvatar(file: File) {
             onUploadProgress(progressEvent) {
                 if (progressEvent.progress) {
                     const percent = 100 * progressEvent.progress
-                    if (percent !== 100) loaderElement.style.background = `conic-gradient(#92c72e ${progressEvent.progress * 100}%, #f4f4f4 0)`
+                    if (percent !== 100) loaderElement.style.background = `conic-gradient(${colorPrimary} ${progressEvent.progress * 100}%, ${colorLowWhite} 0)`
                 }
             },
         })

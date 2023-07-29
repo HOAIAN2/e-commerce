@@ -112,10 +112,6 @@ function Header() {
                         </div>
                     }
                 </div>
-                {/* <div className='cart'>
-                    <FontAwesomeIcon icon={faCartShopping} />
-                    <span>Cart</span>
-                </div> */}
             </div>
         </div>
     )

@@ -1,7 +1,6 @@
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
-import { reqGetToken } from './auth';
-
+import { reqGetToken } from './auth'
 interface Token {
     accessToken: string
     refreshToken: string
@@ -43,7 +42,6 @@ function getTokenHeader() {
 const request = axios.create({
     baseURL: baseURL
 })
-
 request.interceptors.request.use(async (config) => {
     if (config.method === 'get' && !ignoreLoaders.includes(config.url || '')) {
         config.onDownloadProgress = (progressEvent) => {
