@@ -1,0 +1,17 @@
+{
+    "register": "Register",
+    "username": "Username",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "birthDate": "Birth date",
+    "sex": "Sex",
+    "email": "Email",
+    "phoneNumber": "Phone number",
+    "address": "Address",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "save": "Save",
+    "male": "Male",
+    "female": "Female",
+    "pleaseType": "Please type"
+}

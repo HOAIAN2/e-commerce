@@ -4,11 +4,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { reqRegister } from '../utils/auth'
 import { reqGetUser } from '../utils/user'
-import { useUserData } from '../context/hooks'
+import { useUserData, useLanguage } from '../context/hooks'
 import { USER_ACTION } from '../context/UserContext'
 import './Register.scss'
 
+interface Language {
+    register: string
+    username: string
+    firstName: string
+    lastName: string
+    birthDate: string
+    sex: string
+    email: string
+    phoneNumber: string
+    address: string
+    password: string
+    confirmPassword: string
+    save: string
+    male: string
+    female: string
+    pleaseType: string
+}
+
 function Register() {
+    const { appLanguage } = useLanguage()
+    const [language, setLanguage] = useState<Language>()
     const [hidePass, setHidePass] = useState(true)
     const [username, setUsername] = useState('')
     const [firstName, setFirstName] = useState('')
@@ -66,104 +86,113 @@ function Register() {
             })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+    useEffect(() => {
+        import(`./languages/${appLanguage}Register.json`)
+            .then((data: Language) => {
+                setLanguage(data)
+                document.title = data.register
+            })
+    })
     if (checking) return null
     return (
         <div className='register-container'>
             <form onSubmit={handleRegister}>
-                <div>
-                    <span>Register</span>
+                <div className='title'>
+                    <span>{language?.register}</span>
                 </div>
-                <div>
-                    <label className='require' htmlFor="">Username:</label>
-                    <input type="text" placeholder='Username'
-                        required
-                        value={username}
-                        onChange={e => { setUsername(e.target.value) }}
-                        autoFocus
-                    />
+                <div className='info-container'>
+                    <label className='require' htmlFor="">{language?.username}:</label>
+                    <div>
+                        <input type="text" placeholder={language?.username}
+                            required
+                            value={username}
+                            onChange={e => { setUsername(e.target.value) }}
+                            autoFocus
+                        />
+                    </div>
                 </div>
-                <div>
-                    <label className='require' htmlFor="">First name:</label>
-                    <input type="text" placeholder='First name'
+                <div className='info-container'>
+                    <label className='require' htmlFor="">{language?.firstName}:</label>
+                    <input type="text" placeholder={language?.firstName}
                         required
                         value={firstName}
                         onChange={e => { setFirstName(e.target.value) }}
                     />
                 </div>
-                <div>
-                    <label className='require' htmlFor="">Last name:</label>
-                    <input type="text" placeholder='Last name'
+                <div className='info-container'>
+                    <label className='require' htmlFor="">{language?.lastName}:</label>
+                    <input type="text" placeholder={language?.lastName}
                         required
                         value={lastName}
                         onChange={e => { setLastName(e.target.value) }}
                     />
                 </div>
-                <div>
-                    <label className='require' htmlFor="">Birth date:</label>
-                    <input type="date" placeholder='Birth date'
+                <div className='info-container'>
+                    <label className='require' htmlFor="">{language?.birthDate}:</label>
+                    <input type="date"
                         required
                         value={birthDate}
                         onChange={e => { setBirthDate(e.target.value) }}
                     />
                 </div>
                 <div className='select-sex'>
-                    <label className='require' htmlFor="">Sex:</label>
-                    <div>
+                    <label className='require' htmlFor="">{language?.sex}:</label>
+                    <div className='option'>
                         <input
+                            id='register-male'
                             name='sex'
                             type='radio'
-                            // value={sex}
                             checked={sex === 'male'}
                             value='male'
                             onChange={e => {
                                 setSex(e.currentTarget.value)
                             }}
-                        /> <label>male</label>
+                        /> <label htmlFor='register-male'>{language?.male}</label>
                     </div>
-                    <div>
+                    <div className='option'>
                         <input
+                            id='register-female'
                             name='sex'
                             type='radio'
-                            // value={sex}
                             checked={sex === 'female'}
                             value='female'
                             onChange={e => {
                                 setSex(e.currentTarget.value)
                             }}
-                        /> <label>female</label>
+                        /> <label htmlFor='register-female'>{language?.female}</label>
                     </div>
                 </div>
-                <div>
-                    <label className='require' htmlFor="">Address:</label>
-                    <input type="text" placeholder='Address'
+                <div className='info-container'>
+                    <label className='require' htmlFor="">{language?.address}:</label>
+                    <input type="text" placeholder={language?.address}
                         required
                         value={address}
                         onChange={e => { setAddress(e.target.value) }}
                     />
                 </div>
-                <div>
-                    <label htmlFor="">Email:</label>
-                    <input type="text" placeholder='Email'
+                <div className='info-container'>
+                    <label htmlFor="">{language?.email}:</label>
+                    <input type="text" placeholder={language?.email}
                         value={email}
                         onChange={e => { setEmail(e.target.value) }}
                     />
                 </div>
-                <div>
-                    <label htmlFor="">Phone number:</label>
-                    <input type="text" placeholder='Phone number'
+                <div className='info-container'>
+                    <label htmlFor="">{language?.phoneNumber}:</label>
+                    <input type="text" placeholder={language?.phoneNumber}
                         value={phoneNumber}
                         onChange={e => { setPhoneNumber(e.target.value) }}
                     />
                 </div>
-                <div>
-                    <label className='require' htmlFor="">Password:</label>
+                <div className='info-container'>
+                    <label className='require' htmlFor="">{language?.password}:</label>
                     {hidePass === true ?
-                        <input type="password" placeholder='Password'
+                        <input type="password" placeholder={language?.password}
                             required
                             value={password}
                             onChange={e => { setPassword(e.target.value) }}
                         /> :
-                        <input type="text" placeholder='Password'
+                        <input type="text" placeholder={language?.password}
                             required
                             value={password}
                             onChange={e => { setPassword(e.target.value) }}
@@ -179,15 +208,15 @@ function Register() {
                         }
                     </div>
                 </div>
-                <div>
-                    <label className='require' htmlFor="">Confirm password:</label>
+                <div className='info-container'>
+                    <label className='require' htmlFor="">{language?.confirmPassword}:</label>
                     {hidePass === true ?
-                        <input type="password" placeholder='Password'
+                        <input type="password" placeholder={language?.confirmPassword}
                             required
                             value={confirmPassword}
                             onChange={e => { setConfirmPassword(e.target.value) }}
                         /> :
-                        <input type="text" placeholder='Password'
+                        <input type="text" placeholder={language?.confirmPassword}
                             required
                             value={confirmPassword}
                             onChange={e => { setConfirmPassword(e.target.value) }}
@@ -205,7 +234,7 @@ function Register() {
                 </div>
                 <div className='error'>{error}</div>
                 <div className='confirm'>
-                    <button>Register</button>
+                    <button>{language?.register}</button>
                 </div>
             </form>
         </div>

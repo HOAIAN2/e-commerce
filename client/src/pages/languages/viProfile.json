@@ -1,0 +1,15 @@
+{
+    "info": "Thông tin cá nhân",
+    "username": "Tên đăng nhập",
+    "firstName": "Tên",
+    "lastName": "Họ",
+    "birthDate": "Ngày sinh",
+    "sex": "Giới tính",
+    "email": "Email",
+    "phoneNumber": "Số điện thoại",
+    "address": "Địa chỉ",
+    "save": "Lưu",
+    "male": "Nam",
+    "female": "Nữ",
+    "pleaseType": "Vui lòng nhập"
+}

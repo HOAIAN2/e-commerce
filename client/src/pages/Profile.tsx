@@ -1,12 +1,30 @@
 import { useEffect, useRef, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { useUserData } from '../context/hooks'
+import { useUserData, useLanguage } from '../context/hooks'
 import { USER_ACTION } from '../context/UserContext'
 import { reqPostAvatar, reqPostInfo } from '../utils/user'
 import './Profile.scss'
 
+interface Language {
+    info: string
+    username: string
+    firstName: string
+    lastName: string
+    birthDate: string
+    sex: string
+    email: string
+    phoneNumber: string
+    address: string
+    save: string
+    male: string
+    female: string
+    pleaseType: string
+}
+
 function Profile() {
     const { user, dispatchUser } = useUserData()
+    const { appLanguage } = useLanguage()
+    const [language, setLanguage] = useState<Language>()
     const [avatar, setAvatar] = useState(user?.avatar)
     const [avatarError, setAvatarError] = useState('')
     const [infoError, setInfoError] = useState('')
@@ -78,7 +96,7 @@ function Profile() {
         const required = { username, firstName, lastName, birthDate, sex, address }
         for (const key in required) {
             if (required[key as keyof typeof required].trim() === '') {
-                setInfoError(`Please type ${key}`)
+                language && setInfoError(`${language.pleaseType} ${language[key as keyof typeof language]}`)
                 saveBtnRef.current?.classList.add('disable')
                 break
             }
@@ -87,7 +105,14 @@ function Profile() {
                 saveBtnRef.current?.classList.remove('disable')
             }
         }
-    }, [username, firstName, lastName, birthDate, sex, address, email, phoneNumber])
+    }, [username, firstName, lastName, birthDate, sex, address, email, phoneNumber, language])
+    useEffect(() => {
+        import(`./languages/${appLanguage}Profile.json`)
+            .then((data: Language) => {
+                setLanguage(data)
+                document.title = data.info
+            })
+    }, [appLanguage])
     if (!user) return <Navigate to='/login' replace state={{ from: location }} />
     return (
         <div className="profile-page">
@@ -107,15 +132,15 @@ function Profile() {
                                 id="file"
                                 className="inputfile" />
                         </div>
-                        {avatar !== user.avatar && <button onClick={handleUpdateAvatar} >Save</button>}
+                        {avatar !== user.avatar && <button onClick={handleUpdateAvatar} >{language?.save}</button>}
                         {avatarError && <span>{avatarError}</span>}
                     </div>
                 </div>
                 <div className="right">
-                    <span className='title'>Basic Info</span>
+                    <span className='title'>{language?.info}</span>
                     <div className="info-container">
                         <div className='info-data'>
-                            <span>Username: </span> <input
+                            <span>{language?.username}: </span> <input
                                 value={username}
                                 onInput={e => {
                                     setUsername(e.currentTarget.value)
@@ -124,7 +149,7 @@ function Profile() {
                             /> <br />
                         </div>
                         <div className='info-data'>
-                            <span>First name: </span> <input
+                            <span>{language?.firstName}: </span> <input
                                 value={firstName}
                                 onInput={e => {
                                     setFirstName(e.currentTarget.value)
@@ -133,7 +158,7 @@ function Profile() {
                             /> <br />
                         </div>
                         <div className='info-data'>
-                            <span>Last name: </span>  <input
+                            <span>{language?.lastName}: </span>  <input
                                 value={lastName}
                                 onInput={e => {
                                     setLastName(e.currentTarget.value)
@@ -141,11 +166,8 @@ function Profile() {
                                 }}
                             /> <br />
                         </div>
-                        {/* <div className='info-data'>
-                            <span>Birth date: </span> <span>{user.birthDate.toLocaleDateString('vi-vn')}</span> <br />
-                        </div> */}
                         <div className='info-data'>
-                            <span>Birth date: </span>  <input
+                            <span>{language?.birthDate}: </span>  <input
                                 type='date'
                                 value={birthDate}
                                 onInput={e => {
@@ -155,18 +177,19 @@ function Profile() {
                             /> <br />
                         </div>
                         <div className='info-data'>
-                            <span>Sex: </span>  <input
+                            <span>{language?.sex}: </span>  <input
+                                id='info-male'
                                 name='sex'
                                 type='radio'
-                                // value={sex}
                                 checked={sex === 'male'}
                                 value='male'
                                 onChange={e => {
                                     setSex(e.currentTarget.value)
                                     setEdited(true)
                                 }}
-                            /> <label>male</label>
+                            /> <label htmlFor='info-male'>{language?.male}</label>
                             <input
+                                id='info-female'
                                 name='sex'
                                 type='radio'
                                 checked={sex === 'female'}
@@ -175,7 +198,7 @@ function Profile() {
                                     setSex(e.currentTarget.value)
                                     setEdited(true)
                                 }}
-                            /> <label>female</label>
+                            /> <label htmlFor='info-female'>{language?.female}</label>
                             <br />
                         </div>
                         <div className='info-data'>
@@ -188,7 +211,7 @@ function Profile() {
                             /> <br />
                         </div>
                         <div className='info-data'>
-                            <span>Phone number: </span>  <input
+                            <span>{language?.phoneNumber}: </span>  <input
                                 value={phoneNumber}
                                 onInput={e => {
                                     setPhoneNumber(e.currentTarget.value)
@@ -197,7 +220,7 @@ function Profile() {
                             /> <br />
                         </div>
                         <div className='info-data'>
-                            <span>Address: </span> <input
+                            <span>{language?.address}: </span> <input
                                 value={address}
                                 onInput={e => {
                                     setAddress(e.currentTarget.value)
@@ -208,7 +231,7 @@ function Profile() {
                         {edited &&
                             <button
                                 ref={saveBtnRef}
-                                onClick={handlePostUserInfo}>Save</button>}
+                                onClick={handlePostUserInfo}>{language?.save}</button>}
                         {infoError && <span className='info-error'>{infoError}</span>}
                     </div>
                 </div>

@@ -5,7 +5,7 @@
     height: 100%;
 
     & form {
-        width: 540px;
+        width: 560px;
         position: absolute;
         top: 60%;
         left: 50%;
@@ -18,15 +18,28 @@
             color: red;
         }
 
-        & div {
-            position: relative;
+        & div.title {
+            height: 60px;
             text-align: center;
+
+            & span {
+                font-size: 32px;
+                font-weight: 600;
+            }
+        }
+
+        & .confirm {
+            height: 60px;
+            text-align: center;
+        }
+
+        & div.info-container {
+            position: relative;
             height: 60px;
             width: 95%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-left: 20px;
+            display: grid;
+            grid-template-columns: 150px calc(560px - 150px);
+            padding-left: 10px;
 
             &.error {
                 padding: 0;
@@ -38,9 +51,8 @@
                 width: fit-content;
                 height: fit-content;
                 position: absolute;
-                top: 50%;
+                top: 15%;
                 right: 10px;
-                transform: translate(0%, -50%);
                 cursor: pointer;
             }
 
@@ -51,6 +63,7 @@
 
             label {
                 margin-right: 10px;
+                margin-left: 10px;
                 position: relative;
 
                 &.require::before {
@@ -62,7 +75,9 @@
             }
 
             input {
-                width: 350px;
+                // width: 350px;
+                width: 90%;
+                display: inline;
                 height: 40px;
                 padding-left: 15px;
                 padding-right: 30px;
@@ -70,44 +85,59 @@
                 border: none;
                 outline: none;
                 background-color: colors.$color-low-white;
-                // flex: 1;
+                flex: 1;
             }
 
-            button {
-                width: 300px;
-                height: 40px;
-                padding-left: 15px;
-                padding-right: 30px;
-                border-radius: 20px;
-                border: 1px solid black;
-                outline: none;
-                background-color: white;
-                cursor: pointer;
-                transition: 0.2s;
+            // button {
+            //     width: 300px;
+            //     height: 40px;
+            //     padding-left: 15px;
+            //     padding-right: 30px;
+            //     border-radius: 20px;
+            //     border: 1px solid black;
+            //     outline: none;
+            //     background-color: white;
+            //     cursor: pointer;
+            //     transition: 0.2s;
 
-                &:hover {
-                    color: white;
-                    border: 1px solid black;
-                    background-color: black;
-                }
-            }
-        }
-
-        .confirm {
-            justify-content: center;
+            //     &:hover {
+            //         color: white;
+            //         border: 1px solid black;
+            //         background-color: black;
+            //     }
+            // }
         }
 
         .select-sex {
-            justify-content: flex-start;
+            height: 60px;
+            width: 95%;
+            display: grid;
+            grid-template-columns: 150px 200px 200px;
 
-            & input[type="radio"] {
-                width: 30px;
-                height: 30px;
+            & label.require {
+                width: 100px;
+                margin-left: 20px;
+
+                &::before {
+                    content: "*";
+                    color: red;
+                    position: absolute;
+                    left: 10px;
+                }
             }
 
-            & div {
-                margin-left: 100px;
-                width: 150px;
+            & div.option {
+                margin-left: 20px;
+
+                & input[type="radio"] {
+                    width: 20px;
+                    height: 20px;
+
+                }
+
+                label {
+                    font-size: 20px;
+                }
             }
         }
     }
