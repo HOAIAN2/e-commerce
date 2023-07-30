@@ -3,12 +3,18 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ProductList, reqGetProductsSearch } from '../utils/product'
 import NotFound from './NotFound'
 import Product from '../components/Product'
+import { getLanguage } from '../utils/languages'
 import './Search.scss'
+
+interface Language {
+    loadMore: string
+}
 
 function Search() {
     const [products, setProducts] = useState([] as ProductList)
     const [hasNext, setHasNext] = useState(true)
     const [notFound, setNotfound] = useState(false)
+    const [language, setLanguage] = useState<Language>()
     const navigate = useNavigate()
     const [searchParam] = useSearchParams()
     function handleLoadMore() {
@@ -32,6 +38,13 @@ function Search() {
             })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchParam.get('name')])
+    useEffect(() => {
+        const language = getLanguage()
+        import(`./languages/${language}Search.json`)
+            .then((data: Language) => {
+                setLanguage(data)
+            })
+    })
     if (notFound) return <NotFound />
     return (
         <div className='search-page'>
@@ -40,7 +53,7 @@ function Search() {
             </div>
             {hasNext && <button
                 onClick={handleLoadMore}
-                className='load-more'>Load more</button>}
+                className='load-more'>{language?.loadMore}</button>}
         </div>
     )
 }

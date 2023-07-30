@@ -9,11 +9,24 @@ import { reqGetProductsAutoComplete, ProductList } from '../utils/product'
 import SearchListPopup from './SearchListPopup'
 import './Header.scss'
 import useDebounce from '../utils/hooks/useDebouce'
+import { getLanguage } from '../utils/languages'
+
+interface Language {
+    categories: string
+    brands: string
+    login: string
+    register: string
+    search: string
+    info: string
+    order: string
+    logout: string
+}
 
 function Header() {
     const [searchParam] = useSearchParams()
     const [query, setQuery] = useState(searchParam.get('name') || '')
     const [autoCompleData, setAutoCompleteData] = useState<ProductList>([])
+    const [language, setLanguage] = useState<Language>()
     const searchQuery = useDebounce(query, 200)
     const dropListRef = useRef<HTMLDivElement>(null)
     const { user } = useUserData()
@@ -34,6 +47,11 @@ function Header() {
             })
     }, [searchQuery])
     useEffect(() => {
+        const language = getLanguage()
+        import(`./languages/${language}Header.json`)
+            .then((data: Language) => {
+                setLanguage(data)
+            })
         function handleClick(e: MouseEvent) {
             const element = e.target as HTMLElement
             if (element.className === 'search-input') return
@@ -53,10 +71,10 @@ function Header() {
                     <span>Online shoping</span>
                 </Link>
                 <div className='options'>
-                    <span>Categories</span>
+                    <span>{language?.categories}</span>
                 </div>
                 <div className='options'>
-                    <span>Brands</span>
+                    <span>{language?.brands}</span>
                 </div>
             </div>
             <div className='right'>
@@ -70,7 +88,7 @@ function Header() {
                     <input
                         className='search-input'
                         type='text'
-                        placeholder='search'
+                        placeholder={language?.search}
                         value={query}
                         onChange={e => {
                             setQuery(e.target.value)
@@ -80,7 +98,8 @@ function Header() {
                             <FontAwesomeIcon icon={faSearch} />
                         </div> : null}
                 </form>
-                <SearchListPopup data={autoCompleData} setData={setAutoCompleteData} />
+                {document.activeElement?.className === 'search-input' ?
+                    <SearchListPopup data={autoCompleData} setData={setAutoCompleteData} /> : null}
                 <div className='account'>
                     {user !== null ?
                         <div className='logon'
@@ -93,22 +112,22 @@ function Header() {
                             <div ref={dropListRef} className='account-drop-list hide'>
                                 <Link to='/profile'>
                                     <FontAwesomeIcon icon={faUser} />
-                                    <span>Info</span>
+                                    <span>{language?.info}</span>
                                 </Link>
                                 <div>
                                     <FontAwesomeIcon icon={faCartShopping} />
-                                    <span>Order</span>
+                                    <span>{language?.order}</span>
                                 </div>
                                 <div onClick={handleLogout}>
                                     <FontAwesomeIcon icon={faSignOut} />
-                                    <span>Logout</span>
+                                    <span>{language?.logout}</span>
                                 </div>
                             </div>
                         </div>
                         : <div className='not-logon'>
-                            <Link to='/login' state={{ from: location }}>Login</Link>
+                            <Link to='/login' state={{ from: location }}>{language?.login}</Link>
                             <span>|</span>
-                            <Link to='/register'>Register</Link>
+                            <Link to='/register'>{language?.register}</Link>
                         </div>
                     }
                 </div>

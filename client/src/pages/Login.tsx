@@ -6,7 +6,16 @@ import { reqLogin } from '../utils/auth'
 import { reqGetUser } from '../utils/user'
 import { useUserData } from '../context/hooks'
 import { USER_ACTION } from '../context/UserContext'
+import { getLanguage } from '../utils/languages'
 import './Login.scss'
+
+interface Language {
+    login: string
+    username: string
+    password: string
+    passwordTooShort: string
+    usernameTooShort: string
+}
 
 function Login() {
     const [hidePass, setHidePass] = useState(true)
@@ -14,6 +23,7 @@ function Login() {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [checking, setChecking] = useState(true)
+    const [language, setLanguage] = useState<Language>()
     const navigate = useNavigate()
     const location = useLocation()
     const prePage = location.state?.from
@@ -21,8 +31,8 @@ function Login() {
     function handleLogin(e: FormEvent) {
         e.preventDefault()
         setError('')
-        if (username.length < 8) return setError('username must have at least 8 characters')
-        if (password.length < 8) return setError('password must have at least 8 characters')
+        if (username.length < 8) return setError(language?.usernameTooShort || '')
+        if (password.length < 8) return setError(language?.passwordTooShort || '')
         reqLogin(username, password)
             .then(() => {
                 return reqGetUser()
@@ -36,6 +46,12 @@ function Login() {
             })
     }
     useEffect(() => {
+        const language = getLanguage()
+        import(`./languages/${language}Login.json`)
+            .then((data: Language) => {
+                setLanguage(data)
+                document.title = data.login
+            })
         reqGetUser()
             .then(data => {
                 dispatchUser({ type: USER_ACTION.SET, payload: data })
@@ -52,10 +68,10 @@ function Login() {
         <div className='login-container'>
             <form onSubmit={handleLogin}>
                 <div>
-                    <span>Login</span>
+                    <span>{language?.login}</span>
                 </div>
                 <div>
-                    <input type="text" placeholder='Username'
+                    <input type="text" placeholder={language?.username}
                         value={username}
                         onChange={e => { setUsername(e.target.value) }}
                         autoFocus
@@ -63,11 +79,11 @@ function Login() {
                 </div>
                 <div>
                     {hidePass === true ?
-                        <input type="password" placeholder='Password'
+                        <input type="password" placeholder={language?.password}
                             value={password}
                             onChange={e => { setPassword(e.target.value) }}
                         /> :
-                        <input type="text" placeholder='Password'
+                        <input type="text" placeholder={language?.password}
                             value={password}
                             onChange={e => { setPassword(e.target.value) }}
                         />
@@ -84,7 +100,7 @@ function Login() {
                 </div>
                 <div className='error'>{error}</div>
                 <div>
-                    <button>Login</button>
+                    <button>{language?.login}</button>
                 </div>
             </form>
         </div>

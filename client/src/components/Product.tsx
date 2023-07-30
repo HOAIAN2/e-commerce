@@ -1,10 +1,24 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ProductItem } from '../utils/product'
 import { baseIMG } from '../utils/api-config'
 import ProductRating from './ProductRating'
+import { getLanguage } from '../utils/languages'
 import './Product.scss'
 
+interface Language {
+    addToCart: string
+}
+
 function Product({ data }: { data: ProductItem }) {
+    const [language, setLanguage] = useState<Language>()
+    useEffect(() => {
+        const language = getLanguage()
+        import(`./languages/${language}Product.json`)
+            .then((data: Language) => {
+                setLanguage(data)
+            })
+    })
     return (
         <div className='product'>
             <Link className='img-container' to={'/product/' + data.productID}>
@@ -16,7 +30,7 @@ function Product({ data }: { data: ProductItem }) {
                     <ProductRating rate={data.rating} />({data.ratingCount})
                 </div>
                 <div className='price'>{data.price.toLocaleString('vi') + 'đ'}</div>
-                <button>Add to cart</button>
+                <button>{language?.addToCart}</button>
             </div>
         </div>
     )

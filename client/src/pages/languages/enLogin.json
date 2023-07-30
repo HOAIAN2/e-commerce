@@ -1,0 +1,7 @@
+{
+    "login": "Login",
+    "username": "Username",
+    "password": "Password",
+    "passwordTooShort": "Password must have atlest 8 characters",
+    "usernameTooShort": "Username must have atlest 8 characters"
+}

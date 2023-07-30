@@ -8,7 +8,16 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons"
 import CommentItem from "./CommentItem"
 import { Comment, reqGetComments, reqPostComment } from '../utils/comment'
 import { reqGetProduct } from "../utils/product"
+import { getLanguage } from "../utils/languages"
 import './Comments.scss'
+
+interface Language {
+    comments: string
+    latest: string
+    oldest: string
+    write: string
+    loaderMore: string
+}
 
 function Comments({ product, setProduct }: { product: ProductFull, setProduct: React.Dispatch<React.SetStateAction<ProductFull | null>> }) {
     const { user } = useUserData()
@@ -16,6 +25,7 @@ function Comments({ product, setProduct }: { product: ProductFull, setProduct: R
     const [comment, setComment] = useState('')
     const [comments, setComments] = useState<Comment[]>([])
     const commentRef = useRef<HTMLTextAreaElement>(null)
+    const [language, setLanguage] = useState<Language>()
     const navigate = useNavigate()
     const location = useLocation()
     function handleSendComment() {
@@ -50,23 +60,30 @@ function Comments({ product, setProduct }: { product: ProductFull, setProduct: R
     }, [product.productID])
     useEffect(() => {
         let orderMode = 'DESC'
-        if (commentOrder === 'Oldest') orderMode = 'ASC'
+        if (commentOrder === language?.oldest) orderMode = 'ASC'
         reqGetComments(product.productID, orderMode)
             .then(data => {
                 setComments(data)
             })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [commentOrder])
+    useEffect(() => {
+        const language = getLanguage()
+        import(`./languages/${language}Comments.json`)
+            .then((data: Language) => {
+                setLanguage(data)
+            })
+    })
     return (
         <div className='comments' >
             <div className='comment-count'>
-                <span>Comment ({product.commentCount})</span>
+                <span>{language?.comments} ({product.commentCount})</span>
                 <select value={commentOrder}
                     onChange={e => {
                         setCommentOrder(e.target.value)
                     }}>
-                    <option>Latest</option>
-                    <option>Oldest</option>
+                    <option>{language?.latest}</option>
+                    <option>{language?.oldest}</option>
                 </select>
             </div>
             <div className='comment-writter'>
@@ -78,7 +95,7 @@ function Comments({ product, setProduct }: { product: ProductFull, setProduct: R
                 <div className='right'>
                     <textarea
                         ref={commentRef}
-                        placeholder='Write comment'
+                        placeholder={language?.write}
                         value={comment}
                         onFocus={() => {
                             if (!user) {
@@ -96,7 +113,7 @@ function Comments({ product, setProduct }: { product: ProductFull, setProduct: R
                 {comments.map(comment => {
                     return <CommentItem key={comment.commentID} data={comment} />
                 })}
-                {comments.length !== product.commentCount ? <button onClick={handleLoadComments}>Load more</button> : null}
+                {comments.length !== product.commentCount ? <button onClick={handleLoadComments}>{language?.loaderMore}</button> : null}
             </div>
         </ div>
     )

@@ -1,0 +1,7 @@
+{
+    "login": "Đăng nhập",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "passwordTooShort": "Mật khẩu phải có ít nhất 8 ký tự",
+    "usernameTooShort": "Tên đăng nhập phải có ít nhất 8 ký tự"
+}
