@@ -13,7 +13,7 @@ import { __dirname } from "../config.js"
 import languages from './languages/authError.json' assert { type: "json" }
 
 
-interface UserChangInfo {
+interface UserChangeInfo {
     username: string
     firstName: string
     lastName: string
@@ -36,7 +36,7 @@ async function handleGetInfo(request: FastifyRequest, reply: FastifyReply) {
 }
 async function handleEditInfo(request: FastifyRequest, reply: FastifyReply) {
     const language = languages[getLanguage(request) as keyof typeof languages]
-    const data = request.body as UserChangInfo
+    const data = request.body as UserChangeInfo
     const tokenData = readTokenFromRequest(request)
     if (!tokenData) return reply.status(401).send()
     try {
