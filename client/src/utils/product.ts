@@ -37,6 +37,8 @@ export interface ProductFull {
     rating: number
     ratingCount: number
     commentCount: number
+    bought?: boolean
+    userRate?: number
 }
 
 async function reqGetProductsHome() {

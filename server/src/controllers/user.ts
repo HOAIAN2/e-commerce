@@ -57,9 +57,9 @@ async function handleEditInfo(request: FastifyRequest, reply: FastifyReply) {
         }
         return reply.send(user)
     } catch (error: any) {
-        if (error.includes('UQ_username')) return reply.status(400).send(errorMessage(language.emailExists))
+        if (error.includes('UQ_username')) return reply.status(400).send(errorMessage(language.usernameExists))
         if (error.includes('UQ_email')) return reply.status(400).send(errorMessage(language.emailExists))
-        if (error.includes('UQ_phone_number')) return reply.status(400).send(errorMessage(language.emailExists))
+        if (error.includes('UQ_phone_number')) return reply.status(400).send(errorMessage(language.phoneNumberExists))
         return reply.status(500).send(errorMessage("Server error"))
     }
 }
