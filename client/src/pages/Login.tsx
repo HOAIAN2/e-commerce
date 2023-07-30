@@ -4,9 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { reqLogin } from '../utils/auth'
 import { reqGetUser } from '../utils/user'
-import { useUserData } from '../context/hooks'
+import { useUserData, useLanguage } from '../context/hooks'
 import { USER_ACTION } from '../context/UserContext'
-import { getLanguage } from '../utils/languages'
 import './Login.scss'
 
 interface Language {
@@ -28,6 +27,7 @@ function Login() {
     const location = useLocation()
     const prePage = location.state?.from
     const { dispatchUser } = useUserData()
+    const { appLanguage } = useLanguage()
     function handleLogin(e: FormEvent) {
         e.preventDefault()
         setError('')
@@ -46,12 +46,6 @@ function Login() {
             })
     }
     useEffect(() => {
-        const language = getLanguage()
-        import(`./languages/${language}Login.json`)
-            .then((data: Language) => {
-                setLanguage(data)
-                document.title = data.login
-            })
         reqGetUser()
             .then(data => {
                 dispatchUser({ type: USER_ACTION.SET, payload: data })
@@ -63,6 +57,13 @@ function Login() {
             })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+    useEffect(() => {
+        import(`./languages/${appLanguage}Login.json`)
+            .then((data: Language) => {
+                setLanguage(data)
+                document.title = data.login
+            })
+    }, [appLanguage])
     if (checking) return null
     return (
         <div className='login-container'>

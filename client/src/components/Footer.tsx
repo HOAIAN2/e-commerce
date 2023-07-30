@@ -1,6 +1,8 @@
+import { useLanguage } from '../context/hooks'
 import './Footer.scss'
 
 function Footer() {
+    const { appLanguage, setAppLanguage } = useLanguage()
     return (
         <div className='footer'>
             <div>
@@ -16,6 +18,14 @@ function Footer() {
                 <a>About</a>
                 <a>Terms</a>
             </div>
+            <select value={appLanguage}
+                onChange={(e) => {
+                    setAppLanguage(e.currentTarget.value)
+                    localStorage.setItem('lang', e.currentTarget.value)
+                }}>
+                <option value="en">English</option>
+                <option value="vi">Tiếng Việt</option>
+            </select>
         </div>
     )
 }

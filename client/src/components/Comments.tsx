@@ -1,14 +1,13 @@
-import { useEffect, useRef, useState } from "react"
-import { ProductFull } from "../utils/product"
-import { useUserData } from "../context/hooks"
-import { baseIMG } from "../utils/api-config"
-import { useLocation, useNavigate } from "react-router-dom"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons"
-import CommentItem from "./CommentItem"
+import { useEffect, useRef, useState } from 'react'
+import { ProductFull } from '../utils/product'
+import { useUserData, useLanguage } from '../context/hooks'
+import { baseIMG } from '../utils/api-config'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import CommentItem from './CommentItem'
 import { Comment, reqGetComments, reqPostComment } from '../utils/comment'
-import { reqGetProduct } from "../utils/product"
-import { getLanguage } from "../utils/languages"
+import { reqGetProduct } from '../utils/product'
 import './Comments.scss'
 
 interface Language {
@@ -21,6 +20,7 @@ interface Language {
 
 function Comments({ product, setProduct }: { product: ProductFull, setProduct: React.Dispatch<React.SetStateAction<ProductFull | null>> }) {
     const { user } = useUserData()
+    const { appLanguage } = useLanguage()
     const [commentOrder, setCommentOrder] = useState('Latest')
     const [comment, setComment] = useState('')
     const [comments, setComments] = useState<Comment[]>([])
@@ -68,12 +68,11 @@ function Comments({ product, setProduct }: { product: ProductFull, setProduct: R
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [commentOrder])
     useEffect(() => {
-        const language = getLanguage()
-        import(`./languages/${language}Comments.json`)
+        import(`./languages/${appLanguage}Comments.json`)
             .then((data: Language) => {
                 setLanguage(data)
             })
-    })
+    }, [appLanguage])
     return (
         <div className='comments' >
             <div className='comment-count'>

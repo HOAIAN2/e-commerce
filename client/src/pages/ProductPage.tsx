@@ -6,13 +6,23 @@ import ProductRating from '../components/ProductRating'
 import Product from '../components/Product'
 import Comments from '../components/Comments'
 import { baseIMG } from '../utils/api-config'
+import { useLanguage } from '../context/hooks'
 import './ProductPage.scss'
+
+interface Language {
+    addToCart: string
+    only: string
+    items: string
+    sold: string
+}
 
 function ProductPage() {
     const [data, setData] = useState<ProductFull | null>(null)
     const [suggestProducts, setSuggestProducts] = useState<ProductList | null>(null)
     const [notFound, setNotFound] = useState(false)
     const [quantity, setQuantity] = useState(1)
+    const { appLanguage } = useLanguage()
+    const [language, setLanguage] = useState<Language>()
     const { id } = useParams()
     function handleUpdateQuantity(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         if (e.currentTarget.textContent === '+') {
@@ -40,6 +50,12 @@ function ProductPage() {
                 setNotFound(true)
             })
     }, [id])
+    useEffect(() => {
+        import(`./languages/${appLanguage}ProductPage.json`)
+            .then((data: Language) => {
+                setLanguage(data)
+            })
+    }, [appLanguage])
     if (!data) return null
     if (notFound) return <NotFound />
     return (
@@ -71,10 +87,10 @@ function ProductPage() {
                                     paddingRight: '15px'
                                 }
                             }
-                        >{data?.soldQuantity + ' sold'}</span>
-                        <span>Only <span
+                        >{data?.soldQuantity + ' ' + language?.sold}</span>
+                        <span>{language?.only} <span
                             className='items-left'
-                        >{data?.quantity} items</span>left</span>
+                        >{data?.quantity} {language?.items}</span></span>
                     </div>
                     <div className='price'>{data?.price.toLocaleString('en-us') + ' VND'}</div>
                     {data?.discount ? <span>{'-' + data?.discount * 100 + '%'}</span> : null}
@@ -85,7 +101,7 @@ function ProductPage() {
                         </div>
                         <button onClick={handleUpdateQuantity}>+</button>
                     </div>
-                    <button className='add-to-cart'>Add to cart</button>
+                    <button className='add-to-cart'>{language?.addToCart}</button>
                 </div>
             </div>
             <div className='suggest-products'>

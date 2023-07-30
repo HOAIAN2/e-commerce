@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ProductList, reqGetProductsSearch } from '../utils/product'
 import NotFound from './NotFound'
 import Product from '../components/Product'
-import { getLanguage } from '../utils/languages'
+import { useLanguage } from '../context/hooks'
 import './Search.scss'
 
 interface Language {
@@ -17,6 +17,7 @@ function Search() {
     const [language, setLanguage] = useState<Language>()
     const navigate = useNavigate()
     const [searchParam] = useSearchParams()
+    const { appLanguage } = useLanguage()
     function handleLoadMore() {
         reqGetProductsSearch(searchParam.get('name') as string, products.at(-1)?.productID)
             .then(data => {
@@ -39,8 +40,7 @@ function Search() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchParam.get('name')])
     useEffect(() => {
-        const language = getLanguage()
-        import(`./languages/${language}Search.json`)
+        import(`./languages/${appLanguage}Search.json`)
             .then((data: Language) => {
                 setLanguage(data)
             })

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { ProductItem } from '../utils/product'
 import { baseIMG } from '../utils/api-config'
 import ProductRating from './ProductRating'
-import { getLanguage } from '../utils/languages'
+import { useLanguage } from '../context/hooks'
 import './Product.scss'
 
 interface Language {
@@ -11,10 +11,10 @@ interface Language {
 }
 
 function Product({ data }: { data: ProductItem }) {
+    const { appLanguage } = useLanguage()
     const [language, setLanguage] = useState<Language>()
     useEffect(() => {
-        const language = getLanguage()
-        import(`./languages/${language}Product.json`)
+        import(`./languages/${appLanguage}Product.json`)
             .then((data: Language) => {
                 setLanguage(data)
             })

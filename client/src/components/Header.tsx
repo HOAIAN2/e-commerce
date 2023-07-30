@@ -3,13 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faUser, faSignOut, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import icon from '/logo.png'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import { useUserData } from '../context/hooks'
+import { useUserData, useLanguage } from '../context/hooks'
 import { reqLogout } from '../utils/auth'
 import { reqGetProductsAutoComplete, ProductList } from '../utils/product'
 import SearchListPopup from './SearchListPopup'
 import './Header.scss'
 import useDebounce from '../utils/hooks/useDebouce'
-import { getLanguage } from '../utils/languages'
 
 interface Language {
     categories: string
@@ -30,6 +29,7 @@ function Header() {
     const searchQuery = useDebounce(query, 200)
     const dropListRef = useRef<HTMLDivElement>(null)
     const { user } = useUserData()
+    const { appLanguage } = useLanguage()
     const navigate = useNavigate()
     const location = useLocation()
     function handleLogout() {
@@ -47,11 +47,6 @@ function Header() {
             })
     }, [searchQuery])
     useEffect(() => {
-        const language = getLanguage()
-        import(`./languages/${language}Header.json`)
-            .then((data: Language) => {
-                setLanguage(data)
-            })
         function handleClick(e: MouseEvent) {
             const element = e.target as HTMLElement
             if (element.className === 'search-input') return
@@ -62,6 +57,12 @@ function Header() {
             document.removeEventListener('click', handleClick)
         }
     }, [])
+    useEffect(() => {
+        import(`./languages/${appLanguage}Header.json`)
+            .then((data: Language) => {
+                setLanguage(data)
+            })
+    }, [appLanguage])
     return (
         <div className='header'>
             <div id='loader'></div>
