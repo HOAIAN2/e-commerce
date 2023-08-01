@@ -28,6 +28,7 @@ function Header() {
     const [language, setLanguage] = useState<Language>()
     const searchQuery = useDebounce(query, 200)
     const dropListRef = useRef<HTMLDivElement>(null)
+    const searchRef = useRef<HTMLInputElement>(null)
     const { user } = useUserData()
     const { appLanguage } = useLanguage()
     const navigate = useNavigate()
@@ -87,6 +88,7 @@ function Header() {
                     }}
                 >
                     <input
+                        ref={seachRef}
                         className='search-input'
                         type='text'
                         placeholder={language?.search}
@@ -99,7 +101,7 @@ function Header() {
                             <FontAwesomeIcon icon={faSearch} />
                         </div> : null}
                 </form>
-                {document.activeElement?.className === 'search-input' ?
+                {searchRef.current && searchRef.current.hasFocus() === true ?
                     <SearchListPopup data={autoCompleData} setData={setAutoCompleteData} /> : null}
                 <div className='account'>
                     {user !== null ?
