@@ -49,18 +49,26 @@ function Profile() {
     const saveBtnRef = useRef<HTMLButtonElement>(null)
     const location = useLocation()
     async function handleChangeAvatar(e: React.ChangeEvent<HTMLInputElement>) {
+        const validSignatures = [
+            // png
+            "iVBORw0KGgo",
+            // jpeg, jpg
+            "/9j/"
+        ]
         setAvatarError('')
         const acceptFormats = ['image/png', 'image/jpg', 'image/jpeg']
         const limitSize = 1024 * 1024
-        if (!e.target.files) return
-        if (e.target.files[0]?.size > limitSize) return setAvatarError(`File must be smaller than ${limitSize / 1024} KB`)
-        if (!acceptFormats.includes(e.target.files[0]?.type)) return setAvatarError('Only accept png, jpg, jpeg')
-        const file = new FileReader()
-        file.addEventListener("load", () => {
-            setAvatar(file.result as string)
+        if (!e.currentTarget.files) return
+        if (e.currentTarget.files[0]?.size > limitSize) return setAvatarError(`File must be smaller than ${limitSize / 1024} KB`)
+        if (!acceptFormats.includes(e.currentTarget.files[0]?.type)) return setAvatarError('Only accept png, jpg, jpeg')
+        const fileReader = new FileReader()
+        fileReader.addEventListener("load", () => {
+            const data = fileReader.result as string
+            if (!validSignatures.some(value => data.split(',')[1].startsWith(value))) return setAvatarError('Only accept png, jpg, jpeg')
+            setAvatar(data)
             setAvatarError('')
         })
-        e.currentTarget.files && file.readAsDataURL(e.currentTarget.files[0])
+        fileReader.readAsDataURL(e.currentTarget.files[0])
     }
     function handleUpdateAvatar(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.currentTarget.classList.add('disable')

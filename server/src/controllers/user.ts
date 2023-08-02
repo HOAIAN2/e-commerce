@@ -67,6 +67,7 @@ async function handleAddAvatar(request: FastifyRequest, reply: FastifyReply) {
     const language = languages[getLanguage(request) as keyof typeof languages]
     const acceptFormats = ['image/png', 'image/jpg', 'image/jpeg']
     // Files signature: https://en.wikipedia.org/wiki/List_of_file_signatures
+    // hex buffer
     const validSignatures = [
         // png
         '89504e470d0a1a0a',
