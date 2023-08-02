@@ -66,27 +66,37 @@ async function handleEditInfo(request: FastifyRequest, reply: FastifyReply) {
 async function handleAddAvatar(request: FastifyRequest, reply: FastifyReply) {
     const language = languages[getLanguage(request) as keyof typeof languages]
     const acceptFormats = ['image/png', 'image/jpg', 'image/jpeg']
+    // Files signature: https://en.wikipedia.org/wiki/List_of_file_signatures
+    const validSignatures = [
+        // png
+        '89504e470d0a1a0a',
+        // jpeg and jpg
+        'ffd8ffe8',
+        'ffd8ffe3',
+        'ffd8ffe2',
+        'ffd8ffe1',
+        'ffd8ffe0'
+    ]
     const tokenData = readTokenFromRequest(request)
     if (!tokenData) return reply.status(401).send()
     try {
         const file = await request.file()
         if (!file) return reply.status(400).send(errorMessage(language.fileNotFound))
         if (!acceptFormats.includes(file.mimetype)) return reply.status(400).send(errorMessage(language.formatNotAccept))
+        const buffer = await file.toBuffer()
+        const bufferString = buffer.toString('hex')
+        if (!validSignatures.some(value => bufferString.startsWith(value))) return reply.status(400).send(errorMessage(language.formatNotAccept))
         const user = await dbSelectUserByUsername(tokenData.username)
         if (!user) return reply.status(404).send(errorMessage(language.usernameNotFound))
-        const buffer = await file.toBuffer()
         let fileName = `${Date.now()}-${user.username}.${file.mimetype.split('/')[1]}`
         let newPath = path.join(__dirname, '../static/avatars', fileName)
-        console.log(fileName)
-        console.log(user.avatar)
         await fs.writeFile(newPath, buffer)
         if (user.avatar !== 'user.png') await fs.unlink(path.join(__dirname, '../static/avatars', user.avatar))
         await dbUpdateUserAvatar(fileName, user.username)
         user.setAvatar(fileName)
         return reply.send(user)
     } catch (error: any) {
-        console.log(error)
-        if (error.message.includes('file too large')) return reply.status(500).send(errorMessage(language.fileTooLarge))
+        if (error.message.includes('file too large')) return reply.status(400).send(errorMessage(language.fileTooLarge))
         return reply.status(500).send(errorMessage("Server error"))
     }
 }
