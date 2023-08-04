@@ -1,0 +1,9 @@
+{
+    "changePass": "Change password",
+    "password": "Password",
+    "newPassword": "New password",
+    "samePassword": "Same password",
+    "confirmPassword": "Confirm password",
+    "passwordTooShort": "Password must have atlest 8 characters",
+    "confirmIncorrect": "Confirm password incorrect"
+}

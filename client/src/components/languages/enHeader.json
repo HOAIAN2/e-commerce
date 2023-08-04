@@ -5,6 +5,7 @@
     "register": "Register",
     "search": "Search",
     "info": "Info",
+    "changePass": "Change password",
     "order": "Order",
     "logout": "Logout"
 }

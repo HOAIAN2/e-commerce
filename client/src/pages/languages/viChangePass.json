@@ -1,0 +1,9 @@
+{
+    "changePass": "Đổi mật khẩu",
+    "password": "Mật khẩu",
+    "newPassword": "Mật khẩu mới",
+    "samePassword": "Mật khẩu trùng lặp",
+    "confirmPassword": "Nhập lại mật khẩu",
+    "passwordTooShort": "Mật khẩu phải có ít nhất 8 ký tự",
+    "confirmIncorrect": "Nhập lại mật khẩu không chính xác"
+}

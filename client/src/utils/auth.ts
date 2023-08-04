@@ -41,6 +41,20 @@ async function reqRegister(data: RegisterData) {
         throw new Error(message)
     }
 }
+async function reqChangePass(password: string, newPassword: string) {
+    try {
+        await request.post('/auth/password', {
+            password,
+            newPassword
+        })
+        // return res.data as Token
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+        if (!error.response) throw new Error(error.message)
+        const message = error.response.data.message
+        throw new Error(message)
+    }
+}
 async function reqLogout() {
     try {
         await request.post('/auth/logout', {
@@ -72,5 +86,6 @@ export {
     reqLogin,
     reqRegister,
     reqLogout,
+    reqChangePass,
     reqGetToken
 }

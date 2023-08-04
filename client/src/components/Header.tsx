@@ -17,6 +17,7 @@ interface Language {
     register: string
     search: string
     info: string
+    changePass: string
     order: string
     logout: string
 }
@@ -114,6 +115,10 @@ function Header() {
                                 <Link to='/profile'>
                                     <FontAwesomeIcon icon={faUser} />
                                     <span>{language?.info}</span>
+                                </Link>
+                                <Link to='/change-pass'>
+                                    <FontAwesomeIcon icon={faUser} />
+                                    <span>{language?.changePass}</span>
                                 </Link>
                                 <div>
                                     <FontAwesomeIcon icon={faCartShopping} />

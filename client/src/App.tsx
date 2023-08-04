@@ -10,6 +10,7 @@ import Register from './pages/Register'
 import Search from './pages/Search'
 import ProductPage from './pages/ProductPage'
 import Profile from './pages/Profile'
+import ChangePass from './pages/ChangePass'
 import { useUserData } from './context/hooks'
 import { USER_ACTION } from './context/UserContext'
 import { reqGetUser } from './utils/user'
@@ -44,6 +45,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/change-pass' element={<ChangePass />} />
         <Route path='/search' element={<Search />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/product/:id' element={<ProductPage />} />
