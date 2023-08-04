@@ -32,12 +32,7 @@ function Profile() {
     const [username, setUsername] = useState(user?.username || '')
     const [firstName, setFirstName] = useState(user?.firstName || '')
     const [lastName, setLastName] = useState(user?.lastName || '')
-    const [birthDate, setBirthDate] = useState(() => {
-        const year = user?.birthDate.toLocaleString('default', { year: 'numeric' })
-        const month = user?.birthDate.toLocaleString('default', { month: '2-digit' })
-        const day = user?.birthDate.toLocaleString('default', { day: '2-digit' })
-        return [year, month, day].join('-')
-    })
+    const [birthDate, setBirthDate] = useState(getDefaultBirthDate())
     const [sex, setSex] = useState(user?.sex || 'male')
     const [address, setAddress] = useState(user?.address || '')
     const [email, setEmail] = useState(user?.email || '')
@@ -48,6 +43,12 @@ function Profile() {
     const imageRef = useRef<HTMLImageElement>(null)
     const saveBtnRef = useRef<HTMLButtonElement>(null)
     const location = useLocation()
+    function getDefaultBirthDate() {
+        const year = user?.birthDate.toLocaleString('default', { year: 'numeric' })
+        const month = user?.birthDate.toLocaleString('default', { month: '2-digit' })
+        const day = user?.birthDate.toLocaleString('default', { day: '2-digit' })
+        return [year, month, day].join('-')
+    }
     async function handleChangeAvatar(e: React.ChangeEvent<HTMLInputElement>) {
         const validSignatures = [
             // png
@@ -115,6 +116,32 @@ function Profile() {
         }
     }, [username, firstName, lastName, birthDate, sex, address, email, phoneNumber, language])
     useEffect(() => {
+        const data = {
+            username,
+            firstName,
+            lastName,
+            birthDate,
+            sex,
+            address,
+            email,
+            phoneNumber
+        }
+        const defaultData = {
+            username: user?.username,
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+            birthDate: getDefaultBirthDate(),
+            sex: user?.sex,
+            address: user?.address,
+            email: user?.email,
+            phoneNumber: user?.phoneNumber
+        }
+        Object.keys(data).some(field => {
+            return data[field as keyof typeof data] !== defaultData[field as keyof typeof defaultData]
+        }) ? setEdited(true) : setEdited(false)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [username, firstName, lastName, birthDate, sex, address, email, phoneNumber])
+    useEffect(() => {
         import(`./languages/${appLanguage}Profile.json`)
             .then((data: Language) => {
                 setLanguage(data)
@@ -152,7 +179,6 @@ function Profile() {
                                 value={username}
                                 onInput={e => {
                                     setUsername(e.currentTarget.value)
-                                    setEdited(true)
                                 }}
                             /> <br />
                         </div>
@@ -161,7 +187,6 @@ function Profile() {
                                 value={firstName}
                                 onInput={e => {
                                     setFirstName(e.currentTarget.value)
-                                    setEdited(true)
                                 }}
                             /> <br />
                         </div>
@@ -170,7 +195,6 @@ function Profile() {
                                 value={lastName}
                                 onInput={e => {
                                     setLastName(e.currentTarget.value)
-                                    setEdited(true)
                                 }}
                             /> <br />
                         </div>
@@ -180,7 +204,6 @@ function Profile() {
                                 value={birthDate}
                                 onInput={e => {
                                     setBirthDate(e.currentTarget.value)
-                                    setEdited(true)
                                 }}
                             /> <br />
                         </div>
@@ -193,7 +216,6 @@ function Profile() {
                                 value='male'
                                 onChange={e => {
                                     setSex(e.currentTarget.value)
-                                    setEdited(true)
                                 }}
                             /> <label htmlFor='info-male'>{language?.male}</label>
                             <input
@@ -204,7 +226,6 @@ function Profile() {
                                 value='female'
                                 onChange={e => {
                                     setSex(e.currentTarget.value)
-                                    setEdited(true)
                                 }}
                             /> <label htmlFor='info-female'>{language?.female}</label>
                             <br />
@@ -214,7 +235,6 @@ function Profile() {
                                 value={email}
                                 onInput={e => {
                                     setEmail(e.currentTarget.value)
-                                    setEdited(true)
                                 }}
                             /> <br />
                         </div>
@@ -223,7 +243,6 @@ function Profile() {
                                 value={phoneNumber}
                                 onInput={e => {
                                     setPhoneNumber(e.currentTarget.value)
-                                    setEdited(true)
                                 }}
                             /> <br />
                         </div>
@@ -232,7 +251,6 @@ function Profile() {
                                 value={address}
                                 onInput={e => {
                                     setAddress(e.currentTarget.value)
-                                    setEdited(true)
                                 }}
                             /> <br />
                         </div>
