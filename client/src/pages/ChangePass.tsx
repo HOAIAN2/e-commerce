@@ -77,21 +77,13 @@ function ChangePass() {
                     <span>{language?.changePass}</span>
                 </div>
                 <div>
-                    <input type="password" placeholder={language?.password}
+                    <input type={hidePass ? 'password' : 'text'} placeholder={language?.password}
                         value={password}
                         onChange={e => { setPassword(e.target.value) }}
                     />
                     <div className='hide-button'
-                        onClick={(e) => {
-                            const inputElemenet = e.currentTarget.parentNode?.querySelector('input') as HTMLInputElement
-                            if (inputElemenet.type === 'password') {
-                                inputElemenet.type = 'text'
-                                setHidePass(false)
-                            }
-                            else {
-                                inputElemenet.type = 'password'
-                                setHidePass(true)
-                            }
+                        onClick={() => {
+                            setHidePass(!hidePass)
                         }}
                     >
                         {hidePass === true ? <FontAwesomeIcon icon={faEyeSlash} /> :
@@ -100,21 +92,13 @@ function ChangePass() {
                     </div>
                 </div>
                 <div>
-                    <input type="password" placeholder={language?.newPassword}
+                    <input type={hideNewPass ? 'password' : 'text'} placeholder={language?.newPassword}
                         value={newPassword}
                         onChange={e => { setNewPassword(e.target.value) }}
                     />
                     <div className='hide-button'
-                        onClick={(e) => {
-                            const inputElemenet = e.currentTarget.parentNode?.querySelector('input') as HTMLInputElement
-                            if (inputElemenet.type === 'password') {
-                                inputElemenet.type = 'text'
-                                setHideNewPass(false)
-                            }
-                            else {
-                                inputElemenet.type = 'password'
-                                setHideNewPass(true)
-                            }
+                        onClick={() => {
+                            setHideNewPass(!hideNewPass)
                         }}
                     >
                         {hideNewPass === true ? <FontAwesomeIcon icon={faEyeSlash} /> :
@@ -123,21 +107,13 @@ function ChangePass() {
                     </div>
                 </div>
                 <div>
-                    <input type="password" placeholder={language?.confirmPassword}
+                    <input type={hideConfirmPass ? 'password' : 'text'} placeholder={language?.confirmPassword}
                         value={confirmPassword}
                         onChange={e => { setConfirmPassword(e.target.value) }}
                     />
                     <div className='hide-button'
-                        onClick={(e) => {
-                            const inputElemenet = e.currentTarget.parentNode?.querySelector('input') as HTMLInputElement
-                            if (inputElemenet.type === 'password') {
-                                inputElemenet.type = 'text'
-                                setHideConfirmPass(false)
-                            }
-                            else {
-                                inputElemenet.type = 'password'
-                                setHideConfirmPass(true)
-                            }
+                        onClick={() => {
+                            setHideConfirmPass(!hideConfirmPass)
                         }}
                     >
                         {hideConfirmPass === true ? <FontAwesomeIcon icon={faEyeSlash} /> :

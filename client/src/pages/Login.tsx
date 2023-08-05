@@ -79,21 +79,13 @@ function Login() {
                     />
                 </div>
                 <div>
-                    <input type="password" placeholder={language?.password}
+                    <input type={hidePass ? 'password' : 'text'} placeholder={language?.password}
                         value={password}
                         onChange={e => { setPassword(e.target.value) }}
                     />
                     <div className='hide-button'
-                        onClick={(e) => {
-                            const inputElemenet = e.currentTarget.parentNode?.querySelector('input') as HTMLInputElement
-                            if (inputElemenet.type === 'password') {
-                                inputElemenet.type = 'text'
-                                setHidePass(false)
-                            }
-                            else {
-                                inputElemenet.type = 'password'
-                                setHidePass(true)
-                            }
+                        onClick={() => {
+                            setHidePass(!hidePass)
                         }}
                     >
                         {hidePass === true ? <FontAwesomeIcon icon={faEyeSlash} /> :

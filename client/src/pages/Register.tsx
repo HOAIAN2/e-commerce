@@ -188,22 +188,14 @@ function Register() {
                 </div>
                 <div className='info-container'>
                     <label className='require' htmlFor="">{language?.password}:</label>
-                    <input type="password" placeholder={language?.password}
+                    <input type={hidePass ? 'password' : 'text'} placeholder={language?.password}
                         required
                         value={password}
                         onChange={e => { setPassword(e.target.value) }}
                     />
                     <div className='hide-button'
-                        onClick={(e) => {
-                            const inputElemenet = e.currentTarget.parentNode?.querySelector('input') as HTMLInputElement
-                            if (inputElemenet.type === 'password') {
-                                inputElemenet.type = 'text'
-                                setHidePass(false)
-                            }
-                            else {
-                                inputElemenet.type = 'password'
-                                setHidePass(true)
-                            }
+                        onClick={() => {
+                            setHidePass(!hidePass)
                         }}
                     >
                         {hidePass === true ? <FontAwesomeIcon icon={faEyeSlash} /> :
@@ -213,22 +205,14 @@ function Register() {
                 </div>
                 <div className='info-container'>
                     <label className='require' htmlFor="">{language?.confirmPassword}:</label>
-                    <input type="password" placeholder={language?.confirmPassword}
+                    <input type={hideConfirmPass ? 'password' : 'text'} placeholder={language?.confirmPassword}
                         required
                         value={confirmPassword}
                         onChange={e => { setConfirmPassword(e.target.value) }}
                     />
                     <div className='hide-button'
-                        onClick={(e) => {
-                            const inputElemenet = e.currentTarget.parentNode?.querySelector('input') as HTMLInputElement
-                            if (inputElemenet.type === 'password') {
-                                inputElemenet.type = 'text'
-                                setHideConfirmPass(false)
-                            }
-                            else {
-                                inputElemenet.type = 'password'
-                                setHideConfirmPass(true)
-                            }
+                        onClick={() => {
+                            setHideConfirmPass(!hideConfirmPass)
                         }}
                     >
                         {hideConfirmPass === true ? <FontAwesomeIcon icon={faEyeSlash} /> :
