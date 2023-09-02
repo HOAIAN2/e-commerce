@@ -10,6 +10,7 @@ const DB_HOST = process.env['DB_HOST']
 const DB_USER = process.env['DB_USER']
 const DB_PASSWORD = process.env['DB_PASSWORD']
 const DB_NAME = process.env['DB_NAME']
+const USE_SWAGGER = (process.env['USE_SWAGGER'] === 'true' ? true : false)
 const ACCESS_TOKEN_SECRET = process.env['ACCESS_TOKEN_SECRET']
 const REFRESH_TOKEN_SERCET = process.env['REFRESH_TOKEN_SERCET']
 
@@ -22,6 +23,7 @@ export {
     DB_USER,
     DB_PASSWORD,
     DB_NAME,
+    USE_SWAGGER,
     ACCESS_TOKEN_SECRET,
     REFRESH_TOKEN_SERCET
 }
